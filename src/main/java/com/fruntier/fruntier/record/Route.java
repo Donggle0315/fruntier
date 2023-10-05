@@ -8,15 +8,13 @@ public class Route {
     private double distance;
     private double running_time;
     private int date_time;
-    private List<RouteElement> routeElementList;
 
-    public Route(Long userId, Long routeId, double distance, double running_time, int date_time, List<RouteElement> routeElementList) {
+    public Route(Long userId, Long routeId, double distance, double running_time, int date_time) {
         this.userId = userId;
         this.routeId = routeId;
         this.distance = distance;
         this.running_time = running_time;
         this.date_time = date_time;
-        this.routeElementList = routeElementList;
     }
 
     public Long getUserId() {
@@ -59,11 +57,4 @@ public class Route {
         this.date_time = date_time;
     }
 
-    public List<RouteElement> getRouteElementList() {
-        return routeElementList;
-    }
-
-    public void setRouteElementList(List<RouteElement> routeElementList) {
-        this.routeElementList = routeElementList;
-    }
 }

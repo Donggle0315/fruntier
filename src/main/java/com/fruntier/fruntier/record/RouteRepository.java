@@ -21,7 +21,7 @@ public interface RouteRepository {
      * @param routeId 검색할 루트 아이디
      * @return 루트 클래스
      */
-    Route findById(Long routeId);
+    Route findRouteById(Long routeId);
 
     /**
      * 루트 요소를 저장소에 저장

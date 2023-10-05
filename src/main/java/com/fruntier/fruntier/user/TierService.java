@@ -4,10 +4,10 @@ public interface TierService {
 
     /**
      * 유저의 티어 정보를 얻음
-     * @param UserId 유저 아이디
+     * @param userId 유저 아이디
      * @return 유저의 현재 티어
      */
-    Tier getUserTier(Long UserId);
+    Tier getUserTier(Long userId);
 
     /**
      * 기록에 따라 유저의 티어를 측정하는 기능
