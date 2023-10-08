@@ -1,5 +1,7 @@
 package com.fruntier.fruntier.user;
 
+import java.util.Objects;
+
 public class Friend {
     private Long userId1;
     private Long userId2;
@@ -23,5 +25,19 @@ public class Friend {
 
     public void setUserId2(Long userId2) {
         this.userId2 = userId2;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(obj==null || getClass() != obj.getClass()) return false;
+
+        Friend friend = (Friend)obj;
+        return Objects.equals(userId1,friend.userId1) && Objects.equals(userId2,friend.userId2);
+    }
+
+    @Override
+    public int hashCode(){
+        return Objects.hash(userId1,userId2);
     }
 }

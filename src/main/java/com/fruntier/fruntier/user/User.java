@@ -16,6 +16,9 @@ public class User {
     private Position position;//유저 등급(일반사용자, 관리자)
     private Date lastLoginDate; //마지막 접속 일자
 
+    public User(){
+        ;
+    }
     public User(Long userId, String name, String password, String email, String phoneNumber, String message, Boolean isMan, Tier tier, Position position, Date lastLoginDate) {
         this.userId = userId;
         this.name = name;
