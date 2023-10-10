@@ -7,9 +7,9 @@ public class Edge {
     private Double distance;
 
     /* additional information about the edge */
-    private int slope;
-    private int width;
-    private int population;
+    private Integer slope;
+    private Integer width;
+    private Integer population;
     private Double subjective_score;
     private Double total_score;
 

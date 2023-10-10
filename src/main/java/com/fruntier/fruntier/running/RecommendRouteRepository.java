@@ -5,5 +5,5 @@ public interface RecommendRouteRepository {
 
     RecommendRoute getRecoRouteById(Long recoId);
 
-    boolean deleteRecomRoute(Long recoId);
+    boolean deleteRecoRoute(Long recoId);
 }

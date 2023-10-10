@@ -19,5 +19,5 @@ public interface VertexRepository {
      * @param vertexId 삭제할 지점 아이디
      * @return 삭제 성공 여부
      */
-    boolean deleteVertex(Long vertexId);
+    Boolean deleteVertex(Long vertexId);
 }

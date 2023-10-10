@@ -5,7 +5,7 @@ import java.util.List;
 public class RecommendRoute {
     private Long id;
     private Double distance;
-    private int expected_time;
+    private Integer expected_time;
     private Double score;
     private List<Edge> route_info;
 
