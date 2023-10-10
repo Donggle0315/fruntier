@@ -32,4 +32,7 @@ public interface UserRepository {
      * @return 성공 실패 여부
      */
     Boolean deleteUser(Long userId);
+
+
+
 }

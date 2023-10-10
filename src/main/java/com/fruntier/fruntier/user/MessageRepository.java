@@ -19,4 +19,11 @@ public interface MessageRepository {
     public List<Message> getMessages(Long userid);
 
 
+    /**
+     * @param userId1 사용자 1
+     * @param userId2 사용자 2
+     */
+    public List<Message> getMessagesBetween(Long userId1, Long userId2);
+
+
 }
