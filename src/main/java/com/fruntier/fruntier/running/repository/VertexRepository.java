@@ -1,4 +1,6 @@
-package com.fruntier.fruntier.running;
+package com.fruntier.fruntier.running.repository;
+
+import com.fruntier.fruntier.running.domain.Vertex;
 
 public interface VertexRepository {
     /**

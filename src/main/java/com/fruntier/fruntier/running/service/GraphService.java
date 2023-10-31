@@ -1,4 +1,7 @@
-package com.fruntier.fruntier.running;
+package com.fruntier.fruntier.running.service;
+
+import com.fruntier.fruntier.running.domain.Edge;
+import com.fruntier.fruntier.running.domain.Vertex;
 
 import java.util.List;
 public interface GraphService {

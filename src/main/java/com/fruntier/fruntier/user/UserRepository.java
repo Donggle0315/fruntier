@@ -17,8 +17,6 @@ public interface UserRepository {
      */
     Optional<User> findUser(Long userId);
 
-
-
     /**
      * 유저를 업데이트
      * @param user

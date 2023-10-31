@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface RecordService {
     /**
-     * 루트를 만드는 기능
+     * 루트를 저장하는 기능
      * @param route 생성할 루트 인스턴스
      */
     void createRoute(Route route);

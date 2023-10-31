@@ -1,4 +1,6 @@
-package com.fruntier.fruntier.running;
+package com.fruntier.fruntier.running.domain;
+
+import com.fruntier.fruntier.running.domain.Edge;
 
 import java.util.List;
 

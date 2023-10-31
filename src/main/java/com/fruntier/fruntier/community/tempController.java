@@ -8,6 +8,8 @@ public class tempController {
 
     @GetMapping("/")
     public String home(){
+
+
         return "home";
     }
 

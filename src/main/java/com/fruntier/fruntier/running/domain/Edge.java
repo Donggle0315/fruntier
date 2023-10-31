@@ -1,4 +1,4 @@
-package com.fruntier.fruntier.running;
+package com.fruntier.fruntier.running.domain;
 
 public class Edge {
     private Long id;

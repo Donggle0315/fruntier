@@ -1,4 +1,6 @@
-package com.fruntier.fruntier.running;
+package com.fruntier.fruntier.running.domain;
+
+import com.fruntier.fruntier.running.domain.Vertex;
 
 public class UserRequest {
     Vertex start_vertex;
