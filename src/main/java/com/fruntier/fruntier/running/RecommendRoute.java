@@ -7,14 +7,14 @@ public class RecommendRoute {
     private Double distance;
     private Integer expected_time;
     private Double score;
-    private List<Edge> route_info;
+    private List<Edge> route_edges;
 
-    public RecommendRoute(Long id, Double distance, int expected_time, Double score, List<Edge> route_info) {
+    public RecommendRoute(Long id, Double distance, int expected_time, Double score, List<Edge> route_edges) {
         this.id = id;
         this.distance = distance;
         this.expected_time = expected_time;
         this.score = score;
-        this.route_info = route_info;
+        this.route_edges = route_edges;
     }
 
     public Long getId() {
@@ -33,11 +33,11 @@ public class RecommendRoute {
         this.distance = distance;
     }
 
-    public int getExpected_time() {
+    public Integer getExpected_time() {
         return expected_time;
     }
 
-    public void setExpected_time(int expected_time) {
+    public void setExpected_time(Integer expected_time) {
         this.expected_time = expected_time;
     }
 
@@ -49,11 +49,11 @@ public class RecommendRoute {
         this.score = score;
     }
 
-    public List<Edge> getRoute_info() {
-        return route_info;
+    public List<Edge> getRoute_edges() {
+        return route_edges;
     }
 
-    public void setRoute_info(List<Edge> route_info) {
-        this.route_info = route_info;
+    public void setRoute_edges(List<Edge> route_edges) {
+        this.route_edges = route_edges;
     }
 }
