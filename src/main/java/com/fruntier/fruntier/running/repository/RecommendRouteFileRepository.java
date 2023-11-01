@@ -113,11 +113,16 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
 
     @Override
     public void delete(RecommendRoute recommendRoute) {
-
+        recommendRouteArrayList.remove(recommendRoute);
+        System.out.println("Remove recommendRoute (id : " + recommendRoute.getId() + ")");
     }
 
     @Override
     public void deleteById(Long id) {
-
+        for (RecommendRoute recommendRoute : recommendRouteArrayList) {
+            if (recommendRoute.getId().equals(id)) {
+                delete(recommendRoute);
+            }
+        }
     }
 }
