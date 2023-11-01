@@ -4,11 +4,15 @@ import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
 public class RecommendRouteFileRepository implements RecommendRouteRepository{
+    //static final String file_path = System.getProperty("user.dir") + "/src/main/resources//RecommendRoute.txt";
+    static final Path file_path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/RecommendRoute.txt");
     private ArrayList<RecommendRoute> recommendRouteArrayList;
     private Long id;
 
@@ -16,8 +20,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
         recommendRouteArrayList = new ArrayList<>();
 
         try {
-            String file_path = System.getProperty("user.dir") + "/src/main/resources//RecommendRoute.txt";
-            Files.lines(Paths.get(file_path))
+            Files.lines(file_path)
                     .forEach(line -> recommendRouteArrayList.add(convertStringToRecommendRoute(line)));
         } catch (Exception e) {
             throw new IllegalArgumentException();
@@ -78,7 +81,42 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
         recommendRoute.setId(this.id++);
         recommendRouteArrayList.add(recommendRoute);
 
+        try{
+            Files.writeString(file_path, convertRecommendRouteToString(recommendRoute));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         System.out.println("Save RecommendRoute (id : " + recommendRoute.getId() + ")");
+    }
+
+    private String convertRecommendRouteToString(RecommendRoute recommendRoute) {
+        String result = ""+recommendRoute.getId();
+        result += " " + recommendRoute.getDistance();
+        result += " " + recommendRoute.getExpected_time();
+        result += " " + recommendRoute.getScore();
+        result += convertEdgesToString(recommendRoute.getRoute_edges());
+
+        return result;
+    }
+
+    private String convertEdgesToString(List<Edge> edges) {
+        String result = "";
+        for (Edge edge : edges) {
+            String word = "";
+            word += " " + edge.getId();
+            word += " " + edge.getStart_vertex_id();
+            word += " " + edge.getEnd_vertex_id();
+            word += " " + edge.getDistance();
+            word += " " + edge.getSlope();
+            word += " " + edge.getWidth();
+            word += " " + edge.getPopulation();
+            word += " " + edge.getSubjective_score();
+            word += " " + edge.getTotal_score();
+
+            result += word;
+        }
+
+        return result;
     }
 
     @Override
