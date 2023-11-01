@@ -103,6 +103,11 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
 
     @Override
     public Optional<RecommendRoute> findById(Long id) {
+        for (RecommendRoute recommendRoute : recommendRouteArrayList) {
+            if (recommendRoute.getId().equals(id)) {
+                return Optional.of(recommendRoute);
+            }
+        }
         return Optional.empty();
     }
 
