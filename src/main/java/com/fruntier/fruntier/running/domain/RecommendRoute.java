@@ -58,4 +58,14 @@ public class RecommendRoute {
     public void setRoute_edges(List<Edge> route_edges) {
         this.route_edges = route_edges;
     }
+
+    @Override
+    public String toString(){
+        String result = this.id + " " + this.distance + " " + this.expected_time + " " + this.score;
+        for(Edge edge : this.route_edges){
+            result += " " + edge.toString();
+        }
+
+        return result;
+    }
 }

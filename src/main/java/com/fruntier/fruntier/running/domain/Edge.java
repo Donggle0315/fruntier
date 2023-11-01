@@ -96,4 +96,17 @@ public class Edge {
     public void setTotal_score(Double total_score) {
         this.total_score = total_score;
     }
+
+    @Override
+    public String toString(){
+        return  this.id + " " +
+                this.start_vertex_id + " " +
+                this.end_vertex_id + " " +
+                this.distance + " " +
+                this.slope + " " +
+                this.width + " " +
+                this.population + " " +
+                this.subjective_score + " " +
+                this.total_score;
+    }
 }

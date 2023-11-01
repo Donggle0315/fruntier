@@ -11,7 +11,6 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class RecommendRouteFileRepository implements RecommendRouteRepository{
-    //static final String file_path = System.getProperty("user.dir") + "/src/main/resources//RecommendRoute.txt";
     static final Path file_path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/RecommendRoute.txt");
     private ArrayList<RecommendRoute> recommendRouteArrayList;
     private Long id;
@@ -90,30 +89,13 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
     }
 
     private String convertRecommendRouteToString(RecommendRoute recommendRoute) {
-        String result = ""+recommendRoute.getId();
-        result += " " + recommendRoute.getDistance();
-        result += " " + recommendRoute.getExpected_time();
-        result += " " + recommendRoute.getScore();
-        result += convertEdgesToString(recommendRoute.getRoute_edges());
-
-        return result;
+        return recommendRoute.toString() + convertEdgesToString(recommendRoute.getRoute_edges());
     }
 
     private String convertEdgesToString(List<Edge> edges) {
         String result = "";
         for (Edge edge : edges) {
-            String word = "";
-            word += " " + edge.getId();
-            word += " " + edge.getStart_vertex_id();
-            word += " " + edge.getEnd_vertex_id();
-            word += " " + edge.getDistance();
-            word += " " + edge.getSlope();
-            word += " " + edge.getWidth();
-            word += " " + edge.getPopulation();
-            word += " " + edge.getSubjective_score();
-            word += " " + edge.getTotal_score();
-
-            result += word;
+            result += edge.toString();
         }
 
         return result;
