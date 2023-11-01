@@ -3,14 +3,13 @@ package com.fruntier.fruntier.running.repository;
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class RecommendRouteFileRepository implements RecommendRouteRepository{
+public class RecommendRouteFileRepository implements RecommendRouteRepository {
     static final Path file_path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/RecommendRoute.txt");
     private ArrayList<RecommendRoute> recommendRouteArrayList;
     private Long id;
@@ -29,7 +28,6 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
     }
 
     private RecommendRoute convertStringToRecommendRoute(String line) throws IllegalArgumentException {
-        System.out.println("convertStringToEdges()");
         ArrayList<String> parsed_line = new ArrayList<>(Arrays.asList(line.split(" ")));
 
         try {
@@ -47,7 +45,6 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
 
     private ArrayList<Edge> convertStringToEdges(List<String> line) {
         ArrayList<Edge> edges = new ArrayList<>();
-        System.out.println("converStringToEdges");
 
         try {
             for (int i = 0; i < line.size(); i += 9) {
@@ -80,7 +77,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
         recommendRoute.setId(this.id++);
         recommendRouteArrayList.add(recommendRoute);
 
-        try{
+        try {
             Files.writeString(file_path, convertRecommendRouteToString(recommendRoute));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -124,5 +121,15 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
                 delete(recommendRoute);
             }
         }
+    }
+
+    @Override
+    public String toString(){
+        String result = "";
+        for (RecommendRoute recommendRoute : recommendRouteArrayList) {
+            result += recommendRoute.toString() + "\n";
+        }
+
+        return result;
     }
 }
