@@ -10,8 +10,9 @@ import java.util.*;
 
 public class RecommendRouteFileRepository implements RecommendRouteRepository{
     private ArrayList<RecommendRoute> recommendRouteArrayList;
+    private Long id;
 
-    public RecommendRouteFileRepository(){
+    public RecommendRouteFileRepository() throws IllegalArgumentException {
         recommendRouteArrayList = new ArrayList<>();
 
         try {
@@ -19,8 +20,10 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
             Files.lines(Paths.get(file_path))
                     .forEach(line -> recommendRouteArrayList.add(convertStringToRecommendRoute(line)));
         } catch (Exception e) {
-            System.out.println("File open error : " + e.getMessage());
+            throw new IllegalArgumentException();
         }
+
+        id = (long) recommendRouteArrayList.size();
     }
 
     private RecommendRoute convertStringToRecommendRoute(String line) throws IllegalArgumentException {
@@ -66,8 +69,16 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository{
     }
 
     @Override
-    public void save(RecommendRoute recommendRoute) {
+    public void save(RecommendRoute recommendRoute) throws IllegalArgumentException {
+        if (recommendRouteArrayList.contains(recommendRoute)) {
+            System.out.println("Reject to Save Duplicated Instance");
+            throw new IllegalArgumentException();
+        }
 
+        recommendRoute.setId(this.id++);
+        recommendRouteArrayList.add(recommendRoute);
+
+        System.out.println("Save RecommendRoute (id : " + recommendRoute.getId() + ")");
     }
 
     @Override

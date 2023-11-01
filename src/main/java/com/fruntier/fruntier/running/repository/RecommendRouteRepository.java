@@ -5,7 +5,7 @@ import com.fruntier.fruntier.running.domain.RecommendRoute;
 import java.util.Optional;
 
 public interface RecommendRouteRepository {
-    void save(RecommendRoute recommendRoute);
+    void save(RecommendRoute recommendRoute) throws IllegalArgumentException;
 
     Optional<RecommendRoute> findById(Long id);
 
