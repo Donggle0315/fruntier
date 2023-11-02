@@ -4,10 +4,13 @@ import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class RecommendRouteFileRepository implements RecommendRouteRepository {
     static final Path file_path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/RecommendRoute.txt");
@@ -16,7 +19,6 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
 
     public RecommendRouteFileRepository() throws IllegalArgumentException {
         recommendRouteArrayList = new ArrayList<>();
-
         try {
             Files.lines(file_path)
                     .forEach(line -> recommendRouteArrayList.add(convertStringToRecommendRoute(line)));
@@ -29,6 +31,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
 
     private RecommendRoute convertStringToRecommendRoute(String line) throws IllegalArgumentException {
         ArrayList<String> parsed_line = new ArrayList<>(Arrays.asList(line.split(" ")));
+        parsed_line.removeIf(Predicate.isEqual(""));
 
         try {
             Long id = Long.parseLong(parsed_line.get(0));
@@ -74,11 +77,13 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
             throw new IllegalArgumentException();
         }
 
-        recommendRoute.setId(this.id++);
+        recommendRoute.setId(++this.id);
         recommendRouteArrayList.add(recommendRoute);
 
         try {
-            Files.writeString(file_path, convertRecommendRouteToString(recommendRoute));
+            //Files.writeString(file_path, convertRecommendRouteToString(recommendRoute));
+            Files.write(file_path, (convertRecommendRouteToString(recommendRoute) + System.lineSeparator()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -92,7 +97,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     private String convertEdgesToString(List<Edge> edges) {
         String result = "";
         for (Edge edge : edges) {
-            result += edge.toString();
+            result += edge.toString() + " ";
         }
 
         return result;

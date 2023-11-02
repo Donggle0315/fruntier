@@ -107,6 +107,6 @@ public class Edge {
                 this.width + " " +
                 this.population + " " +
                 this.subjective_score + " " +
-                this.total_score;
+                this.total_score + " ";
     }
 }

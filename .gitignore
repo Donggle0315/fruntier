@@ -38,3 +38,4 @@ out/
 
 ### Donggle ###
 .gitignore
+!**src/main/java/com/fruntier/fruntier/TestMain.java
