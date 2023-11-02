@@ -47,4 +47,8 @@ public class VertexMemoryRepository implements VertexRepository {
         vertexArrayList.removeIf(v -> v.getId().equals(vertexId));
 
     }
+
+    public void clear(){
+        vertexArrayList.clear();
+    }
 }
