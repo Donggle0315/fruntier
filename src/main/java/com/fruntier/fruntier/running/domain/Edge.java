@@ -2,8 +2,8 @@ package com.fruntier.fruntier.running.domain;
 
 public class Edge {
     private Long id;
-    private Long start_vertex_id;
-    private Long end_vertex_id;
+    private Vertex startVertex;
+    private Vertex endVertex;
     private Double distance;
 
     /* additional information about the edge */
@@ -13,10 +13,10 @@ public class Edge {
     private Double subjective_score;
     private Double total_score;
 
-    public Edge(Long id, Long start_vertex_id, Long end_vertex_id, Double distance, int slope, int width, int population, Double subjective_score, Double total_score) {
+    public Edge(Long id, Vertex startVertex, Vertex endVertex, Double distance, Integer slope, Integer width, Integer population, Double subjective_score, Double total_score) {
         this.id = id;
-        this.start_vertex_id = start_vertex_id;
-        this.end_vertex_id = end_vertex_id;
+        this.startVertex = startVertex;
+        this.endVertex = endVertex;
         this.distance = distance;
         this.slope = slope;
         this.width = width;
@@ -33,20 +33,20 @@ public class Edge {
         this.id = id;
     }
 
-    public Long getStart_vertex_id() {
-        return start_vertex_id;
+    public Vertex getStartVertex() {
+        return startVertex;
     }
 
-    public void setStart_vertex_id(Long start_vertex_id) {
-        this.start_vertex_id = start_vertex_id;
+    public void setStartVertex(Vertex startVertex) {
+        this.startVertex = startVertex;
     }
 
-    public Long getEnd_vertex_id() {
-        return end_vertex_id;
+    public Vertex getEndVertex() {
+        return endVertex;
     }
 
-    public void setEnd_vertex_id(Long end_vertex_id) {
-        this.end_vertex_id = end_vertex_id;
+    public void setEndVertex(Vertex endVertex) {
+        this.endVertex = endVertex;
     }
 
     public Double getDistance() {
@@ -57,27 +57,27 @@ public class Edge {
         this.distance = distance;
     }
 
-    public int getSlope() {
+    public Integer getSlope() {
         return slope;
     }
 
-    public void setSlope(int slope) {
+    public void setSlope(Integer slope) {
         this.slope = slope;
     }
 
-    public int getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(Integer width) {
         this.width = width;
     }
 
-    public int getPopulation() {
+    public Integer getPopulation() {
         return population;
     }
 
-    public void setPopulation(int population) {
+    public void setPopulation(Integer population) {
         this.population = population;
     }
 
