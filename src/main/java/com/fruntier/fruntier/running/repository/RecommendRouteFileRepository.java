@@ -4,16 +4,13 @@ import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.Predicate;
 
 public class RecommendRouteFileRepository implements RecommendRouteRepository {
-    static final Path file_path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/RecommendRoute.txt");
+    private static final Path file_path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/RecommendRoute.txt");
     private ArrayList<RecommendRoute> recommendRouteArrayList;
     private Long id;
 
@@ -26,7 +23,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
             throw new IllegalArgumentException();
         }
 
-        id = (long) recommendRouteArrayList.size();
+        id = recommendRouteArrayList.isEmpty() ? 0 : recommendRouteArrayList.get(recommendRouteArrayList.size() -1).getId();
     }
 
     private RecommendRoute convertStringToRecommendRoute(String line) throws IllegalArgumentException {
@@ -80,13 +77,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
         recommendRoute.setId(++this.id);
         recommendRouteArrayList.add(recommendRoute);
 
-        try {
-            //Files.writeString(file_path, convertRecommendRouteToString(recommendRoute));
-            Files.write(file_path, (convertRecommendRouteToString(recommendRoute) + System.lineSeparator()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        fileWriteRecommendRouteEntries();
         System.out.println("Save RecommendRoute (id : " + recommendRoute.getId() + ")");
 
         return recommendRoute;
@@ -97,12 +88,12 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     }
 
     private String convertEdgesToString(List<Edge> edges) {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Edge edge : edges) {
-            result += edge.toString() + " ";
+            result.append(edge.toString()).append(" ");
         }
 
-        return result;
+        return result.toString();
     }
 
     @Override
@@ -117,45 +108,41 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
 
     @Override
     public void delete(RecommendRoute recommendRoute) {
-        recommendRouteArrayList.remove(recommendRoute);
-        System.out.println("Remove recommendRoute (id : " + recommendRoute.getId() + ")");
+        if (recommendRouteArrayList.contains(recommendRoute)) {
+            recommendRouteArrayList.remove(recommendRoute);
+            System.out.println("Remove recommendRoute (id : " + recommendRoute.getId() + ")");
+            fileWriteRecommendRouteEntries();
+        }
     }
 
     @Override
     public void deleteById(Long id) {
-        for (RecommendRoute recommendRoute : this.recommendRouteArrayList) {
-            System.out.println(recommendRoute);
-            if (recommendRoute.getId().equals(id)) {
-                delete(recommendRoute);
-                break;
-            }
+        if (this.findById(id).isPresent()) {
+            delete(this.findById(id).get());
+            System.out.println("DeleteById id : " + id);
         }
-
-        fileWriteRecommendRouteEntries();
     }
 
     @Override
     public String toString(){
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (RecommendRoute recommendRoute : recommendRouteArrayList) {
-            result += recommendRoute.toString() + "\n";
+            result.append(recommendRoute.toString()).append("\n");
         }
-
-        return result;
+        return result.toString();
     }
 
     private void fileWriteRecommendRouteEntries() {
         try {
-            //Files.writeString(file_path, convertRecommendRouteToString(recommendRoute));
-            Files.write(file_path, (convertRecommendRouteToString(recommendRouteArrayList.get(0)) + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
+            Files.delete(file_path);
+            Files.createFile(file_path);
+            Files.writeString(file_path, recommendRouteArrayList.get(0).toString() + System.lineSeparator(), StandardOpenOption.WRITE);
             for (RecommendRoute recommendRoute : recommendRouteArrayList.subList(1, recommendRouteArrayList.size())) {
-                Files.write(file_path, (convertRecommendRouteToString(recommendRoute) + System.lineSeparator()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+                Files.writeString(file_path, recommendRoute.toString() + System.lineSeparator(), StandardOpenOption.APPEND);
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
 

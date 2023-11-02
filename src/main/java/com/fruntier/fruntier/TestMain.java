@@ -25,8 +25,10 @@ public class TestMain {
         System.out.println(recommendRoute1);
         System.out.println(recommendRoute2);
 
-        repository.deleteById(18L);
+        repository.deleteById(3L);
+        System.out.println("Delete by Id : " + 1L);
 
+        repository.delete(repository.findById(4L).get());
     }
 
     private static List<Edge> makeEdges(){

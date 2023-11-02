@@ -61,11 +61,11 @@ public class RecommendRoute {
 
     @Override
     public String toString(){
-        String result = this.id + " " + this.distance + " " + this.expected_time + " " + this.score;
+        StringBuilder result = new StringBuilder(this.id + " " + this.distance + " " + this.expected_time + " " + this.score);
         for(Edge edge : this.route_edges){
-            result += " " + edge.toString();
+            result.append(" ").append(edge.toString());
         }
 
-        return result;
+        return result.toString();
     }
 }
