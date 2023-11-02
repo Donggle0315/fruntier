@@ -42,7 +42,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
         }
     }
 
-    private ArrayList<Edge> convertStringToEdges(List<String> line) {
+    private ArrayList<Edge> convertStringToEdges(List<String> line) throws IllegalArgumentException {
         ArrayList<Edge> edges = new ArrayList<>();
 
         try {
@@ -67,7 +67,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     }
 
     @Override
-    public RecommendRoute save(RecommendRoute recommendRoute) throws IllegalArgumentException {
+    public RecommendRoute save(RecommendRoute recommendRoute) throws RuntimeException {
         if (recommendRouteArrayList.contains(recommendRoute)) {
             System.out.println("Reject to Save Duplicated Instance");
             throw new IllegalArgumentException();
@@ -93,7 +93,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     }
 
     @Override
-    public void delete(RecommendRoute recommendRoute) {
+    public void delete(RecommendRoute recommendRoute) throws RuntimeException {
         if (recommendRouteArrayList.contains(recommendRoute)) {
             recommendRouteArrayList.remove(recommendRoute);
             System.out.println("Remove recommendRoute (id : " + recommendRoute.getId() + ")");
@@ -102,7 +102,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(Long id) throws RuntimeException {
         if (this.findById(id).isPresent()) {
             delete(this.findById(id).get());
             System.out.println("DeleteById id : " + id);
@@ -118,7 +118,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
         return result.toString();
     }
 
-    private void fileWriteRecommendRouteEntries() {
+    private void fileWriteRecommendRouteEntries() throws RuntimeException {
         try {
             Files.delete(file_path);
             Files.createFile(file_path);
