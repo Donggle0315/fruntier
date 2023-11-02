@@ -71,7 +71,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     }
 
     @Override
-    public void save(RecommendRoute recommendRoute) throws IllegalArgumentException {
+    public RecommendRoute save(RecommendRoute recommendRoute) throws IllegalArgumentException {
         if (recommendRouteArrayList.contains(recommendRoute)) {
             System.out.println("Reject to Save Duplicated Instance");
             throw new IllegalArgumentException();
@@ -88,6 +88,8 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
             throw new RuntimeException(e);
         }
         System.out.println("Save RecommendRoute (id : " + recommendRoute.getId() + ")");
+
+        return recommendRoute;
     }
 
     private String convertRecommendRouteToString(RecommendRoute recommendRoute) {
@@ -121,11 +123,15 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
 
     @Override
     public void deleteById(Long id) {
-        for (RecommendRoute recommendRoute : recommendRouteArrayList) {
+        for (RecommendRoute recommendRoute : this.recommendRouteArrayList) {
+            System.out.println(recommendRoute);
             if (recommendRoute.getId().equals(id)) {
                 delete(recommendRoute);
+                break;
             }
         }
+
+        fileWriteRecommendRouteEntries();
     }
 
     @Override
@@ -137,4 +143,19 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
 
         return result;
     }
+
+    private void fileWriteRecommendRouteEntries() {
+        try {
+            //Files.writeString(file_path, convertRecommendRouteToString(recommendRoute));
+            Files.write(file_path, (convertRecommendRouteToString(recommendRouteArrayList.get(0)) + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
+            for (RecommendRoute recommendRoute : recommendRouteArrayList.subList(1, recommendRouteArrayList.size())) {
+                Files.write(file_path, (convertRecommendRouteToString(recommendRoute) + System.lineSeparator()).getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }
+

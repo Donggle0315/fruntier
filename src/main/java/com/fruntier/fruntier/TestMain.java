@@ -7,6 +7,7 @@ import com.fruntier.fruntier.running.repository.RecommendRouteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class TestMain {
     public static void main(String[] args) {
@@ -16,8 +17,15 @@ public class TestMain {
 
         repository.save(new RecommendRoute(2L, 2.0, 5, 6.0, makeEdges()));
         repository.save(new RecommendRoute(3L, 2.0, 5, 6.0, makeEdges()));
+        System.out.println("Save done");
 
-        System.out.println(repository);
+
+        Optional<RecommendRoute> recommendRoute1 = repository.findById(1L);
+        Optional<RecommendRoute> recommendRoute2 = repository.findById(100L);
+        System.out.println(recommendRoute1);
+        System.out.println(recommendRoute2);
+
+        repository.deleteById(18L);
 
     }
 
