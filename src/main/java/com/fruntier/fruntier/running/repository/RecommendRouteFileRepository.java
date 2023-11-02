@@ -17,13 +17,12 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     public RecommendRouteFileRepository() throws IllegalArgumentException {
         recommendRouteArrayList = new ArrayList<>();
         try {
-            Files.lines(file_path)
-                    .forEach(line -> recommendRouteArrayList.add(convertStringToRecommendRoute(line)));
+            Files.lines(file_path).forEach(line -> recommendRouteArrayList.add(convertStringToRecommendRoute(line)));
         } catch (Exception e) {
             throw new IllegalArgumentException();
         }
 
-        id = recommendRouteArrayList.isEmpty() ? 0 : recommendRouteArrayList.get(recommendRouteArrayList.size() -1).getId();
+        id = recommendRouteArrayList.isEmpty() ? 0 : recommendRouteArrayList.get(recommendRouteArrayList.size() - 1).getId();
     }
 
     private RecommendRoute convertStringToRecommendRoute(String line) throws IllegalArgumentException {
@@ -83,19 +82,6 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
         return recommendRoute;
     }
 
-    private String convertRecommendRouteToString(RecommendRoute recommendRoute) {
-        return recommendRoute.toString() + convertEdgesToString(recommendRoute.getRoute_edges());
-    }
-
-    private String convertEdgesToString(List<Edge> edges) {
-        StringBuilder result = new StringBuilder();
-        for (Edge edge : edges) {
-            result.append(edge.toString()).append(" ");
-        }
-
-        return result.toString();
-    }
-
     @Override
     public Optional<RecommendRoute> findById(Long id) {
         for (RecommendRoute recommendRoute : recommendRouteArrayList) {
@@ -124,7 +110,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder result = new StringBuilder();
         for (RecommendRoute recommendRoute : recommendRouteArrayList) {
             result.append(recommendRoute.toString()).append("\n");
