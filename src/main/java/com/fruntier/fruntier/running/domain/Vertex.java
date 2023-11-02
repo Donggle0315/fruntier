@@ -1,14 +1,18 @@
 package com.fruntier.fruntier.running.domain;
 
+import java.util.List;
+
 public class Vertex {
     private Long id;
     private Coordinate coordinate;
     private String location;
+    private List<Edge> outEdge;
 
-    public Vertex(Long id, Coordinate coordinate, String location) {
+    public Vertex(Long id, Coordinate coordinate, String location, List<Edge> outEdge) {
         this.id = id;
         this.coordinate = coordinate;
         this.location = location;
+        this.outEdge = outEdge;
     }
 
     public Long getId() {
@@ -33,5 +37,13 @@ public class Vertex {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<Edge> getOutEdge() {
+        return outEdge;
+    }
+
+    public void setOutEdge(List<Edge> outEdge) {
+        this.outEdge = outEdge;
     }
 }

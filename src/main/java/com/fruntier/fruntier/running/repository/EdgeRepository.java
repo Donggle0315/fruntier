@@ -2,25 +2,28 @@ package com.fruntier.fruntier.running.repository;
 
 import com.fruntier.fruntier.running.domain.Edge;
 
+
+import java.util.Optional;
+
 public interface EdgeRepository {
 
     /**
      * 길을 저장소에 저장
      * @param edge 길 인스턴스
+     * @return 길
      */
-    void saveEdge(Edge edge);
+    Edge save(Edge edge);
 
     /**
      * 길을 저장소에서 검색
      * @param edgeId 길 아이디
-     * @return 길 인스턴스
+     * @return Edge의 옵셔널
      */
-    Edge findEdgeById(Long edgeId);
+    Optional<Edge> findById(Long edgeId);
 
     /**
      * 길을 저장소에서 삭제
      * @param edgeId 길 아이디
-     * @return 삭제 성공 여부
      */
-    boolean deleteEdge(Long edgeId);
+    void delete(Long edgeId);
 }
