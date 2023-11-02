@@ -33,11 +33,11 @@ public class TestMain {
 
     private static List<Edge> makeEdges(){
         List<Edge> edges = new ArrayList<>();
-        edges.add(new Edge(1L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
-        edges.add(new Edge(2L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
-        edges.add(new Edge(3L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
-        edges.add(new Edge(4L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
-        edges.add(new Edge(5L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
+//        edges.add(new Edge(1L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
+//        edges.add(new Edge(2L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
+//        edges.add(new Edge(3L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
+//        edges.add(new Edge(4L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
+//        edges.add(new Edge(5L, 2L, 3L, 4.0, 5, 6, 7, 8.0, 9.0));
 
         return edges;
     }

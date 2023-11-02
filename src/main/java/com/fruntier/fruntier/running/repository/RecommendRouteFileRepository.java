@@ -2,6 +2,7 @@ package com.fruntier.fruntier.running.repository;
 
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
+import com.fruntier.fruntier.running.domain.Vertex;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -44,12 +45,14 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
 
     private ArrayList<Edge> convertStringToEdges(List<String> line) throws IllegalArgumentException {
         ArrayList<Edge> edges = new ArrayList<>();
-
+        VertexRepository vertexRepository = new VertexMemoryRepository();
         try {
             for (int i = 0; i < line.size(); i += 9) {
                 Long id = Long.parseLong(line.get(i));
-                Long start_vertex_id = Long.parseLong(line.get(i + 1));
-                Long end_vertex_id = Long.parseLong(line.get(i + 2));
+//                Long start_vertex_id = Long.parseLong(line.get(i + 1));
+//                Long end_vertex_id = Long.parseLong(line.get(i + 2));
+                Vertex start_vertex = vertexRepository.findById(Long.parseLong(line.get(i + 3))).get();
+                Vertex end_vertex = vertexRepository.findById(Long.parseLong(line.get(i + 4))).get();
                 Double distance = Double.parseDouble(line.get(i + 3));
                 Integer slope = Integer.parseInt(line.get(i + 4));
                 Integer width = Integer.parseInt(line.get(i + 5));
@@ -57,7 +60,7 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
                 Double subjective_score = Double.parseDouble(line.get(i + 7));
                 Double total_score = Double.parseDouble(line.get(i + 8));
 
-                edges.add(new Edge(id, start_vertex_id, end_vertex_id, distance, slope, width, population, subjective_score, total_score));
+                edges.add(new Edge(id, start_vertex, end_vertex, distance, slope, width, population, subjective_score, total_score));
             }
 
             return edges;

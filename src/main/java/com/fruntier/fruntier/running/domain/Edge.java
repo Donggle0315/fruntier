@@ -100,8 +100,8 @@ public class Edge {
     @Override
     public String toString(){
         return  this.id + " " +
-                this.start_vertex_id + " " +
-                this.end_vertex_id + " " +
+                this.startVertex.getId() + " " +
+                this.endVertex.getId() + " " +
                 this.distance + " " +
                 this.slope + " " +
                 this.width + " " +
