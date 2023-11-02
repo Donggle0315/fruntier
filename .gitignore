@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Donggle ###
+.gitignore
+!**src/main/java/com/fruntier/fruntier/TestMain.java
