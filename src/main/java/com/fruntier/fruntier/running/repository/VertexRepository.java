@@ -24,4 +24,7 @@ public interface VertexRepository {
      * @return 삭제 성공 여부
      */
     void delete(Long vertexId);
+
+    Iterable<Vertex> findAll();
+
 }
