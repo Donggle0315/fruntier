@@ -27,5 +27,8 @@ public interface VertexRepository {
      */
     void delete(Long vertexId);
 
+  
+    Iterable<Vertex> findAll();
+
 
 }

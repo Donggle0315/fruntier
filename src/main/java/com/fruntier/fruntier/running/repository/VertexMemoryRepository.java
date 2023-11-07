@@ -48,6 +48,11 @@ public class VertexMemoryRepository implements VertexRepository {
 
     }
 
+    @Override
+    public Iterable<Vertex> findAll() {
+        return vertexArrayList;
+    }
+
     public void clear(){
         vertexArrayList.clear();
     }
