@@ -5,12 +5,17 @@ import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.Vertex;
 import com.fruntier.fruntier.running.repository.VertexMemoryRepository;
 import com.fruntier.fruntier.running.repository.VertexRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class GraphServiceImpl implements GraphService {
     private final VertexRepository vertexRepository;
+
+    @Autowired
     public GraphServiceImpl(VertexRepository vertexRepository) {
         this.vertexRepository = vertexRepository;
     }

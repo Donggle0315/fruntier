@@ -3,6 +3,7 @@ package com.fruntier.fruntier.running.repository;
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 import com.fruntier.fruntier.running.domain.Vertex;
+import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -10,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.function.Predicate;
 
+@Repository
 public class RecommendRouteFileRepository implements RecommendRouteRepository {
     private static final Path file_path = Paths.get(System.getProperty("user.dir") + "/src/main/resources/RecommendRoute.txt");
     private ArrayList<RecommendRoute> recommendRouteArrayList;
