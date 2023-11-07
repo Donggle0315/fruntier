@@ -6,15 +6,23 @@ import com.fruntier.fruntier.running.domain.UserRequest;
 import com.fruntier.fruntier.running.domain.Vertex;
 import com.fruntier.fruntier.running.repository.RecommendRouteFileRepository;
 import com.fruntier.fruntier.running.repository.RecommendRouteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class RecommendRouteServiceImpl implements RecommendRouteService {
-    private final RecommendRouteRepository recommendRouteRepository = new RecommendRouteFileRepository();
-    private final GraphService graphService = new GraphService();
+    private final RecommendRouteRepository recommendRouteRepository;
+    private final GraphService graphService;
     private final double DISTANCE_LOWER_PERCENTAGE = 0.95;
+
+    @Autowired
+    public RecommendRouteServiceImpl(RecommendRouteRepository recommendRouteRepository, GraphService graphService) {
+        this.recommendRouteRepository = recommendRouteRepository;
+        this.graphService = graphService;
+    }
+
     @Override
     public void createRecommendRoute(RecommendRoute recommendRoute) {
         recommendRouteRepository.save(recommendRoute);
