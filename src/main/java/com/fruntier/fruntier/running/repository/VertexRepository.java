@@ -1,7 +1,9 @@
 package com.fruntier.fruntier.running.repository;
 
+import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.Vertex;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface VertexRepository {
@@ -25,6 +27,8 @@ public interface VertexRepository {
      */
     void delete(Long vertexId);
 
+  
     Iterable<Vertex> findAll();
+
 
 }
