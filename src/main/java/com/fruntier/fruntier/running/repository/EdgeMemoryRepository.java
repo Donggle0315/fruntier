@@ -1,11 +1,15 @@
 package com.fruntier.fruntier.running.repository;
 
 import com.fruntier.fruntier.running.domain.Edge;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+@Component
 public class EdgeMemoryRepository implements EdgeRepository {
 
     Map<Long,Edge> edgeStore = new HashMap<>();
@@ -14,10 +18,6 @@ public class EdgeMemoryRepository implements EdgeRepository {
         //check if argument is null
         if(edge == null){
             throw new IllegalArgumentException("Argument(edge) is null");
-        }
-        //value alredy exists
-        if(edgeStore.containsKey(edge.getId())){
-
         }
         //add edge to DB
         edgeStore.put(edge.getId(),edge);

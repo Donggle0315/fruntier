@@ -1,12 +1,13 @@
 package com.fruntier.fruntier.running.repository;
 
 import com.fruntier.fruntier.running.domain.Vertex;
+import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.Optional;
 
 import static java.util.Arrays.stream;
-
+@Repository
 public class VertexMemoryRepository implements VertexRepository {
     ArrayList<Vertex> vertexArrayList = new ArrayList<>();
 

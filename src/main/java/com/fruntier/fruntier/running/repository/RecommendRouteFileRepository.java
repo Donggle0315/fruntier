@@ -17,16 +17,16 @@ public class RecommendRouteFileRepository implements RecommendRouteRepository {
     private ArrayList<RecommendRoute> recommendRouteArrayList;
     private Long id;
 
-    public RecommendRouteFileRepository() throws IllegalArgumentException {
-        recommendRouteArrayList = new ArrayList<>();
-        try {
-            Files.lines(file_path).forEach(line -> recommendRouteArrayList.add(convertStringToRecommendRoute(line)));
-        } catch (Exception e) {
-            throw new IllegalArgumentException();
-        }
-
-        id = recommendRouteArrayList.isEmpty() ? 0 : recommendRouteArrayList.get(recommendRouteArrayList.size() - 1).getId();
-    }
+//    public RecommendRouteFileRepository() throws IllegalArgumentException {
+//        recommendRouteArrayList = new ArrayList<>();
+//        try {
+//            Files.lines(file_path).forEach(line -> recommendRouteArrayList.add(convertStringToRecommendRoute(line)));
+//        } catch (Exception e) {
+//            throw new IllegalArgumentException();
+//        }
+//
+//        id = recommendRouteArrayList.isEmpty() ? 0 : recommendRouteArrayList.get(recommendRouteArrayList.size() - 1).getId();
+//    }
 
     private RecommendRoute convertStringToRecommendRoute(String line) throws IllegalArgumentException {
         ArrayList<String> parsed_line = new ArrayList<>(Arrays.asList(line.split(" ")));

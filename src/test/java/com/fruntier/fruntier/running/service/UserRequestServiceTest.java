@@ -9,13 +9,24 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@SpringBootTest
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class UserRequestServiceTest {
+    private final VertexMemoryRepository vertexRepository;
+    private final UserRequestService userRequestService;
 
-    private final VertexMemoryRepository vertexRepository = new VertexMemoryRepository();
-    private final UserRequestService userRequestService = new UserRequestServiceImpl(vertexRepository);
+    @Autowired
+    public UserRequestServiceTest(VertexMemoryRepository vertexRepository, UserRequestService userRequestService) {
+        this.vertexRepository = vertexRepository;
+        this.userRequestService = userRequestService;
+    }
 
     @BeforeEach
     void beforeTest(){
