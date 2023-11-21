@@ -8,11 +8,10 @@ import java.util.Optional;
 
 import static java.util.Arrays.stream;
 @Repository
-public class VertexMemoryRepository implements VertexRepository {
+public class VertexMemoryRepository {
     ArrayList<Vertex> vertexArrayList = new ArrayList<>();
 
 
-    @Override
     public Vertex save(Vertex vertex) throws IllegalArgumentException {
         if(vertex == null){
             throw new IllegalArgumentException("Vertex is null");
@@ -22,7 +21,6 @@ public class VertexMemoryRepository implements VertexRepository {
         return vertex;
     }
 
-    @Override
     public Optional<Vertex> findById(Long vertexId) throws IllegalArgumentException{
 
         if(vertexId == null){
@@ -39,7 +37,6 @@ public class VertexMemoryRepository implements VertexRepository {
         return Optional.empty();
     }
 
-    @Override
     public void delete(Long vertexId) throws IllegalArgumentException{
         if(vertexId == null){
             throw new IllegalArgumentException("id is null");
@@ -49,7 +46,6 @@ public class VertexMemoryRepository implements VertexRepository {
 
     }
 
-    @Override
     public Iterable<Vertex> findAll() {
         return vertexArrayList;
     }

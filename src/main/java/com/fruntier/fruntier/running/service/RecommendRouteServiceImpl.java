@@ -4,7 +4,6 @@ import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 import com.fruntier.fruntier.running.domain.UserRequest;
 import com.fruntier.fruntier.running.domain.Vertex;
-import com.fruntier.fruntier.running.repository.RecommendRouteFileRepository;
 import com.fruntier.fruntier.running.repository.RecommendRouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
