@@ -1,9 +1,11 @@
 package com.fruntier.fruntier.running.repository;
 
 import com.fruntier.fruntier.running.domain.Edge;
+import org.springframework.stereotype.Repository;
 
 
 import java.util.Optional;
+
 
 public interface EdgeRepository {
 

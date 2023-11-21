@@ -2,6 +2,7 @@ package com.fruntier.fruntier.running.repository;
 
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.Vertex;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
