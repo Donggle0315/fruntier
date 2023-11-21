@@ -7,6 +7,8 @@ import com.fruntier.fruntier.running.repository.VertexRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class UserRequestServiceImpl implements UserRequestService {
     private final VertexRepository vertexRepository;
@@ -32,5 +34,10 @@ public class UserRequestServiceImpl implements UserRequestService {
         }
 
         return curClosest;
+    }
+
+    @Override
+    public UserRequest makeUserRequesetFromJSON(Map<String, Object> payload) {
+        return null;
     }
 }

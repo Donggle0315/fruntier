@@ -1,15 +1,10 @@
 package com.fruntier.fruntier.running.repository;
 
 import com.fruntier.fruntier.running.domain.RecommendRoute;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface RecommendRouteRepository {
-    RecommendRoute save(RecommendRoute recommendRoute) throws IllegalArgumentException;
+public interface RecommendRouteRepository extends JpaRepository<RecommendRoute, Long> {
 
-    Optional<RecommendRoute> findById(Long id);
-
-    void delete(RecommendRoute recommendRoute);
-
-    void deleteById(Long id);
 }

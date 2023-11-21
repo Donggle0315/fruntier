@@ -3,6 +3,8 @@ package com.fruntier.fruntier.running.service;
 import com.fruntier.fruntier.running.domain.UserRequest;
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
+import com.fruntier.fruntier.running.domain.Vertex;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -13,5 +15,5 @@ public interface RecommendRouteService {
 
     Boolean deleteRecommendRouteById(Long recommendRouteId);
 
-    List<Edge> makeRecommendRouteNormal(UserRequest userRequest);
+    List<Vertex> makeRecommendRouteNormal(UserRequest userRequest);
 }
