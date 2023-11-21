@@ -6,14 +6,28 @@ import com.fruntier.fruntier.running.domain.Vertex;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@SpringBootTest
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class EdgeMemoryRepositoryTest {
 
-    private final EdgeMemoryRepository edgeRepository = new EdgeMemoryRepository();
+     EdgeRepository edgeRepository;
+
+    @Autowired
+    public EdgeMemoryRepositoryTest(EdgeRepository edgeRepository) {
+        this.edgeRepository = edgeRepository;
+    }
+
     @Test
     void save(){
         List<Edge> v1Edge = new ArrayList<>();
@@ -99,8 +113,8 @@ public class EdgeMemoryRepositoryTest {
 
     }
 
-    @AfterEach
-    void clear(){
-        edgeRepository.clear();
-    }
+//    @AfterEach
+//    void clear(){
+//        edgeRepository.clear();
+//    }
 }

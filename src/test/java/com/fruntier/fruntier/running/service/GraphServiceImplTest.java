@@ -4,17 +4,31 @@ import com.fruntier.fruntier.running.domain.Coordinate;
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.Vertex;
 import com.fruntier.fruntier.running.repository.VertexMemoryRepository;
+import com.fruntier.fruntier.running.repository.VertexRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+@SpringBootTest
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class GraphServiceImplTest {
-    private final VertexMemoryRepository vertexRepository = new VertexMemoryRepository();
-    private final GraphServiceImpl graphService = new GraphServiceImpl(vertexRepository);
+    private final VertexRepository vertexRepository;
+    private final GraphService graphService;
+
+    @Autowired
+    public GraphServiceImplTest(VertexRepository vertexRepository, GraphService graphService) {
+        this.vertexRepository = vertexRepository;
+        this.graphService = graphService;
+    }
 
     @Test
     void findConnectedEdge(){
@@ -69,8 +83,8 @@ public class GraphServiceImplTest {
 
     }
 
-    @AfterEach
-    void clear(){
-        vertexRepository.clear();
-    }
+//    @AfterEach
+//    void clear(){
+//        vertexRepository.clear();
+//    }
 }

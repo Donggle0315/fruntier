@@ -7,13 +7,27 @@ import org.aspectj.lang.annotation.After;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@SpringBootTest
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class VertexMemoryRepositoryTest {
-    private final VertexMemoryRepository vertexRepository = new VertexMemoryRepository();
+    private final VertexMemoryRepository vertexRepository;
+
+    @Autowired
+    public VertexMemoryRepositoryTest(VertexMemoryRepository vertexRepository) {
+        this.vertexRepository = vertexRepository;
+    }
 
     @Test
     void save(){

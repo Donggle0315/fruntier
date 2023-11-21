@@ -5,7 +5,9 @@ import com.fruntier.fruntier.running.domain.UserRequest;
 import com.fruntier.fruntier.running.domain.Vertex;
 import com.fruntier.fruntier.running.repository.VertexRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserRequestServiceImpl implements UserRequestService {
     private final VertexRepository vertexRepository;
 
