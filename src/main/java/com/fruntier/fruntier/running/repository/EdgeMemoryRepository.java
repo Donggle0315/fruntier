@@ -10,10 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 
 @Component
-public class EdgeMemoryRepository implements EdgeRepository {
+public class EdgeMemoryRepository{
 
     Map<Long,Edge> edgeStore = new HashMap<>();
-    @Override
     public Edge save(Edge edge) throws IllegalArgumentException{
         //check if argument is null
         if(edge == null){
@@ -24,7 +23,6 @@ public class EdgeMemoryRepository implements EdgeRepository {
         return edge;
     }
 
-    @Override
     public Optional<Edge> findById(Long edgeId) throws IllegalArgumentException{
         if(edgeId == null){
             throw new IllegalArgumentException("Argument(edgeId) is null");
@@ -32,7 +30,6 @@ public class EdgeMemoryRepository implements EdgeRepository {
         return Optional.ofNullable(edgeStore.get(edgeId));
     }
 
-    @Override
     public void delete(Long edgeId) throws IllegalArgumentException{
         if(edgeId == null){
             throw new IllegalArgumentException("Argument(edgeId) is null");
