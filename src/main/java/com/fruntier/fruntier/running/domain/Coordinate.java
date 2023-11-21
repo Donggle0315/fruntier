@@ -1,5 +1,9 @@
 package com.fruntier.fruntier.running.domain;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+
+@Embeddable
 public class Coordinate {
     private Double longitude;
     private Double latitude;

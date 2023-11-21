@@ -1,19 +1,25 @@
 package com.fruntier.fruntier.running.domain;
 
+import jakarta.persistence.*;
+
 import java.util.List;
 
+@Entity
 public class Vertex {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Embedded
     private Coordinate coordinate;
     private String location;
+
+    @OneToMany(mappedBy = "endVertex")
+    private List<Edge> inEdge;
+    @OneToMany(mappedBy = "startVertex")
     private List<Edge> outEdge;
 
-    public Vertex(Long id, Coordinate coordinate, String location, List<Edge> outEdge) {
-        this.id = id;
-        this.coordinate = coordinate;
-        this.location = location;
-        this.outEdge = outEdge;
-    }
+    public Vertex(){}
 
     public Long getId() {
         return id;
@@ -37,6 +43,14 @@ public class Vertex {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<Edge> getInEdge() {
+        return inEdge;
+    }
+
+    public void setInEdge(List<Edge> inEdge) {
+        this.inEdge = inEdge;
     }
 
     public List<Edge> getOutEdge() {

@@ -1,19 +1,37 @@
 package com.fruntier.fruntier.running.domain;
 
+
+import jakarta.persistence.*;
+
+@Entity
 public class Edge {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "start_vertex_id")
     private Vertex startVertex;
+
+    @ManyToOne
+    @JoinColumn(name = "end_vertex_id")
     private Vertex endVertex;
+
+
     private Double distance;
 
     /* additional information about the edge */
     private Integer slope;
     private Integer width;
     private Integer population;
-    private Double subjective_score;
-    private Double total_score;
+    private Double subjectiveScore;
 
-    public Edge(Long id, Vertex startVertex, Vertex endVertex, Double distance, Integer slope, Integer width, Integer population, Double subjective_score, Double total_score) {
+    @Transient
+    private Double totalScore;
+
+    public Edge(){}
+
+    public Edge(Long id, Vertex startVertex, Vertex endVertex, Double distance, Integer slope, Integer width, Integer population, Double subjectiveScore, Double totalScore) {
         this.id = id;
         this.startVertex = startVertex;
         this.endVertex = endVertex;
@@ -21,8 +39,8 @@ public class Edge {
         this.slope = slope;
         this.width = width;
         this.population = population;
-        this.subjective_score = subjective_score;
-        this.total_score = total_score;
+        this.subjectiveScore = subjectiveScore;
+        this.totalScore = totalScore;
     }
 
     public Long getId() {
@@ -81,20 +99,20 @@ public class Edge {
         this.population = population;
     }
 
-    public Double getSubjective_score() {
-        return subjective_score;
+    public Double getSubjectiveScore() {
+        return subjectiveScore;
     }
 
-    public void setSubjective_score(Double subjective_score) {
-        this.subjective_score = subjective_score;
+    public void setSubjectiveScore(Double subjectiveScore) {
+        this.subjectiveScore = subjectiveScore;
     }
 
-    public Double getTotal_score() {
-        return total_score;
+    public Double getTotalScore() {
+        return totalScore;
     }
 
-    public void setTotal_score(Double total_score) {
-        this.total_score = total_score;
+    public void setTotalScore(Double totalScore) {
+        this.totalScore = totalScore;
     }
 
     @Override
@@ -106,7 +124,7 @@ public class Edge {
                 this.slope + " " +
                 this.width + " " +
                 this.population + " " +
-                this.subjective_score + " " +
-                this.total_score + " ";
+                this.subjectiveScore + " " +
+                this.totalScore + " ";
     }
 }
