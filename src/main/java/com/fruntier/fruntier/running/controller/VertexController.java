@@ -33,7 +33,7 @@ public class VertexController {
         System.out.println("Received expectedDistance: " + expectedDistance);
         System.out.println("Received vertices: " + vertices);
 
-        //UserRequest userRequest = userRequestService.makeUserRequesetFromJSON(payload);
+        UserRequest userRequest = userRequestService.makeUserRequesetFromJSON(payload);
         //List<Vertex> recommmendRoute = recommendRouteService.makeRecommendRouteNormal(userRequest);
 
         String response = "{\"status\": \"success\", \"message\": \"Vertices received successfully\"}";

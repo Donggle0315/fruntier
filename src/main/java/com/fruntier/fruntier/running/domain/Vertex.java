@@ -60,4 +60,15 @@ public class Vertex {
     public void setOutEdge(List<Edge> outEdge) {
         this.outEdge = outEdge;
     }
+
+    @Override
+    public String toString() {
+        return "Vertex{" +
+                "id=" + id +
+                ", coordinate=" + coordinate +
+                ", location='" + location + '\'' +
+                ", inEdge=" + inEdge +
+                ", outEdge=" + outEdge +
+                '}';
+    }
 }
