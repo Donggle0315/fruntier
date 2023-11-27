@@ -27,7 +27,7 @@ public class VertexController {
 
     @PostMapping("/send-vertices-json")
     public ResponseEntity<String> receiveVerticesJson(@RequestBody Map<String, Object> payload) {
-        // Process the received JSON data on server
+        //process the received JSON data on server
         int expectedDistance = (int) payload.get("expectedDistance");
         Object vertices = payload.get("vertices");
         System.out.println("Received expectedDistance: " + expectedDistance);

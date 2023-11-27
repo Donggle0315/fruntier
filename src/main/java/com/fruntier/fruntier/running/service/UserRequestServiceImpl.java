@@ -15,7 +15,7 @@ public class UserRequestServiceImpl implements UserRequestService {
     private final VertexRepository vertexRepository;
 
     @Autowired
-    public UserRequestServiceImpl(VertexRepository vertexRepository){
+    public UserRequestServiceImpl(VertexRepository vertexRepository) {
         this.vertexRepository = vertexRepository;
     }
 
@@ -23,12 +23,12 @@ public class UserRequestServiceImpl implements UserRequestService {
     public Vertex convertCoordinateToVertex(Coordinate coordinate) {
         Vertex curClosest = null;
         double minDistance = Double.MAX_VALUE;
-        for(Vertex vertex: vertexRepository.findAll()){
+        for (Vertex vertex : vertexRepository.findAll()) {
             Coordinate vertexCoordinate = vertex.getCoordinate();
             double curDistance =
-                    Math.pow(vertexCoordinate.getLatitude()-coordinate.getLatitude(),2) +
-                    Math.pow(vertexCoordinate.getLongitude()-coordinate.getLongitude(), 2);
-            if(curDistance < minDistance){
+                    Math.pow(vertexCoordinate.getLatitude() - coordinate.getLatitude(), 2) +
+                            Math.pow(vertexCoordinate.getLongitude() - coordinate.getLongitude(), 2);
+            if (curDistance < minDistance) {
                 minDistance = curDistance;
                 curClosest = vertex;
             }
@@ -39,11 +39,11 @@ public class UserRequestServiceImpl implements UserRequestService {
 
     @Override
     public UserRequest makeUserRequesetFromJSON(Map<String, Object> payload) {
-        // Process the received JSON data on the server
+        //process the received JSON data on the server
         int expectedDistance = (int) payload.get("expectedDistance");
         List<Map<String, Object>> vertices = (List<Map<String, Object>>) payload.get("vertices");
 
-        // Extract start and end coordinates
+        //extract start and end coordinates
         Coordinate startCoordinate = convertToCoordinate(vertices.get(0).get("coordinate"));
         Coordinate endCoordinate = convertToCoordinate(vertices.get(1).get("coordinate"));
         Vertex startVertex = convertCoordinateToVertex(startCoordinate);
@@ -64,7 +64,7 @@ public class UserRequestServiceImpl implements UserRequestService {
     }
 
     public Vertex findNearestVertex(Coordinate targetCoordinate) {
-        List<Vertex> allVertices = vertexRepository.findAll(); // Fetch all vertices from the database
+        List<Vertex> allVertices = vertexRepository.findAll(); //fetch all vertices from the database
 
         Vertex nearestVertex = null;
         double minDistance = Double.MAX_VALUE;
@@ -80,10 +80,7 @@ public class UserRequestServiceImpl implements UserRequestService {
         return nearestVertex;
     }
 
-    // Add a method to calculate distance between two coordinates
     private double calculateDistance(Coordinate coordinate1, Coordinate coordinate2) {
-        // Implement your distance calculation logic (e.g., Euclidean distance, Haversine formula, etc.)
-        // Here's a simple example using Euclidean distance:
         double xDiff = coordinate1.getLatitude() - coordinate2.getLatitude();
         double yDiff = coordinate1.getLongitude() - coordinate2.getLongitude();
         return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
