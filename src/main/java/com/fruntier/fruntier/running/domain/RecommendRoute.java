@@ -1,22 +1,30 @@
 package com.fruntier.fruntier.running.domain;
 
 import com.fruntier.fruntier.running.domain.Edge;
+import jakarta.persistence.*;
 
 import java.util.List;
 
+@Entity
 public class RecommendRoute {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double distance;
-    private Integer expected_time;
+    private Integer expectedTime;
     private Double score;
-    private List<Edge> route_edges;
+    @ManyToMany
+    private List<Vertex> routeVertices;
 
-    public RecommendRoute(Long id, Double distance, int expected_time, Double score, List<Edge> route_edges) {
+    public RecommendRoute() {
+    }
+
+    public RecommendRoute(Long id, Double distance, Integer expectedTime, Double score, List<Vertex> routeVertices) {
         this.id = id;
         this.distance = distance;
-        this.expected_time = expected_time;
+        this.expectedTime = expectedTime;
         this.score = score;
-        this.route_edges = route_edges;
+        this.routeVertices = routeVertices;
     }
 
     public Long getId() {
@@ -35,12 +43,12 @@ public class RecommendRoute {
         this.distance = distance;
     }
 
-    public Integer getExpected_time() {
-        return expected_time;
+    public Integer getExpectedTime() {
+        return expectedTime;
     }
 
-    public void setExpected_time(Integer expected_time) {
-        this.expected_time = expected_time;
+    public void setExpectedTime(Integer expectedTime) {
+        this.expectedTime = expectedTime;
     }
 
     public Double getScore() {
@@ -51,21 +59,22 @@ public class RecommendRoute {
         this.score = score;
     }
 
-    public List<Edge> getRoute_edges() {
-        return route_edges;
+    public List<Vertex> getRouteVertices() {
+        return routeVertices;
     }
 
-    public void setRoute_edges(List<Edge> route_edges) {
-        this.route_edges = route_edges;
+    public void setRouteVertices(List<Vertex> routeVertices) {
+        this.routeVertices = routeVertices;
     }
 
     @Override
-    public String toString(){
-        StringBuilder result = new StringBuilder(this.id + " " + this.distance + " " + this.expected_time + " " + this.score);
-        for(Edge edge : this.route_edges){
-            result.append(" ").append(edge.toString());
-        }
-
-        return result.toString();
+    public String toString() {
+        return "RecommendRoute{" +
+                "id=" + id +
+                ", distance=" + distance +
+                ", expectedTime=" + expectedTime +
+                ", score=" + score +
+                ", routeVertices=" + routeVertices +
+                '}';
     }
 }

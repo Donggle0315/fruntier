@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>UserRequest</title>
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <p id="UserRequest">User Request</p>
+        <p>출발지 & 도착지 선택</p>
+        <div id="map" style="width:500px;height:400px;"></div>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5cf8836fb662afb5dbdf8f0c054fce52"></script>
+        <script type="text/javascript" th:src="@{/js/userRequest.js}"></script>
+        <script>
+            document.getElementById('clickLatlng')
+        </script>
+    </div>
+
+    <div class="right">
+        <div class="set_start_vertex">
+            <br>
+            <button id = "setStartVertex">startVertex</button>
+            <p id="startCoordinates"></p>
+        </div>
+
+        <div class="set_end_vertex">
+            <br>
+            <button id = "setEndVertex">endVertex</button>
+            <p id="endCoordinates"></p>
+        </div>
+
+        <div class="show_vertex">
+            <br>
+            <button id = "vertexList">showSelectedVertex</button>
+            <p id="allCoordinates"></p>
+        </div>
+
+        <div class="input_expected_distance">
+            <br>
+            <label for="expectedDistance">Expected Distance:</label>
+            <input type="number" id="expectedDistance" />
+        </div>
+
+        <div class="send_vertex">
+            <br>
+            <button id = "sendVertices">sendToServer</button>
+            <p id ="sendToServer"></p>
+        </div>
+
+        <div class="show_recommend_route">
+            <br>
+            <button id="showRoute">showRoute</button>
+            <p id="showReceivedRoute"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

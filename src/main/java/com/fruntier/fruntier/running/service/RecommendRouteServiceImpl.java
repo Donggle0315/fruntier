@@ -6,11 +6,13 @@ import com.fruntier.fruntier.running.domain.UserRequest;
 import com.fruntier.fruntier.running.domain.Vertex;
 import com.fruntier.fruntier.running.repository.RecommendRouteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class RecommendRouteServiceImpl implements RecommendRouteService {
     private final RecommendRouteRepository recommendRouteRepository;
     private final GraphService graphService;
@@ -43,13 +45,13 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
     }
 
     @Override
-    public List<Edge> makeRecommendRouteNormal(UserRequest userRequest) {
+    public List<Vertex> makeRecommendRouteNormal(UserRequest userRequest) {
         return dfsRouteFinder(userRequest, new ArrayList<>(), 0.0);
     }
 
-    private List<Edge> dfsRouteFinder(UserRequest userRequest, List<Edge> edges, Double distance) {
+    private List<Vertex> dfsRouteFinder(UserRequest userRequest, List<Edge> edges, Double distance) {
         if (checkFinishCondition(userRequest,edges,distance)) {
-            return edges;
+            return null;
         }
 
         Vertex lastVertex = getLastVertex(edges, userRequest.getStart_vertex());

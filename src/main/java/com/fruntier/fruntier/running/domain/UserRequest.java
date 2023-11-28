@@ -36,4 +36,13 @@ public class UserRequest {
     public void setExpect_distance(Integer expect_distance) {
         this.expect_distance = expect_distance;
     }
+
+    @Override
+    public String toString() {
+        return "UserRequest{" +
+                "start_vertex=" + start_vertex +
+                ", end_vertex=" + end_vertex +
+                ", expect_distance=" + expect_distance +
+                '}';
+    }
 }
