@@ -169,13 +169,13 @@ window.onload = function () {
         for (var i = 0; i < data.length - 1; i++) {
             var currentMarker = new kakao.maps.Marker({
                 map: map,
-                position: new kakao.maps.LatLng(data[i].latlng.lat, data[i].latlng.lng),
+                position: new kakao.maps.LatLng(data[i].coordinate.latitude, data[i].coordinate.longitude),
                 title: data[i].title,
             });
 
             var nextMarker = new kakao.maps.Marker({
                 map: map,
-                position: new kakao.maps.LatLng(data[i + 1].latlng.lat, data[i + 1].latlng.lng),
+                position: new kakao.maps.LatLng(data[i + 1].coordinate.latitude, data[i + 1].coordinate.longitude),
                 title: data[i + 1].title,
             });
 
