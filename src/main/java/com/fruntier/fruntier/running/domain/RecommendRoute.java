@@ -15,7 +15,11 @@ public class RecommendRoute {
     private Double score;
     @ManyToMany
     private List<Vertex> routeVertices;
-
+//    @JoinTable(
+//            name = "recommend_route_edge",
+//            joinColumns = @JoinColumn(name = "recommend_route_id"),
+//            inverseJoinColumns = @JoinColumn(name = "edge_id")
+//    )
     public RecommendRoute() {
     }
 
