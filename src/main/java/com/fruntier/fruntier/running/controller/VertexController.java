@@ -1,15 +1,13 @@
 package com.fruntier.fruntier.running.controller;
 
-import com.fruntier.fruntier.running.domain.Edge;
-import com.fruntier.fruntier.running.domain.UserPoint;
-import com.fruntier.fruntier.running.domain.UserRequest;
-import com.fruntier.fruntier.running.domain.Vertex;
+import com.fruntier.fruntier.running.domain.*;
 import com.fruntier.fruntier.running.service.RecommendRouteService;
 import com.fruntier.fruntier.running.service.UserRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +16,8 @@ import java.util.Map;
 public class VertexController {
     private UserRequestService userRequestService;
     private RecommendRouteService recommendRouteService;
+
+    private List<Vertex> tempVertexList;
 
     @Autowired
     public VertexController(UserRequestService userRequestService, RecommendRouteService recommendRouteService) {
@@ -34,7 +34,12 @@ public class VertexController {
         System.out.println("Received vertices: " + vertices);
 
         UserRequest userRequest = userRequestService.makeUserRequesetFromJSON(payload);
-        //List<Vertex> recommmendRoute = recommendRouteService.makeRecommendRouteNormal(userRequest);
+        List<Vertex> recommendRoute = recommendRouteService.makeRecommendRouteNormal(userRequest);
+        for (Vertex v : recommendRoute){
+            System.out.println("v = " + v);
+        }
+
+        tempVertexList = recommendRoute;
 
         String response = "{\"status\": \"success\", \"message\": \"Vertices received successfully\"}";
 
@@ -43,7 +48,12 @@ public class VertexController {
 
     @GetMapping("/get-data")
     public List<UserPoint> getDate() {
-        //return recommendRoute;
-        return null;
+        List<UserPoint> userPointList = new ArrayList<>();
+        for (Vertex vertex : tempVertexList){
+            UserPoint userPoint = new UserPoint("", vertex.getCoordinate());
+            userPointList.add(userPoint);
+        }
+
+        return userPointList;
     }
 }

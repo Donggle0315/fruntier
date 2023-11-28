@@ -62,6 +62,14 @@ public class Vertex {
     }
 
     @Override
+    public boolean equals(Object vertex){
+        if (vertex.getClass() == Vertex.class){
+            return this.getId().equals(((Vertex)vertex).getId());
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "Vertex{" +
                 "id=" + id +
