@@ -24,38 +24,38 @@ public class MemoryFriendRepositoryTest {
     public void checkIsFriend(){
         User user1 = new User();
         user1.setName("Alex");
-        user1.setUserId(1L);
+        user1.setId(1L);
 
         User user2 = new User();
         user2.setName("Liam");
-        user2.setUserId(2L);
+        user2.setId(2L);
 
-        Assertions.assertThat(repository.checkIsFriend(user1.getUserId(),user2.getUserId())).isEqualTo(false);
+        Assertions.assertThat(repository.checkIsFriend(user1.getId(),user2.getId())).isEqualTo(false);
 
-        repository.saveFriend(user1.getUserId(),user2.getUserId());
+        repository.saveFriend(user1.getId(),user2.getId());
 
-        Assertions.assertThat(repository.checkIsFriend(user1.getUserId(),user2.getUserId())).isEqualTo(true);
+        Assertions.assertThat(repository.checkIsFriend(user1.getId(),user2.getId())).isEqualTo(true);
 
     }
     @Test
     public void saveFriend(){
         User user1 = new User();
         user1.setName("Alex");
-        user1.setUserId(1L);
+        user1.setId(1L);
 
         User user2 = new User();
         user2.setName("Liam");
-        user2.setUserId(2L);
+        user2.setId(2L);
 
         User user3 = new User();
         user2.setName("Josh");
-        user2.setUserId(3L);
+        user2.setId(3L);
 
-        repository.saveFriend(user1.getUserId(), user2.getUserId());
+        repository.saveFriend(user1.getId(), user2.getId());
 
         //어느 순서로 해도 똑같음.
-        Assertions.assertThat(repository.checkIsFriend(user1.getUserId(),user2.getUserId())).isEqualTo(true);
-        Assertions.assertThat(repository.checkIsFriend(user2.getUserId(),user1.getUserId())).isEqualTo(true);
+        Assertions.assertThat(repository.checkIsFriend(user1.getId(),user2.getId())).isEqualTo(true);
+        Assertions.assertThat(repository.checkIsFriend(user2.getId(),user1.getId())).isEqualTo(true);
 
     }
 
@@ -63,17 +63,17 @@ public class MemoryFriendRepositoryTest {
     public void deleteFriend(){
         User user1 = new User();
         user1.setName("Alex");
-        user1.setUserId(1L);
+        user1.setId(1L);
 
         User user2 = new User();
         user2.setName("Liam");
-        user2.setUserId(2L);
+        user2.setId(2L);
 
 
-        repository.saveFriend(user1.getUserId(), user2.getUserId());
-        repository.deleteFriend(user1.getUserId(),user2.getUserId());
+        repository.saveFriend(user1.getId(), user2.getId());
+        repository.deleteFriend(user1.getId(),user2.getId());
 
-        Assertions.assertThat(repository.checkIsFriend(user1.getUserId(), user2.getUserId())).isEqualTo(false);
+        Assertions.assertThat(repository.checkIsFriend(user1.getId(), user2.getId())).isEqualTo(false);
 
     }
 }

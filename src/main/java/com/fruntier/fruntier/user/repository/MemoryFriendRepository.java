@@ -45,7 +45,7 @@ public class MemoryFriendRepository implements FriendRepository{
 
     @Override
     public List<Long> getFriends(User user) {
-        Long userId = user.getUserId();
+        Long userId = user.getId();
 
         return friendStore.stream()
                 .filter(f -> Objects.equals(f.getUserId1(), userId) || Objects.equals(f.getUserId2(), userId))
