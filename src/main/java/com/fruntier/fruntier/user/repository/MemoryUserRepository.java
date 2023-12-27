@@ -1,4 +1,6 @@
-package com.fruntier.fruntier.user;
+package com.fruntier.fruntier.user.repository;
+
+import com.fruntier.fruntier.user.domain.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +8,7 @@ import java.util.Optional;
 
 public class MemoryUserRepository implements UserRepository{
 
-    private static Map<Long,User> store = new HashMap<>();
+    private static Map<Long, User> store = new HashMap<>();
     private static long sequence = 0L;
     @Override
     public Long createUser(User user) { //Optioal User 로 받아서 비어있으면 안된다.

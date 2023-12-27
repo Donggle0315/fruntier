@@ -1,4 +1,4 @@
-package com.fruntier.fruntier.user;
+package com.fruntier.fruntier.user.domain;
 
 import java.util.Objects;
 

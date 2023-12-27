@@ -1,4 +1,6 @@
-package com.fruntier.fruntier.user;
+package com.fruntier.fruntier.user.service;
+
+import com.fruntier.fruntier.user.domain.Tier;
 
 public interface TierService {
 

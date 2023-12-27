@@ -1,6 +1,6 @@
 package com.fruntier.fruntier.community;
 
-import com.fruntier.fruntier.user.User;
+import com.fruntier.fruntier.user.domain.User;
 
 import java.util.List;
 

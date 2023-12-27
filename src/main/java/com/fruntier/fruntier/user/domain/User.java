@@ -1,7 +1,6 @@
-package com.fruntier.fruntier.user;
+package com.fruntier.fruntier.user.domain;
 
 import java.util.Date;
-import java.util.List;
 
 public class User {
     private Long userId;//유저 아이디(PK)

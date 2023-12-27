@@ -1,4 +1,6 @@
-package com.fruntier.fruntier.user;
+package com.fruntier.fruntier.user.repository;
+
+import com.fruntier.fruntier.user.domain.Message;
 
 import java.util.List;
 

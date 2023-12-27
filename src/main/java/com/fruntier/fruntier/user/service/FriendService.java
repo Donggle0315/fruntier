@@ -1,7 +1,8 @@
-package com.fruntier.fruntier.user;
+package com.fruntier.fruntier.user.service;
+
+import com.fruntier.fruntier.user.domain.User;
 
 import java.util.List;
-import java.util.Map;
 
 public interface FriendService {
     /**

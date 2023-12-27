@@ -1,6 +1,8 @@
-package com.fruntier.fruntier.user;
+package com.fruntier.fruntier.user.repository;
 
-import javax.swing.text.html.Option;
+import com.fruntier.fruntier.user.domain.Friend;
+import com.fruntier.fruntier.user.domain.User;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

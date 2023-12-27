@@ -1,9 +1,10 @@
 package com.fruntier.fruntier.user;
 
+import com.fruntier.fruntier.user.domain.User;
+import com.fruntier.fruntier.user.repository.MemoryFriendRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class MemoryFriendRepositoryTest {
 
