@@ -42,10 +42,12 @@ public class UserController {
     @ResponseBody
     @PostMapping("/join")
     public String userJoin(@RequestBody Map<String, String> joinData) {
+        System.out.println("joinData = " + joinData);
         if (joinData.containsValue(null)){
             return "error";
+
         }
-        System.out.println("joinData = " + joinData);
+//        System.out.println("joinData = " + joinData);
         String username = joinData.get("username");
         String password = joinData.get("password");
         String email = joinData.get("email");
@@ -84,6 +86,10 @@ public class UserController {
         return "login";
     }
 
+    @GetMapping("/home")
+    public String goHomePage(){
+        return "home";
+    }
 
     @PostMapping("/login")
     public String loginUser(@RequestParam String username, @RequestParam String password, HttpServletResponse response, Model model){
@@ -91,9 +97,9 @@ public class UserController {
         try {
             User user = userJoinLoginService.loginUser(username,password);
             String token = jwtTokenService.generateToken(user);
-
+            model.addAttribute("username", username);
             response.setHeader("Authorization", "Bearer " + token);
-            return "redirect:/home";
+            return "./home";
         }catch (UserNotFoundException | PasswordWrongException exception){
             if(exception instanceof UserNotFoundException){
                 model.addAttribute("errorMessage","User not Found!");

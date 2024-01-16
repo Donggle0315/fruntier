@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Home Page</title>
   <!-- Add any additional stylesheet links here -->
 </head>
 <body>
 <h1>Welcome to the Home Page!</h1>
-<p>Hello, {{username}}! You have successfully logged in.</p>
+<p>Hello, <span th:text="${username}"></span>! You have successfully logged in.</p>
 <!-- You can add more content here, like user details, navigation links, etc. -->
 <a href="/logout">Logout</a>
 </body>
