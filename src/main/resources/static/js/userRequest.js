@@ -62,6 +62,7 @@ window.onload = function () {
             markers.push(marker);
         }
     }
+
     //draw marker selected start and end vertices on the map
     function showMarker(title, latlng, imageSrc) {
         var imageSize = new kakao.maps.Size(24, 35);
@@ -103,10 +104,9 @@ window.onload = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
-
-                    if (response && response.route) {
-                        console.log("Received Route: ", response.route);
-                        drawLineOnMap(response.route);
+                    console.log("response : ", response);
+                    if (response != null) {
+                        drawLineOnMap(response);
                     } else {
                         console.log('Server response:', response);
                     }
@@ -129,29 +129,29 @@ window.onload = function () {
         }
     }
 
-    document.getElementById("showRoute").addEventListener('click', showReceivedRoute);
-    function showReceivedRoute() {
-        //make an HTTP request to the backend
-        fetch('/api/get-data')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                //Handle the JSON data
-                console.log('Received data:', data);
-
-                //console.log data
-                console.log('Key:', data.key);
-                console.log('Value:', data.value);
-
-                //drawMarkerOnMap(data);
-                drawLineOnMap(data);
-            })
-            .catch(error => console.error('Error:', error));
-    }
+//    document.getElementById("showRoute").addEventListener('click', showReceivedRoute);
+//    function showReceivedRoute() {
+//        //make an HTTP request to the backend
+//        fetch('/api/get-data')
+//            .then(response => {
+//                if (!response.ok) {
+//                    throw new Error('Network response was not ok');
+//                }
+//                return response.json();
+//            })
+//            .then(data => {
+//                //Handle the JSON data
+//                console.log('Received data:', data);
+//
+//                //console.log data
+//                console.log('Key:', data.key);
+//                console.log('Value:', data.value);
+//
+//                //drawMarkerOnMap(data);
+//                drawLineOnMap(data);
+//            })
+//            .catch(error => console.error('Error:', error));
+//    }
 
 //    function drawMarkerOnMap(data) {
 //        console.log("in draw:",data);
