@@ -53,7 +53,7 @@ public class UserController {
         String email = joinData.get("email");
         String name = joinData.get("name");
         String address = joinData.get("address");
-        String sex = joinData.get("male");
+        String sex = joinData.get("sex");
 
         User user = new User();
         user.setUsername(username);
