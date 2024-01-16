@@ -1,6 +1,8 @@
 package com.fruntier.fruntier.user.controller;
 
+import com.fruntier.fruntier.user.domain.Position;
 import com.fruntier.fruntier.user.domain.User;
+import com.fruntier.fruntier.user.exceptions.HasDuplicateUsernameException;
 import com.fruntier.fruntier.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,7 +43,7 @@ public class UserController {
     @PostMapping("/join")
     public String userJoin(@RequestBody Map<String, String> joinData) {
         if (joinData.containsValue(null)){
-            // throw exception
+            return "error";
         }
         System.out.println("joinData = " + joinData);
         String username = joinData.get("username");
@@ -52,12 +54,29 @@ public class UserController {
         String sex = joinData.get("male");
 
         User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setName(name);
+        user.setPosition(Position.USER);
+        user.setAddress(address);
+        if (sex.equals("male")){
+            user.setMale(true);
+        }
+        else {
+            user.setMale(false);
+        }
+
+        try {
+            userJoinLoginService.joinUser(user);
+        }
+        catch (HasDuplicateUsernameException he) {
+            System.out.println("HasDuplicateNameException");
+            return "error";
+        }
 
         return "ok";
     }
-  
-
-
 
 
     @GetMapping("/login")

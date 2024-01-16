@@ -1,6 +1,7 @@
 package com.fruntier.fruntier.user.service;
 
 import com.fruntier.fruntier.user.domain.User;
+import com.fruntier.fruntier.user.exceptions.HasDuplicateUsernameException;
 import com.fruntier.fruntier.user.exceptions.PasswordWrongException;
 import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
 import com.fruntier.fruntier.user.repository.UserRepository;
@@ -35,5 +36,14 @@ public class userJoinLoginServiceImpl implements UserJoinLoginService {
         }
 
         return pwCheckUser.get();
+    }
+
+    @Override
+    public User joinUser(User user) throws HasDuplicateUsernameException {
+        if(userRepository.findByUsername(user.getUsername()).isPresent()){
+            throw new HasDuplicateUsernameException("Duplicate Username Found");
+        }
+        User new_user = userRepository.save(user);
+        return new_user;
     }
 }

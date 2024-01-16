@@ -17,6 +17,7 @@ public class User{
     private String name;//유저 이름
     private String password;//유저 패스 워드
     private String email;//유저 이메일
+    private String address;
     private String phoneNumber; //유저 핸드폰 번호
     //private Image profile_picture;
     private String message;// 유저 프로필 메세지
@@ -131,5 +132,13 @@ public class User{
 
     public void setLastLoginDate(Date lastLoginDate) {
         this.lastLoginDate = lastLoginDate;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
