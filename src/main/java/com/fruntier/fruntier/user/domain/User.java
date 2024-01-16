@@ -1,42 +1,64 @@
 package com.fruntier.fruntier.user.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Date;
 
-public class User {
-    private Long userId;//유저 아이디(PK)
+@Entity
+public class User{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id; //유저 구분자(PK)
+    private String username; //the id of the user. identifiable
     private String name;//유저 이름
     private String password;//유저 패스 워드
     private String email;//유저 이메일
     private String phoneNumber; //유저 핸드폰 번호
     //private Image profile_picture;
     private String message;// 유저 프로필 메세지
-    private Boolean isMan;//유저 성별
+    private Boolean isMale;//유저 성별
     private Tier tier;//유저 티어
     private Position position;//유저 등급(일반사용자, 관리자)
     private Date lastLoginDate; //마지막 접속 일자
 
-    public User(){
+    public User() {
         ;
     }
-    public User(Long userId, String name, String password, String email, String phoneNumber, String message, Boolean isMan, Tier tier, Position position, Date lastLoginDate) {
-        this.userId = userId;
+
+    public User(Long id, String username, String name,
+                String password, String email, String phoneNumber,
+                String message, Boolean isMale, Tier tier, Position position, Date lastLoginDate) {
+        this.id = id;
+        this.username = username;
         this.name = name;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.message = message;
-        this.isMan = isMan;
+        this.isMale = isMale;
         this.tier = tier;
         this.position = position;
         this.lastLoginDate = lastLoginDate;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -79,12 +101,12 @@ public class User {
         this.message = message;
     }
 
-    public boolean isMan() {
-        return isMan;
+    public Boolean getMale() {
+        return isMale;
     }
 
-    public void setMan(Boolean man) {
-        isMan = man;
+    public void setMale(Boolean male) {
+        isMale = male;
     }
 
     public Tier getTier() {
