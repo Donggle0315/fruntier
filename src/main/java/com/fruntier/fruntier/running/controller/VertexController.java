@@ -25,6 +25,7 @@ public class VertexController {
         this.recommendRouteService = recommendRouteService;
     }
 
+    @ResponseBody
     @PostMapping("/send-vertices-json")
     public ResponseEntity<String> receiveVerticesJson(@RequestBody Map<String, Object> payload) {
         //process the received JSON data on server
@@ -43,7 +44,7 @@ public class VertexController {
 
         String response = "{\"status\": \"success\", \"message\": \"Vertices received successfully\"}";
 
-        return ResponseEntity.ok(response);
+       return ResponseEntity.ok(response);
     }
 
     @GetMapping("/get-data")
