@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Information Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="tel"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    input[type="checkbox"] {
+      margin-right: 10px;
+    }
+
+    input[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>User Information Form</h2>
+  <form action="/submit-form" method="post">
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+
+    <label for="is_male">Is Male:</label>
+    <input type="checkbox" id="is_male" name="is_male">
+
+    <label for="message">Message:</label>
+    <input type="text" id="message" name="message">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password">
+
+    <label for="phone_number">Phone Number:</label>
+    <input type="tel" id="phone_number" name="phone_number">
+
+    <label for="position">Position:</label>
+    <input type="number" id="position" name="position">
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+
+    <input type="submit" value="Submit">
+  </form>
+</div>
+</body>
+</html>

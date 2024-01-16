@@ -1,8 +1,17 @@
 package com.fruntier.fruntier.user.domain;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import java.util.Date;
 
-public class User {
+@Entity
+public class User{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id; //유저 구분자(PK)
     private String username; //the id of the user. identifiable
     private String name;//유저 이름
