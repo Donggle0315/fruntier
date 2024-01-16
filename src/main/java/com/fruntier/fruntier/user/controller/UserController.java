@@ -23,11 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private final UserInfoService userInfoService;
+    private UserJoinLoginService userJoinLoginService;
+    private JwtTokenService jwtTokenService;
 
     @Autowired
-    public UserController(UserInfoService userInfoService){
-        this.userInfoService = userInfoService;
+    public UserController(UserJoinLoginService userJoinLoginService, JwtTokenService jwtTokenService){
+        this.userJoinLoginService = userJoinLoginService;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @GetMapping("/join")
@@ -54,12 +56,9 @@ public class UserController {
         return "ok";
     }
   
-    UserJoinLoginService userJoinLoginService;
-    JwtTokenService jwtTokenService;
 
-    public UserController(UserJoinLoginService userJoinLoginService) {
-        this.userJoinLoginService = userJoinLoginService;
-    }
+
+
 
     @GetMapping("/login")
     public String showLoginForm(){
