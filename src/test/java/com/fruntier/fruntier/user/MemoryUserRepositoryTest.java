@@ -91,7 +91,7 @@ public class MemoryUserRepositoryTest {
             return;
         }
 
-        Optional<User> result2 = repository.findUser(newUser.getUserId());
+        Optional<User> result2 = repository.findUser(newUser.getId());
 
         if(result2.isPresent()){
             Assertions.assertThat(result2.get()).isEqualTo(newUser);
