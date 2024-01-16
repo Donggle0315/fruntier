@@ -26,8 +26,8 @@ public class VertexController {
     }
 
     @PostMapping("/send-vertices-json")
-    public ResponseEntity<String> receiveVerticesJson(@RequestBody Map<String, Object> payload) {
-        //process the received JSON data on server
+    public ResponseEntity<List<UserPoint>> receiveVerticesJson(@RequestBody Map<String, Object> payload) {
+        // Process the received JSON data on the server
         int expectedDistance = (int) payload.get("expectedDistance");
         Object vertices = payload.get("vertices");
         System.out.println("Received expectedDistance: " + expectedDistance);
@@ -35,25 +35,33 @@ public class VertexController {
 
         UserRequest userRequest = userRequestService.makeUserRequesetFromJSON(payload);
         List<Vertex> recommendRoute = recommendRouteService.makeRecommendRouteNormal(userRequest);
-        for (Vertex v : recommendRoute){
-            System.out.println("v = " + v);
-        }
 
-        tempVertexList = recommendRoute;
-
-        String response = "{\"status\": \"success\", \"message\": \"Vertices received successfully\"}";
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/get-data")
-    public List<UserPoint> getDate() {
+        // Convert Vertex objects to UserPoint objects for response
         List<UserPoint> userPointList = new ArrayList<>();
-        for (Vertex vertex : tempVertexList){
+        for (Vertex vertex : recommendRoute) {
             UserPoint userPoint = new UserPoint("", vertex.getCoordinate());
             userPointList.add(userPoint);
         }
 
-        return userPointList;
+        // Set the recommended route in the response
+        return ResponseEntity.ok(userPointList);
+    }
+
+    @GetMapping("/get-data")
+    public ResponseEntity<List<UserPoint>> getData() {
+        if (tempVertexList == null || tempVertexList.isEmpty()) {
+            return ResponseEntity.noContent().build(); // No content to send
+        }
+
+        // Convert Vertex objects to UserPoint objects for response
+        List<UserPoint> userPointList = new ArrayList<>();
+        for (Vertex vertex : tempVertexList) {
+            UserPoint userPoint = new UserPoint("", vertex.getCoordinate());
+            userPointList.add(userPoint);
+        }
+
+        // Return the recommended route data
+        return ResponseEntity.ok(userPointList);
     }
 }
+
