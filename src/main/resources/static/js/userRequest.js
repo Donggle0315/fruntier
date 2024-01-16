@@ -103,7 +103,13 @@ window.onload = function () {
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     var response = JSON.parse(xhr.responseText);
-                    console.log('Server response:', response);
+
+                    if (response && response.route) {
+                        console.log("Received Route: ", response.route);
+                        drawLineOnMap(response.route);
+                    } else {
+                        console.log('Server response:', response);
+                    }
                 } else {
                     console.error('Error:', xhr.status, xhr.statusText, xhr.responseText);
                 }
