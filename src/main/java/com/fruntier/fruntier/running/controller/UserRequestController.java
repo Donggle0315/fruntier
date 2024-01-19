@@ -12,7 +12,7 @@ public class UserRequestController {
 
     }
 
-    @GetMapping("/tool/userRequest")
+    @GetMapping("/running")
     public String userRequest() {
         return "userRequest";
     }
