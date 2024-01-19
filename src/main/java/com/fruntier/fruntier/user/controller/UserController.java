@@ -7,6 +7,9 @@ import com.fruntier.fruntier.user.exceptions.TokenValidationException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
+import com.fruntier.fruntier.user.service.UserInfoService;
+import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -48,12 +51,25 @@ public class UserController {
     }
 
     @ResponseBody
+    @GetMapping("/join/{username}/duplicate")
+    public String userCheckDuplicateUsername(@PathVariable("username") String username) {
+        if (userJoinLoginService.isDuplicateUsername(username)) {
+            return "true";
+        }
+        return "false";
+    }
+
+    @GetMapping("/info")
+    public String userInfo() {
+        return "info";
+    }
+
+    @ResponseBody
     @PostMapping("/join")
     public String userJoin(@RequestBody Map<String, String> joinData) {
         System.out.println("joinData = " + joinData);
         if (joinData.containsValue(null)) {
             return "error";
-
         }
 //        System.out.println("joinData = " + joinData);
         String username = joinData.get("username");
