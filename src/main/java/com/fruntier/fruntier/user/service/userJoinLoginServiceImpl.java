@@ -46,4 +46,10 @@ public class userJoinLoginServiceImpl implements UserJoinLoginService {
         User new_user = userRepository.save(user);
         return new_user;
     }
+
+    @Override
+    public boolean isDuplicateUsername(String username){
+        return userRepository.findByUsername(username).isPresent();
+    }
+
 }
