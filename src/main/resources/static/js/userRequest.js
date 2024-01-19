@@ -97,7 +97,7 @@ window.onload = function () {
 
         console.log('Vertices:', vertices);
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/api/send-vertices-json', true);
+        xhr.open('POST', '/api/routes/recommendation', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         xhr.onreadystatechange = function () {
