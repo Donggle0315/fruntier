@@ -3,6 +3,10 @@ package com.fruntier.fruntier.user.controller;
 import com.fruntier.fruntier.user.domain.Position;
 import com.fruntier.fruntier.user.domain.User;
 import com.fruntier.fruntier.user.exceptions.HasDuplicateUsernameException;
+import com.fruntier.fruntier.user.exceptions.TokenValidationException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
 import com.fruntier.fruntier.user.service.UserInfoService;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +15,12 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.fruntier.fruntier.user.service.UserInfoService;
+import io.jsonwebtoken.Jwts;
+import jakarta.servlet.http.HttpServletRequest;
+import com.fruntier.fruntier.user.exceptions.TokenValidationException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.HttpServletRequest;
 import com.fruntier.fruntier.user.exceptions.TokenValidationException;
