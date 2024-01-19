@@ -15,4 +15,6 @@ public interface UserJoinLoginService {
 
 
     User joinUser(User user) throws HasDuplicateUsernameException;
+
+    boolean isDuplicateUsername(String username);
 }

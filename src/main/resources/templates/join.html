@@ -29,6 +29,8 @@
       display: block;
       margin-bottom: 5px;
       color: #333;
+      display: inline-block;
+      margin-top: 10px;
     }
 
     input[type="text"],
@@ -38,10 +40,14 @@
     input[type="number"] {
       width: 100%;
       padding: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       border: 1px solid #ddd;
       border-radius: 4px;
       box-sizing: border-box;
+    }
+
+    input[type="text"] {
+      margin-bottom: 10px;
     }
 
     input[type="checkbox"] {
@@ -60,6 +66,11 @@
     input[type="submit"]:hover {
       background-color: #0056b3;
     }
+
+    span#username-warning-text {
+      margin-bottom: 10px;
+    }
+
   </style>
 </head>
 <body>
@@ -67,25 +78,27 @@
   <h2>User Information Form</h2>
   <form id="joinForm" action="#" method="post">
 
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email">
-
-    <select name="sex" id="sex">
-      <option value="male">male</option>
-      <option value="female">female</option>
-    </select>
-
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username">
+    <span id="username-warning-text"></span><br>
 
     <label for="password">Password:</label>
     <input type="password" id="password" name="password">
 
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name">
+
+    <label for="sex">Gender: </label>
+    <select name="sex" id="sex">
+      <option value="male">male</option>
+      <option value="female">female</option>
+    </select> <br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email">
+
     <label for="phone_number">Phone Number:</label>
     <input type="tel" id="phone_number" name="phone_number">
-
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username">
 
     <label for="address">Address:</label>
     <input type="text" id="address" name="address">
