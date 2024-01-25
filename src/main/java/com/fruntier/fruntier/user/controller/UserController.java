@@ -2,44 +2,27 @@ package com.fruntier.fruntier.user.controller;
 
 import com.fruntier.fruntier.user.domain.Position;
 import com.fruntier.fruntier.user.domain.User;
-import com.fruntier.fruntier.user.exceptions.HasDuplicateUsernameException;
-import com.fruntier.fruntier.user.exceptions.TokenValidationException;
+import com.fruntier.fruntier.user.exceptions.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 import com.fruntier.fruntier.user.service.UserInfoService;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.HttpServletRequest;
-import com.fruntier.fruntier.user.exceptions.TokenValidationException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-
-import com.fruntier.fruntier.user.service.UserInfoService;
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.HttpServletRequest;
-import com.fruntier.fruntier.user.exceptions.TokenValidationException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-
-import io.jsonwebtoken.Jwts;
-import jakarta.servlet.http.HttpServletRequest;
-import com.fruntier.fruntier.user.exceptions.TokenValidationException;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 import com.fruntier.fruntier.JwtTokenService;
-import com.fruntier.fruntier.user.exceptions.PasswordWrongException;
-import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
 import com.fruntier.fruntier.user.service.UserJoinLoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.ui.Model;
@@ -47,17 +30,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
+    private UserInfoService userInfoService;
     private UserJoinLoginService userJoinLoginService;
     private JwtTokenService jwtTokenService;
 
     @Autowired
-    public UserController(UserJoinLoginService userJoinLoginService, JwtTokenService jwtTokenService) {
+    public UserController(UserInfoService userInfoService, UserJoinLoginService userJoinLoginService, JwtTokenService jwtTokenService) {
+        this.userInfoService = userInfoService;
         this.userJoinLoginService = userJoinLoginService;
         this.jwtTokenService = jwtTokenService;
     }
@@ -77,8 +62,44 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public String userInfo() {
-        return "info";
+    public String userInfo(HttpServletRequest request, Model model) {
+        try {
+            Cookie[] cookies = request.getCookies();
+            String token = Arrays.stream(cookies)
+                    .filter(c -> "authToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse(null);
+
+            if (token != null) {
+                User user = jwtTokenService.validateTokenReturnUser(token);
+                Optional<User> userInfo = userInfoService.findUserWithId(user.getId());
+                if(userInfo.isEmpty()){
+                    throw new UserNotFoundException("failed to retrieve user information in Userinfo");
+                }else{
+                    model.addAttribute("username",userInfo.get().getUsername());
+                    model.addAttribute("name",userInfo.get().getName());
+                    model.addAttribute("email",userInfo.get().getEmail());
+                    model.addAttribute("address",userInfo.get().getAddress());
+                    model.addAttribute("message",userInfo.get().getMessage());
+                    return "info";
+                }
+
+            } else {
+                // No token found in cookies user is not logged in.
+                logger.error("No token found in cookies");
+                return "redirect:login";
+            }
+        }catch (TokenValidationException e) {
+            logger.error("Token validation error: {}", e.getMessage(), e);
+            return "redirect:login";
+        }catch (UserNotFoundException e){
+            logger.error("User not Found Error : {}",e.getMessage(),e);
+            return "redirect:logout";
+        }catch (Exception e) {
+            logger.error("An unexpected error occurred: {}", e.getMessage(), e);
+            return "redirect:login";
+        }
     }
 
     @ResponseBody
@@ -121,7 +142,30 @@ public class UserController {
 
 
     @GetMapping("/login")
-    public String showLoginForm() {
+    public String showLoginForm(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return "login";
+        }
+        String token = Arrays.stream(cookies)
+                .filter(c -> "authToken".equals(c.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
+
+        if (token != null) {
+            //user is already logged in. invalidate.
+            for (Cookie cookie : cookies) {
+                if ("authToken".equals(cookie.getName())) {
+                    // Set the cookie's max age to 0 to delete it
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/"); // Ensure the path matches the path of the cookie you are deleting
+                    // Add the cookie to the response
+                    response.addCookie(cookie);
+                }
+            }
+        }
+
         return "login";
     }
 
@@ -151,7 +195,7 @@ public class UserController {
             return "redirect:login";
         } catch (Exception e) {
             logger.error("An unexpected error occurred: {}", e.getMessage(), e);
-            return "redirect:login";
+            return "redirect:logout";
         }
     }
 
@@ -194,8 +238,79 @@ public class UserController {
                     response.addCookie(cookie);
                 }
             }
+
         }
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
         // Redirect to login page or another appropriate page after logout
         return "redirect:login";
+    }
+    @PostMapping("/submitUserInfo")
+    public ResponseEntity<?> submitUserInfo(HttpServletRequest request, @RequestBody Map<String, String> userInfo){
+        try {
+            Long userId;
+            Cookie[] cookies = request.getCookies();
+            String token = Arrays.stream(cookies)
+                    .filter(c -> "authToken".equals(c.getName()))
+                    .findFirst()
+                    .map(Cookie::getValue)
+                    .orElse(null);
+
+            if (token != null) {
+                //get user information from token.
+                User currentUser = jwtTokenService.validateTokenReturnUser(token);
+                userId = currentUser.getId();
+            } else {
+                throw new NoTokenException("Token Validation Failed");
+            }
+
+            if (userInfo.containsValue(null)) {
+                throw new JsonEmptyException("Passed on Json Was Empty");
+            }
+
+
+            Optional<User> getUser = userInfoService.findUserWithId(userId);
+            //수정 예정
+            if(getUser.isEmpty()){
+                throw new UserNotFoundException("User not found in submitUserInfo -> findUserWithId()");
+            }
+
+            User obtainedUser = getUser.get();
+
+
+            String name = userInfo.get("name");
+            String email = userInfo.get("email");
+            String address = userInfo.get("address");
+            String message = userInfo.get("message");
+
+            obtainedUser.setName(name);
+            obtainedUser.setEmail(email);
+            obtainedUser.setAddress(address);
+            obtainedUser.setMessage(message);
+
+            logger.info("Message : "+message);
+            userInfoService.modifyUser(obtainedUser);
+            //exception handling 예정
+
+            return ResponseEntity.status(HttpStatus.OK).build();
+
+
+        } catch (TokenValidationException e) {
+            logger.error("Token validation error: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (NoTokenException e) {
+            logger.error("No Token Error: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }catch (JsonEmptyException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (Exception e){
+            logger.error("Unexpected Error regarding Token: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+
+
+
+
     }
 }

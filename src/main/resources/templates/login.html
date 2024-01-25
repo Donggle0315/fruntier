@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script type="text/javascript" th:src="@{/js/login.js}"></script>
   <title>Login Page</title>
   <style>
     body {
@@ -80,15 +81,7 @@
   </form>
 </div>
 
-<!-- Add your JavaScript file here -->
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  var loginError = /*[[${loginError}]]*/ 'defaultError';
-  if (loginError && loginError !== 'defaultError') {
-    alert(loginError);
-  }
-  /*]]>*/
-</script>
+
 
 </body>
 </html>
