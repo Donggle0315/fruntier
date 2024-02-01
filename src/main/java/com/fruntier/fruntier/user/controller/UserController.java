@@ -62,28 +62,19 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public String userInfo(HttpServletRequest request, Model model) {
+    public String userInfo(@CookieValue(value = "authToken", required = false) String token, Model model) {
         try {
-            Cookie[] cookies = request.getCookies();
-            String token = Arrays.stream(cookies)
-                    .filter(c -> "authToken".equals(c.getName()))
-                    .findFirst()
-                    .map(Cookie::getValue)
-                    .orElse(null);
-
             if (token != null) {
                 User user = jwtTokenService.validateTokenReturnUser(token);
-                Optional<User> userInfo = userInfoService.findUserWithId(user.getId());
-                if(userInfo.isEmpty()){
-                    throw new UserNotFoundException("failed to retrieve user information in Userinfo");
-                }else{
-                    model.addAttribute("username",userInfo.get().getUsername());
-                    model.addAttribute("name",userInfo.get().getName());
-                    model.addAttribute("email",userInfo.get().getEmail());
-                    model.addAttribute("address",userInfo.get().getAddress());
-                    model.addAttribute("message",userInfo.get().getMessage());
-                    return "info";
-                }
+                User userInfo = userInfoService.findUserWithId(user.getId());
+
+                model.addAttribute("username",userInfo.getUsername());
+                model.addAttribute("name",userInfo.getName());
+                model.addAttribute("email",userInfo.getEmail());
+                model.addAttribute("address",userInfo.getAddress());
+                model.addAttribute("message",userInfo.getMessage());
+                return "info";
+
 
             } else {
                 // No token found in cookies user is not logged in.
@@ -270,14 +261,7 @@ public class UserController {
             }
 
 
-            Optional<User> getUser = userInfoService.findUserWithId(userId);
-            //수정 예정
-            if(getUser.isEmpty()){
-                throw new UserNotFoundException("User not found in submitUserInfo -> findUserWithId()");
-            }
-
-            User obtainedUser = getUser.get();
-
+            User obtainedUser = userInfoService.findUserWithId(userId);
 
             String name = userInfo.get("name");
             String email = userInfo.get("email");

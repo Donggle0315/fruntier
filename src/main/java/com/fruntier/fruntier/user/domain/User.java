@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 public class User{
@@ -44,6 +45,17 @@ public class User{
         this.tier = tier;
         this.position = position;
         this.lastLoginDate = lastLoginDate;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return Objects.equals(username, user.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username);
     }
 
     public Long getId() {

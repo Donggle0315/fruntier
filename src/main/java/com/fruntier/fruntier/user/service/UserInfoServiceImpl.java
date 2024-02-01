@@ -5,6 +5,7 @@ import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
 import com.fruntier.fruntier.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,9 +23,13 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public Optional<User> findUserWithId(Long userId){
+    public User findUserWithId(Long userId) throws UserNotFoundException{
         //find the user with id.
-        return userRepository.findById(userId);
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isEmpty()){throw new UserNotFoundException("User not found in FindUserWithId");}
+
+        return user.get();
     }
 
     @Override
@@ -40,5 +45,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public Boolean withdrawUser(User user) {
         return null;
+    }
+
+    @Override
+    public List<User> findUsers() {
+        return userRepository.findAll();
     }
 }
