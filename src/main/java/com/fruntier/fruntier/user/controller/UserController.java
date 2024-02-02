@@ -36,9 +36,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/user")
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-    private UserInfoService userInfoService;
-    private UserJoinLoginService userJoinLoginService;
-    private JwtTokenService jwtTokenService;
+    private final UserInfoService userInfoService;
+    private final UserJoinLoginService userJoinLoginService;
+    private final JwtTokenService jwtTokenService;
 
     @Autowired
     public UserController(UserInfoService userInfoService, UserJoinLoginService userJoinLoginService, JwtTokenService jwtTokenService) {
@@ -161,14 +161,8 @@ public class UserController {
     }
 
     @GetMapping("/home")
-    public String goHomePage(HttpServletRequest request, Model model) {
+    public String goHomePage(@CookieValue(value = "authToken", required = false) String token, Model model) {
         try {
-            Cookie[] cookies = request.getCookies();
-            String token = Arrays.stream(cookies)
-                    .filter(c -> "authToken".equals(c.getName()))
-                    .findFirst()
-                    .map(Cookie::getValue)
-                    .orElse(null);
 
             if (token != null) {
                 User user = jwtTokenService.validateTokenReturnUser(token);
@@ -238,15 +232,9 @@ public class UserController {
         return "redirect:login";
     }
     @PostMapping("/submitUserInfo")
-    public ResponseEntity<?> submitUserInfo(HttpServletRequest request, @RequestBody Map<String, String> userInfo){
+    public ResponseEntity<?> submitUserInfo(@CookieValue(value = "authToken", required = false) String token,HttpServletRequest request, @RequestBody Map<String, String> userInfo){
         try {
             Long userId;
-            Cookie[] cookies = request.getCookies();
-            String token = Arrays.stream(cookies)
-                    .filter(c -> "authToken".equals(c.getName()))
-                    .findFirst()
-                    .map(Cookie::getValue)
-                    .orElse(null);
 
             if (token != null) {
                 //get user information from token.
