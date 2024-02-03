@@ -3,15 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../css/userRequest.css">
     <title>UserRequest</title>
 </head>
 <body>
 <div class="container">
     <div class="left">
-        <p id="UserRequest">User Request</p>
-        <p>출발지 & 도착지 선택</p>
-        <div id="map" style="width:500px;height:400px;"></div>
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5cf8836fb662afb5dbdf8f0c054fce52"></script>
+        <p id="UserRequest">추천 경로 생성</p>
+        <p>출발지와 도착지를 선택해주세요.</p>
+        <div id="map"></div>
+        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5cf8836fb662afb5dbdf8f0c054fce52&libraries=drawing"></script>
         <script type="text/javascript" th:src="@{/js/userRequest.js}"></script>
         <script>
             document.getElementById('clickLatlng')
@@ -19,34 +20,17 @@
     </div>
 
     <div class="right">
-        <div class="set_start_vertex">
-            <br>
-            <button id = "setStartVertex">startVertex</button>
-            <p id="startCoordinates"></p>
+        <div class="map_buttons">
+            <p>지도에서 원하는 위치를 선택한 뒤, 설정 버튼을 누르세요</p>
+            <button id="setStartVertex">출발지 설정</button>
+            <button id="setEndVertex">도착지 설정</button>
         </div>
-
-        <div class="set_end_vertex">
-            <br>
-            <button id = "setEndVertex">endVertex</button>
-            <p id="endCoordinates"></p>
-        </div>
-
-        <div class="show_vertex">
-            <br>
-            <button id = "vertexList">showSelectedVertex</button>
-            <p id="allCoordinates"></p>
-        </div>
-
         <div class="input_expected_distance">
-            <br>
-            <label for="expectedDistance">Expected Distance:</label>
-            <input type="number" id="expectedDistance" />
+            <label for="expectedDistance">뛰고 싶은 거리(m) : </label>
+            <input type="number" id="expectedDistance"/>
         </div>
-
-        <div class="send_vertex">
-            <br>
-            <button id = "sendVertices">sendToServer</button>
-            <p id ="sendToServer"></p>
+        <div class="generate_recommend_route">
+            <button id="generateRoute">추천 경로 만들기</button>
         </div>
     </div>
 </div>
