@@ -1,7 +1,9 @@
 package com.fruntier.fruntier.user.service;
 
 import com.fruntier.fruntier.user.domain.User;
+import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserInfoService {
@@ -16,7 +18,7 @@ public interface UserInfoService {
      * @param userId 찾고자 하는 유저의 아이디(PK)
      * @return User class
      */
-    Optional<User> findUserWithId(Long userId);
+    User findUserWithId(Long userId) throws UserNotFoundException;
 
     /**
      * 유저 정보 수정 기능
@@ -31,4 +33,10 @@ public interface UserInfoService {
      * @return 탈퇴 성공 여부
      */
     Boolean withdrawUser(User user);
+
+    /**
+     * 임시로 만듬. 수정 예정 --> 원래는 친구들만 리턴하는데, 임시로 모두 리턴하도록.
+     * @return List of all users
+     */
+    List<User> findUsers();
 }

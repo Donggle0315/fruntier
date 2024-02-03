@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Messenger</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div id="container">
+  <div id="user-list">
+    <!-- Users List -->
+    <ul>
+      <li th:each="user : ${userList}" th:text="${user.name}" th:onclick="'loadChat('+ ${loginUser.id}+',' + ${user.id} + ')'" th:classappend="${user.id} == ${loginUser.id} ? 'current-user' : ''">
+        <!-- User names here, clicking on a user will load chat with that user -->
+      </li>
+    </ul>
+  </div>
+
+  <div id="chat-area">
+    <!-- Display "Please select a user" if no user has been selected yet -->
+    <div th:if="${selectedUserId == null}">
+      Please select a user
+    </div>
+
+    <!-- Display "No chatting record" if there are no chat records (and a user has been selected) -->
+    <div th:if="${selectedUserId != null} and ${#lists.isEmpty()}">
+      No chatting record
+    </div>
+
+    <!-- Display chat records if there are any -->
+    <div th:if="${selectedUserId != null and not #lists.isEmpty(chatRecords)}">
+      <ul>
+        <li th:each="chatRecord : ${chatRecords}" th:text="${chatRecord.message}">
+          <!-- Chat messages here -->
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function loadChat(userId) {
+    // JavaScript to load chat for the selected user
+  }
+</script>
+</body>
+</html>
