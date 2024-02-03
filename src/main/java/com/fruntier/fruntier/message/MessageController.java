@@ -6,6 +6,7 @@ import com.fruntier.fruntier.user.domain.User;
 import com.fruntier.fruntier.user.exceptions.TokenValidationException;
 import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
 import com.fruntier.fruntier.user.service.UserInfoService;
+import com.fruntier.fruntier.user.service.UserInfoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,19 +25,24 @@ public class MessageController {
     JwtTokenService jwtTokenService;
     UserInfoService userInfoService;
 
+    public MessageController(JwtTokenService jwtTokenService, UserInfoService userInfoService) {
+        this.jwtTokenService = jwtTokenService;
+        this.userInfoService = userInfoService;
+    }
 
-    @GetMapping("/conversations")
+    @GetMapping("/conversationList")
     public String messagePage(@CookieValue(value = "authToken", required = false) String token, Model model) {
 
         try {
 
             if (token != null) {
                 User loginUser = userInfoService.findUserWithId(jwtTokenService.validateTokenReturnUser(token).getId());
-
                 List<User> userList = userInfoService.findUsers();
 
+                model.addAttribute("userList",userList);
+                model.addAttribute("loginUser",loginUser);
 
-                return "info";
+                return "message";
             } else {
                 // No token found in cookies user is not logged in.
                 logger.error("No token found in cookies");

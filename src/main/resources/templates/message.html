@@ -10,22 +10,33 @@
   <div id="user-list">
     <!-- Users List -->
     <ul>
-      <li th:each="user : ${users}" th:text="${user.name}" th:onclick="'loadChat(' + ${user.id} + ')'" th:classappend="${user.id} == ${currentUser.id} ? 'current-user' : ''">
+      <li th:each="user : ${userList}" th:text="${user.name}" th:onclick="'loadChat('+ ${loginUser.id}+',' + ${user.id} + ')'" th:classappend="${user.id} == ${loginUser.id} ? 'current-user' : ''">
         <!-- User names here, clicking on a user will load chat with that user -->
       </li>
     </ul>
   </div>
 
   <div id="chat-area">
-    <!-- Chat Area -->
-    <div id="messages">
-      <div th:each="message, iterStat : ${messages}" th:class="'message ' + (message.sender.id == ${currentUser.id} ? 'sent' : 'received')">
-        <span th:text="${message.content}"></span>
-        <span class="timestamp" th:text="${#temporals.format(message.time, 'HH:mm')}"></span>
-      </div>
-      <div th:if="${#lists.size(messages) < 5}" th:each="i : ${#numbers.sequence(#lists.size(messages), 4)}" class="message placeholder"></div>
+    <!-- Display "Please select a user" if no user has been selected yet -->
+    <div th:if="${selectedUserId == null}">
+      Please select a user
+    </div>
+
+    <!-- Display "No chatting record" if there are no chat records (and a user has been selected) -->
+    <div th:if="${selectedUserId != null} and ${#lists.isEmpty()}">
+      No chatting record
+    </div>
+
+    <!-- Display chat records if there are any -->
+    <div th:if="${selectedUserId != null and not #lists.isEmpty(chatRecords)}">
+      <ul>
+        <li th:each="chatRecord : ${chatRecords}" th:text="${chatRecord.message}">
+          <!-- Chat messages here -->
+        </li>
+      </ul>
     </div>
   </div>
+
 </div>
 
 <script>
