@@ -1,4 +1,6 @@
-package com.fruntier.fruntier.community;
+package com.fruntier.fruntier.community.service;
+
+import com.fruntier.fruntier.community.domain.Comment;
 
 public interface CommentService {
     /**

@@ -35,7 +35,7 @@ public class JwtTokenService {
                 .compact();
     }
 
-    public User validateTokenReturnUser(String token) throws Exception{
+    public User validateTokenReturnUser(String token) throws TokenValidationException{
         try {
             Claims claims = Jwts.parser()
                     .verifyWith(key)

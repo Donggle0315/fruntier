@@ -1,4 +1,7 @@
-package com.fruntier.fruntier.community;
+package com.fruntier.fruntier.community.repository;
+
+import com.fruntier.fruntier.community.domain.Article;
+import com.fruntier.fruntier.community.domain.Comment;
 
 public interface CommunityRepository {
     /**

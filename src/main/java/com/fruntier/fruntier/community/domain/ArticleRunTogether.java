@@ -1,10 +1,11 @@
-package com.fruntier.fruntier.community;
+package com.fruntier.fruntier.community.domain;
 
+import com.fruntier.fruntier.community.domain.Article;
 import com.fruntier.fruntier.user.domain.User;
 
 import java.util.List;
 
-public class ArticleRunTogether extends Article{
+public class ArticleRunTogether extends Article {
     private List<User> peer;
     private int expected_peer_num;
     private int expected_date;
@@ -13,7 +14,7 @@ public class ArticleRunTogether extends Article{
     private boolean isConfirmed;
 
     public ArticleRunTogether(Long id, boolean isVisible, String mode, String content, int date, Long user_id, int recommend_number, List<User> peer, int expected_peer_num, int expected_date, int expected_time, String additionalInfo, boolean isConfirmed) {
-        super(id, isVisible, mode, content, date, user_id, recommend_number);
+//        super(id, isVisible, mode, content, date, user_id, recommend_number);
         this.peer = peer;
         this.expected_peer_num = expected_peer_num;
         this.expected_date = expected_date;

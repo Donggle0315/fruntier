@@ -1,4 +1,4 @@
-package com.fruntier.fruntier.community;
+package com.fruntier.fruntier.community.service;
 
 public interface RouteRecommendService {
     /**
