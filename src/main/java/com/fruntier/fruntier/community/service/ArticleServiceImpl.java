@@ -100,4 +100,22 @@ public class ArticleServiceImpl implements ArticleService {
         // Passed safety check
         commentRepository.delete(comment);
     }
+
+    @Override
+    public void editComment(User user, long articleId, long commentId, String content) throws CommentException {
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        if (commentOptional.isEmpty()) {
+            throw new CommentException("Missing Comment");
+        }
+
+        Comment comment = commentOptional.get();
+        if (!comment.getAuthor().equals(user)) {
+            throw new CommentException("Not Author of Comment");
+        }
+
+        comment.setContent(content);
+
+        // Passed safety check
+        comment = commentRepository.save(comment);
+    }
 }

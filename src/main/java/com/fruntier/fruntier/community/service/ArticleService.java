@@ -18,4 +18,6 @@ public interface ArticleService {
     void saveComment(Article article, CommentDTO commentDTO, User user);
 
     void deleteComment(User user, long articleId, long commentId) throws CommentException;
+
+    void editComment(User user, long articleId, long commentId, String content) throws CommentException;
 }

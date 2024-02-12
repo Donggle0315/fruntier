@@ -1,6 +1,9 @@
 window.onload = () => {
     let add_comment_btn = document.getElementById("add-comment-btn");
     add_comment_btn.addEventListener('click', addComment);
+
+    // auto-resize textarea
+    addAutoResize();
 }
 
 async function fetchText(path, {method, headers, body}) {
@@ -45,6 +48,35 @@ function addComment(){
         })
 }
 
+function editComment(comment_id) {
+    let cur_comment = document.getElementById(`comment-${comment_id}`);
+    let textarea = cur_comment.querySelector(".comment-edit-content-text");
+    cur_comment.querySelector(".comment-content").style.display = "none";
+    cur_comment.querySelector(".comment-edit-content").style.display = "inline-flex";
+
+    let cur_uri = window.location.pathname;
+    cur_comment.querySelector("#comment-edit-submit-btn").addEventListener("click", () => {
+        let send_object = {};
+        send_object['content'] = textarea.value;
+        let send_json = JSON.stringify(send_object);
+
+        fetchText(`${cur_uri}/comment/${comment_id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': "application/json"
+            },
+            body: send_json
+        })
+        .then(data => {
+            window.location.reload();
+        })
+        .catch(err => {
+            console.error(err);
+        })
+    })
+
+}
+
 function deleteComment(comment_id){
     let cur_uri = window.location.pathname;
     fetchText(`${cur_uri}/comment/${comment_id}`, {
@@ -56,4 +88,16 @@ function deleteComment(comment_id){
     .catch(err => {
         console.error(err);
     })
+}
+
+function addAutoResize() {
+  document.querySelectorAll('[data-autoresize]').forEach(function (element) {
+    element.style.boxSizing = 'border-box';
+    var offset = element.offsetHeight - element.clientHeight;
+    element.addEventListener('input', function (event) {
+      event.target.style.height = 'auto';
+      event.target.style.height = event.target.scrollHeight + offset + 'px';
+    });
+    element.removeAttribute('data-autoresize');
+  });
 }

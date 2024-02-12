@@ -86,6 +86,30 @@ public class CommunityController {
     }
 
     @ResponseBody
+    @PatchMapping("/article/{articleId}/comment/{commentId}")
+    public String editComment(
+            @PathVariable long articleId,
+            @PathVariable long commentId,
+            @RequestBody CommentDTO commentDTO,
+            @CookieValue(value = "authToken", required = false) String authCookie
+    ) throws UserNotLoggedInException {
+        if (authCookie == null) {
+            throw new UserNotLoggedInException("User isn't logged in");
+        }
+
+        try {
+            User user = jwtTokenService.validateTokenReturnUser(authCookie);
+            System.out.println("commentDTO.getContent() = " + commentDTO.getContent());
+            articleService.editComment(user, articleId, commentId, commentDTO.getContent());
+        } catch (TokenValidationException tokenValidationException) {
+            throw new UserNotLoggedInException("User isn't logged in");
+        } catch (CommentException e) {
+            return "redirect:/article/{articleId}/comment/{commentId}"; // refresh the page
+        }
+        return "";
+    }
+
+    @ResponseBody
     @DeleteMapping("/article/{articleId}/comment/{commentId}")
     public String deleteComment(
             @PathVariable long articleId,

@@ -71,7 +71,7 @@
 
     <ul id="comments" class="list-group list-group-flush">
         <li th:each="comment: ${comments}"
-            class="list-group-item comment">
+            class="list-group-item comment" th:id="|comment-${comment.id}|">
             <div class="comment-top">
                 <div class="comment-author" th:text="${comment.author.username}"></div>
                 <div class="comment-options" th:if="${comment.author.id} == ${user.id}">
@@ -81,11 +81,17 @@
             </div>
             <div class="comment-content" style="white-space: pre-line;"
                  th:text="${comment.content}"></div>
+            <div class="comment-edit-content" style="display:none">
+                <textarea th:id="|comment-edit-content-text-${comment.id}|"
+                       class="comment-edit-content-text" data-autoresize
+                          th:text="${comment.content}"></textarea>
+                <button class="btn btn-primary" id="comment-edit-submit-btn">Edit</button>
+            </div>
         </li>
     </ul>
 
     <div id="new-comments" class="row">
-        <textarea id="comment-textarea" class="col-md-8 offset-md-1"></textarea>
+        <textarea id="comment-textarea" class="col-md-8 offset-md-1" data-autoresize></textarea>
         <button type="button" id="add-comment-btn" class="col-md-1 offset-md-1 btn btn-primary">
             comment
         </button>
