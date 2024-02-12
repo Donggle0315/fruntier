@@ -21,12 +21,16 @@ public class Article {
     private Long authorId;
     private String content;
 
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
 
     public Article() {
     }
 
     public void addComment(Comment comment){
-//        comments.add(comment);
+        comments.add(comment);
+        comment.setArticle(this);
     }
 
     public Long getId() {
@@ -77,11 +81,11 @@ public class Article {
         this.content = content;
     }
 
-//    public List<Comment> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(List<Comment> comments) {
-//        this.comments = comments;
-//    }
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

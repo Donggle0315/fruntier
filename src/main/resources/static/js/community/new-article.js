@@ -14,6 +14,9 @@ async function fetchJson(path, {method, headers, body}) {
             if(response.ok){
                 return response.json();
             }
+            else if(response.redirected){
+                window.location.href = `${response.url}?not_logged_in=true`;
+            }
             else{
                 throw new Error("Not Found");
             }

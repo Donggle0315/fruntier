@@ -1,0 +1,12 @@
+.logo {
+    width: 3em;
+    height: 3em;
+}
+.navbar-nav {
+    margin-right: auto;
+    margin-left: auto;
+    font-size: 1.2em; /* Increase font size */
+}
+.navbar {
+    justify-content: space-between; /* Adjusts the spacing */
+}
