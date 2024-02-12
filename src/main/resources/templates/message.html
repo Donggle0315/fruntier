@@ -1,48 +1,94 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Messenger</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .logo {
+      width: 3em;
+      height: 3em;
+    }
+    /* Ensure that the chat and user list boxes take full height of the container */
+    .full-height {
+      height: 100vh; /* Use 100vh to make the container full viewport height */
+    }
+    .chat-area, .user-list {
+      overflow-y: auto; /* Add scroll to the divs if content is taller than the div */
+    }
+  </style>
 </head>
 <body>
-<div id="container">
-  <div id="user-list">
-    <!-- Users List -->
-    <ul>
-      <li th:each="user : ${userList}" th:text="${user.name}" th:onclick="'loadChat('+ ${loginUser.id}+',' + ${user.id} + ')'" th:classappend="${user.id} == ${loginUser.id} ? 'current-user' : ''">
-        <!-- User names here, clicking on a user will load chat with that user -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><img class="logo" src="image/fruntier-logo.png" alt="Logo"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Services</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
       </li>
     </ul>
   </div>
+  <button class="btn btn-primary" onclick="location.href='/user/logout'">Logout</button>
+</nav>
 
-  <div id="chat-area">
-    <!-- Display "Please select a user" if no user has been selected yet -->
-    <div th:if="${selectedUserId == null}">
-      Please select a user
+<div class="container-fluid full-height">
+  <div class="row full-height">
+    <!-- User List -->
+    <div class="col-md-4 user-list">
+      <div class="card">
+        <ul class="list-group list-group-flush">
+          <!-- Dynamic user list here -->
+          <li class="list-group-item" th:data-login-username="${loginUser.username}" th:data-opponent-username="${user.username}"
+              th:each="user : ${userList}" th:data-opponent-name="${user.name}" th:text="${user.name}+' ('+${user.username}+')'" th:classappend="${user.id} == ${loginUser.id} ? 'current-user' : ''" onclick="loadChat(this)">
+            <!-- User names here, clicking on a user will load chat with that user -->
+          </li>
+        </ul>
+      </div>
     </div>
+    <!-- Chat Area -->
+    <div class="col-md-8">
+      <div class="row">
+        <div class="col-12 chat-area">
+          <div class="card" style="height: 75%;">
+            <ul class="list-group list-group-flush" id="message-list">
 
-    <!-- Display "No chatting record" if there are no chat records (and a user has been selected) -->
-    <div th:if="${selectedUserId != null} and ${#lists.isEmpty()}">
-      No chatting record
-    </div>
-
-    <!-- Display chat records if there are any -->
-    <div th:if="${selectedUserId != null and not #lists.isEmpty(chatRecords)}">
-      <ul>
-        <li th:each="chatRecord : ${chatRecords}" th:text="${chatRecord.message}">
-          <!-- Chat messages here -->
-        </li>
-      </ul>
+            </ul>
+          </div>
+        </div>
+        <!-- Send Message Area -->
+        <div class="col-12" style="height: 25%;">
+          <div class="card" style="display: none;" id="divMessageBox">
+            <form id="messageForm">
+              <div class="form-group">
+                <label for="messageBox">Send Message</label>
+                <textarea class="form-control" id="messageBox" rows="3"></textarea>
+              </div>
+              <button id="sendButton" type="button" class="btn btn-primary" onclick="sendMessage(this)" th:data-login-username="${loginUser.username}">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
 </div>
 
-<script>
-  function loadChat(userId) {
-    // JavaScript to load chat for the selected user
-  }
-</script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/<script type="text/javascript" th:src="@{/js/message.js}"></script>
+1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/js/message.js}"></script>
 </body>
 </html>

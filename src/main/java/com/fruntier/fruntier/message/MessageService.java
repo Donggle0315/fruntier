@@ -12,7 +12,7 @@ public interface MessageService {
      * @param receiverUsername : 메시지 받는 사람의 ID
      * @param content : content of the message
      */
-    void sendMessage(String senderUsername, String receiverUsername, String content) throws UserNotFoundException;
+    Message sendMessage(String senderUsername, String receiverUsername, String content) throws UserNotFoundException;
 
 
     /**
