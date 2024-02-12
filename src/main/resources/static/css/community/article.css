@@ -1,4 +1,10 @@
-.comment {
+#article-title {
+    font-size: larger;
+    font-weight: bold;
+}
+
+#article-author {
+    font-size: smaller;
 }
 
 .comment-author {
@@ -12,9 +18,7 @@
     justify-content: space-between;
 }
 
-.comment-content {
 
-}
 
 .comment-edit-content {
     width: 100%;

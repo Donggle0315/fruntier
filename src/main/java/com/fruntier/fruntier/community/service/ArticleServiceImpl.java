@@ -2,7 +2,7 @@ package com.fruntier.fruntier.community.service;
 
 import com.fruntier.fruntier.community.domain.*;
 import com.fruntier.fruntier.community.exception.CommentException;
-import com.fruntier.fruntier.community.exception.MissingArticleException;
+import com.fruntier.fruntier.community.exception.ArticleException;
 import com.fruntier.fruntier.community.repository.ArticleRepository;
 import com.fruntier.fruntier.community.repository.CommentRepository;
 import com.fruntier.fruntier.user.domain.User;
@@ -62,11 +62,11 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticle(Long articleId) throws MissingArticleException {
+    public Article getArticle(Long articleId) throws ArticleException {
         Optional<Article> articleOptional = articleRepository.findById(articleId);
 
         if (articleOptional.isEmpty()) {
-            throw new MissingArticleException("Article doesn't exist!");
+            throw new ArticleException("Article doesn't exist!");
         }
 
         return articleOptional.get();
@@ -117,5 +117,40 @@ public class ArticleServiceImpl implements ArticleService {
 
         // Passed safety check
         comment = commentRepository.save(comment);
+    }
+
+    @Override
+    public void deleteArticle(long articleId, User user) throws ArticleException {
+        Optional<Article> articleOptional = articleRepository.findById(articleId);
+        if(articleOptional.isEmpty()){
+            throw new ArticleException("Article does not exist!");
+        }
+
+        Article article = articleOptional.get();
+        if(!article.getAuthor().equals(user)){
+            throw new ArticleException("Article's author does not match!");
+        }
+
+        // comment is deleted with cascade
+        articleRepository.delete(article);
+    }
+
+    @Override
+    public void editArticle(long articleId, User user, ArticleDTO articleDTO) throws ArticleException {
+        Optional<Article> articleOptional = articleRepository.findById(articleId);
+        if(articleOptional.isEmpty()){
+            throw new ArticleException("Article does not exist!");
+        }
+
+        Article article = articleOptional.get();
+        if(!article.getAuthor().equals(user)){
+            throw new ArticleException("Article's author does not match!");
+        }
+
+        article.setTitle(articleDTO.getTitle());
+        article.setStatus(matchStringToArticleStatus(articleDTO.getStatus()));
+        article.setContent(articleDTO.getContent());
+
+        article = articleRepository.save(article);
     }
 }

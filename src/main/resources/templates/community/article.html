@@ -61,8 +61,13 @@
 
 <div id="main" class="container">
     <div id="articles-card" class="card">
-        <div th:text="${article.title}" class="card-header">
-            Articles
+        <div id="article-header" class="card-header">
+            <div id="article-title" th:text="${article.title}">Articles</div>
+            <div id="article-author" th:text="|by: ${article.author.username}|">author</div>
+            <div class="article-options" th:if="${article.author.id} == ${user.id}">
+                <a class="edit-article-btn" th:href="@{{articleId}/edit(articleId=${article.id})}">edit</a>
+                <a class="delete-article-btn" href="#" th:onclick="|deleteArticle(${article.id})|">delete</a>
+            </div>
         </div>
         <div class="card-body" style="white-space: pre-line;">
             <p class="card-text" text="Sample Text" th:utext="${article.content}"></p>

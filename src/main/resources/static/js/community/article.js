@@ -48,6 +48,27 @@ function addComment(){
         })
 }
 
+function editArticle(article_id) {
+
+}
+
+function deleteArticle(article_id) {
+    if(!confirm("Are you sure you want to delete this article?")){
+        return;
+    }
+
+    let cur_uri = window.location.pathname;
+    fetchText(`${cur_uri}`, {
+        method: 'DELETE'
+    })
+    .then(data => {
+        window.location.href = "/community";
+    })
+    .catch(err => {
+        console.error(err);
+    })
+}
+
 function editComment(comment_id) {
     let cur_comment = document.getElementById(`comment-${comment_id}`);
     let textarea = cur_comment.querySelector(".comment-edit-content-text");
@@ -94,6 +115,8 @@ function addAutoResize() {
   document.querySelectorAll('[data-autoresize]').forEach(function (element) {
     element.style.boxSizing = 'border-box';
     var offset = element.offsetHeight - element.clientHeight;
+    element.style.height = 'auto';
+    element.style.height = event.target.scrollHeight + offset + 'px';
     element.addEventListener('input', function (event) {
       event.target.style.height = 'auto';
       event.target.style.height = event.target.scrollHeight + offset + 'px';
