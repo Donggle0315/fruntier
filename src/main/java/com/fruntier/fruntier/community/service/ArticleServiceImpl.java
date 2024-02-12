@@ -1,13 +1,14 @@
 package com.fruntier.fruntier.community.service;
 
 import com.fruntier.fruntier.community.domain.*;
+import com.fruntier.fruntier.community.exception.CommentException;
 import com.fruntier.fruntier.community.exception.MissingArticleException;
 import com.fruntier.fruntier.community.repository.ArticleRepository;
 import com.fruntier.fruntier.community.repository.CommentRepository;
+import com.fruntier.fruntier.user.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article saveNewArticle(ArticleDTO articleDTO, Long userId) {
+    public Article saveNewArticle(ArticleDTO articleDTO, User user) {
         ArticleStatus articleStatus = matchStringToArticleStatus(articleDTO.getStatus());
 
         Article article = new Article();
@@ -48,7 +49,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setDate(LocalDateTime.now());
         article.setStatus(articleStatus);
         article.setContent(articleDTO.getContent());
-        article.setAuthorId(userId);
+        article.setAuthor(user);
 
         article = articleRepository.save(article);
 
@@ -61,10 +62,10 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public Article getArticle(Long articleId) throws MissingArticleException{
+    public Article getArticle(Long articleId) throws MissingArticleException {
         Optional<Article> articleOptional = articleRepository.findById(articleId);
 
-        if(articleOptional.isEmpty()){
+        if (articleOptional.isEmpty()) {
             throw new MissingArticleException("Article doesn't exist!");
         }
 
@@ -72,13 +73,31 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void saveComment(Article article, CommentDTO commentDTO) {
+    public void saveComment(Article article, CommentDTO commentDTO, User user) {
+        logger.info("Comment: {}", commentDTO.getContent());
         Comment comment = new Comment();
         comment.setContent(commentDTO.getContent());
         comment.setDate(LocalDateTime.now());
+        comment.setAuthor(user);
 
         article.addComment(comment);
 
         comment = commentRepository.save(comment);
+    }
+
+    @Override
+    public void deleteComment(User user, long articleId, long commentId) throws CommentException {
+        Optional<Comment> commentOptional = commentRepository.findById(commentId);
+        if (commentOptional.isEmpty()) {
+            throw new CommentException("Missing Comment");
+        }
+
+        Comment comment = commentOptional.get();
+        if (!comment.getAuthor().equals(user)) {
+            throw new CommentException("Not Author of Comment");
+        }
+
+        // Passed safety check
+        commentRepository.delete(comment);
     }
 }

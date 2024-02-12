@@ -2,10 +2,8 @@ package com.fruntier.fruntier.community.controller;
 
 
 import com.fruntier.fruntier.JwtTokenService;
-import com.fruntier.fruntier.community.domain.Article;
-import com.fruntier.fruntier.community.domain.ArticleDTO;
-import com.fruntier.fruntier.community.domain.ArticleStatus;
-import com.fruntier.fruntier.community.domain.CommentDTO;
+import com.fruntier.fruntier.community.domain.*;
+import com.fruntier.fruntier.community.exception.CommentException;
 import com.fruntier.fruntier.community.exception.MissingArticleException;
 import com.fruntier.fruntier.community.service.ArticleService;
 import com.fruntier.fruntier.community.service.ArticleServiceImpl;
@@ -44,14 +42,22 @@ public class CommunityController {
     }
 
     @GetMapping("/article/{articleId}")
-    public String articlePage(@PathVariable long articleId, Model model) {
+    public String articlePage(
+            @PathVariable long articleId, Model model,
+            @CookieValue(value = "authToken", required = false) String authCookie
+    ) throws UserNotLoggedInException {
         try {
+            User user = jwtTokenService.validateTokenReturnUser(authCookie);
             Article article = articleService.getArticle(articleId);
             model.addAttribute("article", article);
+            model.addAttribute("comments", article.getComments());
+            model.addAttribute("user", user);
         }
         // Article doesn't exist -> redirects to article main page
         catch (MissingArticleException missingArticleException) {
             return "redirect:/community";
+        } catch (TokenValidationException e) {
+            throw new UserNotLoggedInException("User isn't logged in");
         }
         return "community/article";
     }
@@ -60,20 +66,59 @@ public class CommunityController {
     @PostMapping("/article/{articleId}/comment/new")
     public String addNewComment(
             @PathVariable long articleId,
-            @RequestBody CommentDTO commentDTO
-    ) {
-        try {
-            Article article = articleService.getArticle(articleId);
-            articleService.saveComment(article, commentDTO);
+            @RequestBody CommentDTO commentDTO,
+            @CookieValue(value = "authToken", required = false) String authCookie
+    ) throws UserNotLoggedInException {
+        if (authCookie == null) {
+            throw new UserNotLoggedInException("User isn't logged in");
         }
-        catch (MissingArticleException missingArticleException){
+
+        try {
+            User user = jwtTokenService.validateTokenReturnUser(authCookie);
+            Article article = articleService.getArticle(articleId);
+            articleService.saveComment(article, commentDTO, user);
+        } catch (MissingArticleException missingArticleException) {
             return "redirect:/community";
+        } catch (TokenValidationException tokenValidationException) {
+            throw new UserNotLoggedInException("User isn't logged in");
+        }
+        return "";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/article/{articleId}/comment/{commentId}")
+    public String deleteComment(
+            @PathVariable long articleId,
+            @PathVariable long commentId,
+            @CookieValue(value = "authToken", required = false) String authCookie
+    ) throws UserNotLoggedInException {
+        if (authCookie == null) {
+            throw new UserNotLoggedInException("User isn't logged in");
+        }
+        try {
+            User user = jwtTokenService.validateTokenReturnUser(authCookie);
+            articleService.deleteComment(user, articleId, commentId);
+        } catch (TokenValidationException tokenValidationException) {
+            throw new UserNotLoggedInException("User isn't logged in");
+        } catch (CommentException e) {
+            return "redirect:/article/{articleId}/comment/{commentId}"; // refresh the page
         }
         return "";
     }
 
     @GetMapping("/article/new")
-    public String newArticlePage() {
+    public String newArticlePage(
+            @CookieValue(value = "authToken", required = false) String authCookie
+    ) throws UserNotLoggedInException {
+        if (authCookie == null) {
+            throw new UserNotLoggedInException("User isn't logged in");
+        }
+
+        try {
+            User user = jwtTokenService.validateTokenReturnUser(authCookie);
+        } catch (TokenValidationException tokenValidationException) {
+            throw new UserNotLoggedInException(tokenValidationException.getMessage());
+        }
         return "community/new-article";
     }
 
@@ -93,7 +138,7 @@ public class CommunityController {
 
         try {
             User user = jwtTokenService.validateTokenReturnUser(authCookie);
-            article = articleService.saveNewArticle(articleDTO, user.getId());
+            article = articleService.saveNewArticle(articleDTO, user);
 
         } catch (TokenValidationException tokenValidationException) {
             throw new UserNotLoggedInException(tokenValidationException.getMessage());
