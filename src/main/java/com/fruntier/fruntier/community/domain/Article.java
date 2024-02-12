@@ -1,7 +1,7 @@
 package com.fruntier.fruntier.community.domain;
 
 
-import com.fruntier.fruntier.community.repository.CommentRepository;
+import com.fruntier.fruntier.user.domain.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -18,7 +18,9 @@ public class Article {
     private LocalDateTime date;
     private ArticleStatus status;
     private String title;
-    private Long authorId;
+
+    @ManyToOne
+    private User author;
     private String content;
 
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
@@ -65,12 +67,12 @@ public class Article {
         this.title = title;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public String getContent() {

@@ -1,6 +1,7 @@
 package com.fruntier.fruntier.community.domain;
 
 
+import com.fruntier.fruntier.user.domain.User;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -13,10 +14,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long authorId;
+    @ManyToOne
+    private User author;
     private LocalDateTime date;
     private String content;
-    private Long articleId;
+
+    @ManyToOne
+    private Article article;
 
 
     public Comment() {
@@ -30,20 +34,20 @@ public class Comment {
         this.id = id;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
-    public Long getArticleId() {
-        return articleId;
+    public Article getArticle() {
+        return article;
     }
 
-    public void setArticleId(Long articleId) {
-        this.articleId = articleId;
+    public void setArticle(Article article) {
+        this.article = article;
     }
 
     public LocalDateTime getDate() {
