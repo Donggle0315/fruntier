@@ -1,0 +1,17 @@
+.comment {
+}
+
+.comment-author {
+    font-size: larger;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+}
+.comment-top {
+    display: inline-flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.comment-content {
+
+}

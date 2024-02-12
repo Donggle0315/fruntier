@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Homepage</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Optional Bootstrap JavaScript, jQuery, Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script src="/bootstrap/js/bootstrap.bundle.min.js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
     <script th:src="@{/js/community/article.js}"></script>
 
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/community/article.css}" rel="stylesheet">
 
     <style>
         #main {
@@ -33,7 +32,7 @@
 <!-- Bootstrap Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" th:href="@{/home}"><img class="logo" th:src="@{/image/fruntier-logo.png}"/></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -65,15 +64,24 @@
         <div th:text="${article.title}" class="card-header">
             Articles
         </div>
-        <div class="card-body">
-            <p class="card-text" text="Sample Text" th:text="${article.content}"></p>
+        <div class="card-body" style="white-space: pre-line;">
+            <p class="card-text" text="Sample Text" th:utext="${article.content}"></p>
         </div>
     </div>
 
     <ul id="comments" class="list-group list-group-flush">
         <li th:each="comment: ${comments}"
-            th:text="${comment.content}"
-            class="list-group-item"></li>
+            class="list-group-item comment">
+            <div class="comment-top">
+                <div class="comment-author" th:text="${comment.author.username}"></div>
+                <div class="comment-options" th:if="${comment.author.id} == ${user.id}">
+                    <a class="edit-comment-btn" href="#" th:onclick="|editComment(${comment.id})|">edit</a>
+                    <a class="delete-comment-btn" href="#" th:onclick="|deleteComment(${comment.id})|">delete</a>
+                </div>
+            </div>
+            <div class="comment-content" style="white-space: pre-line;"
+                 th:text="${comment.content}"></div>
+        </li>
     </ul>
 
     <div id="new-comments" class="row">

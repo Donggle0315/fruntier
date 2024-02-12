@@ -1,8 +1,6 @@
 window.onload = () => {
     let add_comment_btn = document.getElementById("add-comment-btn");
-
     add_comment_btn.addEventListener('click', addComment);
-
 }
 
 async function fetchText(path, {method, headers, body}) {
@@ -28,7 +26,6 @@ function addComment(){
     let comment_text = document.getElementById("comment-textarea");
     let send_object = {}
     send_object['content'] = comment_text.value;
-    console.log(send_object);
     let send_json = JSON.stringify(send_object);
  
     let cur_uri = window.location.pathname;
@@ -46,4 +43,17 @@ function addComment(){
     .catch(err => {
             console.error(err);
         })
+}
+
+function deleteComment(comment_id){
+    let cur_uri = window.location.pathname;
+    fetchText(`${cur_uri}/comment/${comment_id}`, {
+        method: 'DELETE',
+    })
+    .then(data => {
+        window.location.reload();
+    })
+    .catch(err => {
+        console.error(err);
+    })
 }
