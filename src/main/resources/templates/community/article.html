@@ -4,27 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Homepage</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Optional Bootstrap JavaScript, jQuery, Popper.js -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <style>
-        .logo {
-            width: 3em;
-            height: 3em;
-        }
-        .navbar-nav {
-            margin-right: auto;
-            margin-left: auto;
-            font-size: 1.2em; /* Increase font size */
-        }
-        .navbar {
-            justify-content: space-between; /* Adjusts the spacing */
-        }
-    </style>
+    <!-- Bootstrap -->
+    <link href="/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <script src="/bootstrap/js/bootstrap.bundle.min.js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
+    <script th:src="@{/js/community/article.js}"></script>
+
+    <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/community/article.css}" rel="stylesheet">
 
     <style>
         #main {
@@ -41,52 +28,76 @@
     </style>
 </head>
 <body>
+
 <!-- Bootstrap Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#"><img class="logo" src="image/fruntier-logo.png"/></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+    <a class="navbar-brand" th:href="@{/home}"><img class="logo" th:src="@{/image/fruntier-logo.png}"/></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/home}">Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" th:href="@{/about}">About</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
+                <a class="nav-link" th:href="@{/running}">Run!</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Contact</a>
+                <a class="nav-link" th:href="@{/community}">Together</a>
             </li>
         </ul>
     </div>
-    <button class="btn btn-primary">Login</button>
+    <div th:switch="${not_logged_in}">
+        <a class="btn btn-primary" role="button" th:case="${true}" th:href="@{/user/login}">Login</a>
+        <a class="btn btn-primary" role="button" th:case="${null}" th:href="@{/user/home}">User Page</a>
+    </div>
 </nav>
-
 <!-- Rest of your homepage content goes here, possibly using Bootstrap's grid system for layout -->
 
 <div id="main" class="container">
     <div id="articles-card" class="card">
-        <div th:text="${article.title}" class="card-header">
-            Articles
+        <div id="article-header" class="card-header">
+            <div id="article-title" th:text="${article.title}">Articles</div>
+            <div id="article-author" th:text="|by: ${article.author.username}|">author</div>
+            <div class="article-options" th:if="${article.author.id} == ${user.id}">
+                <a class="edit-article-btn" th:href="@{{articleId}/edit(articleId=${article.id})}">edit</a>
+                <a class="delete-article-btn" href="#" th:onclick="|deleteArticle(${article.id})|">delete</a>
+            </div>
         </div>
-        <div class="card-body">
-            <p class="card-text" text="Sample Text" th:text="${article.content}"></p>
+        <div class="card-body" style="white-space: pre-line;">
+            <p class="card-text" text="Sample Text" th:utext="${article.content}"></p>
         </div>
     </div>
 
     <ul id="comments" class="list-group list-group-flush">
-        <li class="list-group-item">what the guk</li>
-        <li class="list-group-item">that sh</li>
+        <li th:each="comment: ${comments}"
+            class="list-group-item comment" th:id="|comment-${comment.id}|">
+            <div class="comment-top">
+                <div class="comment-author" th:text="${comment.author.username}"></div>
+                <div class="comment-options" th:if="${comment.author.id} == ${user.id}">
+                    <a class="edit-comment-btn" href="#" th:onclick="|editComment(${comment.id})|">edit</a>
+                    <a class="delete-comment-btn" href="#" th:onclick="|deleteComment(${comment.id})|">delete</a>
+                </div>
+            </div>
+            <div class="comment-content" style="white-space: pre-line;"
+                 th:text="${comment.content}"></div>
+            <div class="comment-edit-content" style="display:none">
+                <textarea th:id="|comment-edit-content-text-${comment.id}|"
+                       class="comment-edit-content-text" data-autoresize
+                          th:text="${comment.content}"></textarea>
+                <button class="btn btn-primary" id="comment-edit-submit-btn">Edit</button>
+            </div>
+        </li>
     </ul>
 
     <div id="new-comments" class="row">
-        <textarea id="comment-textarea" class="col-md-8 offset-md-1"></textarea>
-        <button type="button" id="add-article-btn" class="col-md-1 offset-md-1 btn btn-primary">
+        <textarea id="comment-textarea" class="col-md-8 offset-md-1" data-autoresize></textarea>
+        <button type="button" id="add-comment-btn" class="col-md-1 offset-md-1 btn btn-primary">
             comment
         </button>
     </div>

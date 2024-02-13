@@ -1,20 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Homepage</title>
 
     <!-- Bootstrap -->
     <link href="/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
     <script src="/bootstrap/js/bootstrap.bundle.min.js" th:src="@{/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-    <link rel="stylesheet" type="text/css" href="../css/userRequest.css">
-    <title>UserRequest</title>
+    <script th:src="@{/js/community/edit-article.js}"></script>
 
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
+
+    <style>
+        #main {
+            margin-top: 3em;
+        }
+
+        #add-article-btn {
+            margin-top: 1em;
+        }
+    </style>
 </head>
 <body>
-
 <!-- Bootstrap Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" th:href="@{/home}"><img class="logo" th:src="@{/image/fruntier-logo.png}"/></a>
@@ -43,33 +52,28 @@
         <a class="btn btn-primary" role="button" th:case="${null}" th:href="@{/user/home}">User Page</a>
     </div>
 </nav>
+<!-- Rest of your homepage content goes here, possibly using Bootstrap's grid system for layout -->
 
-<div class="container">
-    <div class="left">
-        <p id="UserRequest">추천 경로 생성</p>
-        <p>출발지와 도착지를 선택해주세요.</p>
-        <div id="map"></div>
-        <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5cf8836fb662afb5dbdf8f0c054fce52&libraries=drawing"></script>
-        <script type="text/javascript" th:src="@{/js/userRequest.js}"></script>
-        <script>
-            document.getElementById('clickLatlng')
-        </script>
-    </div>
+<div id="main" class="container">
+    <form id="article-form">
+        <fieldset>
+            <legend class="row">Title</legend>
+            <input type="text" name="title" class="row form-control" id="title" th:value="${article.title}">
+        </fieldset>
 
-    <div class="right">
-        <div class="map_buttons">
-            <p>지도에서 원하는 위치를 선택한 뒤, 설정 버튼을 누르세요</p>
-            <button id="setStartVertex">출발지 설정</button>
-            <button id="setEndVertex">도착지 설정</button>
+        <br>
+        <fieldset>
+            <legend class="row">Content</legend>
+            <textarea name="content" class="row form-control" rows="20" th:text="${article.content}"></textarea>
+        </fieldset>
+
+        <br>
+        <div class="row justify-content-center">
+            <button id="article-submit-btn" type="button" class="btn btn-primary w-75">Submit</button>
         </div>
-        <div class="input_expected_distance">
-            <label for="expectedDistance">뛰고 싶은 거리(m) : </label>
-            <input type="number" id="expectedDistance"/>
-        </div>
-        <div class="generate_recommend_route">
-            <button id="generateRoute">추천 경로 만들기</button>
-        </div>
-    </div>
+    </form>
 </div>
+
+
 </body>
 </html>
