@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running Route Recommendation</title>
+    <link rel="stylesheet" href="../css/record.css">
+</head>
+<body>
+
+<form id="recommendationForm">
+    <label for="runningTime">Running Time:</label>
+    <input type="time" id="runningTime" name="runningTime" required>
+
+    <label for="runningDate">Running Date:</label>
+    <input type="date" id="runningDate" name="runningDate" required>
+
+    <label for="comments">Comments:</label>
+    <textarea id="comments" name="comments" rows="4" placeholder="Leave your comments"></textarea>
+
+    <label for="rating">Rating:</label>
+    <select id="rating" name="rating" required>
+        <option value="5">5 - Excellent</option>
+        <option value="4">4 - Very Good</option>
+        <option value="3">3 - Good</option>
+        <option value="2">2 - Fair</option>
+        <option value="1">1 - Poor</option>
+    </select>
+
+    <button id="submitRecord">저장하기!</button>
+</form>
+</body>
+</html>
