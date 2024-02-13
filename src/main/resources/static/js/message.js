@@ -14,6 +14,7 @@ function loadChat(element){
     currentOpponentName = element.getAttribute('data-opponent-name');
 
     makeSendBlockVisible();
+    makeChatBlockActive();
     loadChatWith(loginUsername,opponentUsername);
     setButtonInfo(opponentUsername);
 
@@ -119,5 +120,8 @@ function getTimeFromMessage(msg){
     const hours = msgTime.getHours().toString().padStart(2,'0')
     const minutes = msgTime.getMinutes().toString().padStart(2, '0');
     return `${hours}:${minutes}`;
+}
+function makeChatBlockActive(){
+    document.getElementById("chatLogo").innerText = "Chat with (" + currentOpponentName + ")"
 }
 

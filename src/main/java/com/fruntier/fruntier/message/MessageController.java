@@ -56,18 +56,18 @@ public class MessageController {
             } else {
                 // No token found in cookies user is not logged in.
                 logger.error("No token found in cookies");
-                return "redirect:login";
+                return "redirect:/user/login";
             }
 
         } catch (TokenValidationException e) {
             logger.error("Token validation error: {}", e.getMessage(), e);
-            return "/user/login";
+            return "redirect:/user/login";
         } catch (UserNotFoundException e) {
             logger.error("User not Found Error : {}", e.getMessage(), e);
-            return "redirect:logout";
+            return "redirect:/user/logout";
         } catch (Exception e) {
             logger.error("An unexpected error occurred: {}", e.getMessage(), e);
-            return "/user/login";
+            return "redirect:/user/login";
         }
     }
     @PostMapping("/loadChatWith")
