@@ -2,6 +2,7 @@
 var markerLatLng;
 var vertexMap = [];
 var result = [];
+var response;
 
 window.onload = function () {
     /* KaKao Map Container*/
@@ -126,7 +127,6 @@ window.onload = function () {
     }
 
     function communicateServer(server, sendingData, callback) {
-        var response;
 
         server.onreadystatechange = function() {
             if (server.readyState === 4) {
@@ -183,4 +183,22 @@ window.onload = function () {
             result.push(polyline);
         }
     }
+
+    document.getElementById("recordRoute").addEventListener('click', recordBusiness);
+    function recordBusiness() {
+        const formData = {
+                title: document.getElementById("routeTitle").value,
+                routes: response
+            };
+
+            fetch('/record/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData),
+                });
+
+    }
+
 }
