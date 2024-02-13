@@ -33,7 +33,7 @@
     </div>
     <div th:switch="${not_logged_in}">
         <a class="btn btn-primary" role="button" th:case="${true}" th:href="@{/user/login}">Login</a>
-        <a class="btn btn-primary" role="button" th:case="${null}" th:href="@{/user/home}">User Page</a>
+        <a class="btn btn-primary" role="button" th:case="${null}" th:href="@{/user/logout}">Logout</a>
     </div>
 </nav>
 
