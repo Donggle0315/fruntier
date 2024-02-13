@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message</title>
+  <!-- Bootstrap CSS -->
+  <style>
+
+    .logo {
+      width: 3em;
+      height: 3em;
+    }
+    .navbar-nav {
+      margin-right: auto;
+      margin-left: auto;
+      font-size: 1.2em; /* Increase font size */
+    }
+    .navbar {
+      justify-content: space-between; /* Adjusts the spacing */
+    }
+
+  </style>
+
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Optional Bootstrap JavaScript, jQuery, Popper.js -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#"><img class="logo" src="image/fruntier-logo.png" /></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Services</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+      </li>
+    </ul>
+  </div>
+  <button class="btn btn-primary">Login</button>
+</nav>
+<div id="container" class="w-100 h-100" >
+  <div id="user-list" class = "card w-50 float-left h-100">
+    <!-- Users List -->
+    <ul class="list-group">
+      <li class="list-group-item" th:data-login-username="${loginUser.username}" th:data-opponent-username="${user.username}" th:each="user : ${userList}" th:text="${user.name}" th:classappend="${user.id} == ${loginUser.id} ? 'current-user' : ''" onclick="loadChat(this)">
+        <!-- User names here, clicking on a user will load chat with that user -->
+      </li>
+      <li class="list-group-item"></li>
+    </ul>
+  </div>
+
+  <div id="chat-area" class="card w-50 h-50 float-right">
+    <!-- Display "Please select a user" if no user has been selected yet -->
+    <ul class="list-group">
+      <li class="list-group-item" th:if="${selectedUserId == null}" th:text="${loginUser.name}">Please select a User</li>
+      <li class="list-group-item" th:if="${selectedUserId != null} and ${#lists.isEmpty()}">No whattie Record</li>
+    </ul>
+
+
+    <!-- Display "No chatting record" if there are no chat records (and a user has been selected) -->
+
+    <!-- Display chat records if there are any -->
+    <ul id="message-list" class="list-group-item">
+
+    </ul>
+  </div>
+  <div id="send-area" class="card w-50 h-50 float-right">
+    <form action="sendMessagePre(this)" th:data-login-username="${loginUser.username}">
+      <label for="sendMessage">send Message here</label>
+      <textarea class="form-control" id="sendMessage" rows="3"></textarea>
+      <button type="submit" class="btn btn-primary" >Submit</button>
+    </form>
+  </div>
+s
+</div>
+
+<script>
+  function loadChat(userId) {
+    // JavaScript to load chat for the selected user
+  }
+</script>
+</body>
+</html>

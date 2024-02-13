@@ -28,7 +28,7 @@ public class MessageServiceImpl implements MessageService{
 
 
     @Override
-    public void sendMessage(String senderUsername, String receiverUsername, String content) throws UserNotFoundException {
+    public Message sendMessage(String senderUsername, String receiverUsername, String content) throws UserNotFoundException {
         Optional<User> opReceiver = userRepository.findByUsername(receiverUsername);
         Optional<User> opSender = userRepository.findByUsername(senderUsername);
 
@@ -50,6 +50,8 @@ public class MessageServiceImpl implements MessageService{
         message.setTime(new Date()); //fix of Adding date required
 
         messageRepository.save(message); //error checking of saving required.
+
+        return message;
     }
 
     @Override
