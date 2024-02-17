@@ -1,25 +1,34 @@
 package com.fruntier.fruntier.running.domain;
 
-import com.fruntier.fruntier.running.domain.Edge;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@ToString
 @Entity
+@Table(name = "recommend_route")
 public class RecommendRoute {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Double distance;
     private Integer expectedTime;
     private Double score;
-    @ManyToMany
-    private List<Vertex> routeVertices;
-//    @JoinTable(
-//            name = "recommend_route_edge",
-//            joinColumns = @JoinColumn(name = "recommend_route_id"),
-//            inverseJoinColumns = @JoinColumn(name = "edge_id")
-//    )
+    @ManyToMany(mappedBy = "route", cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "RecommendRoute_Vertex",
+            joinColumns = { @JoinColumn(name = "recommendRoute_id")},
+            inverseJoinColumns = { @JoinColumn(name = "vertex_id")}
+    )
+    private List<Vertex> routeVertices = new ArrayList<>();
+
+
     public RecommendRoute() {
     }
 
@@ -31,54 +40,4 @@ public class RecommendRoute {
         this.routeVertices = routeVertices;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(Double distance) {
-        this.distance = distance;
-    }
-
-    public Integer getExpectedTime() {
-        return expectedTime;
-    }
-
-    public void setExpectedTime(Integer expectedTime) {
-        this.expectedTime = expectedTime;
-    }
-
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
-    }
-
-    public List<Vertex> getRouteVertices() {
-        return routeVertices;
-    }
-
-    public void setRouteVertices(List<Vertex> routeVertices) {
-        this.routeVertices = routeVertices;
-    }
-
-    @Override
-    public String toString() {
-        return "RecommendRoute{" +
-                "id=" + id +
-                ", distance=" + distance +
-                ", expectedTime=" + expectedTime +
-                ", score=" + score +
-                ", routeVertices=" + routeVertices +
-                '}';
-    }
 }

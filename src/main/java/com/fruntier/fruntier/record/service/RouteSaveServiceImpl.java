@@ -6,16 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RecordSaveServiceImpl implements RecordSaveService {
+public class RouteSaveServiceImpl implements RouteSaveService {
     private final RouteRepository routeRepository;
 
     @Autowired
-    public RecordSaveServiceImpl(RouteRepository routeRepository) {
+    public RouteSaveServiceImpl(RouteRepository routeRepository) {
         this.routeRepository = routeRepository;
     }
 
     @Override
     public Route save(Route route) {
+        System.out.println("RouteSaveServiceImpl.save");
         Route save = routeRepository.save(route);
         return save;
     }

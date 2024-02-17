@@ -2,10 +2,14 @@ package com.fruntier.fruntier.record.domain;
 
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-//@Entity
+@Entity
+@Getter
+@Setter
 public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,46 +30,6 @@ public class Route {
         this.userId = userId;
         this.title = title;
         this.history = history;
-        this.recommendRoute = recommendRoute;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public List<Record> getHistory() {
-        return history;
-    }
-
-    public void setHistory(List<Record> history) {
-        this.history = history;
-    }
-
-    public RecommendRoute getRecommendRoute() {
-        return recommendRoute;
-    }
-
-    public void setRecommendRoute(RecommendRoute recommendRoute) {
         this.recommendRoute = recommendRoute;
     }
 }

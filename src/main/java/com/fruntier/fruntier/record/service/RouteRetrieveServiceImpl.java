@@ -9,16 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RecordRetrieveServiceImpl implements RecordRetrieveService {
+public class RouteRetrieveServiceImpl implements RouteRetrieveService {
     private final RouteRepository routeRepository;
 
     @Autowired
-    public RecordRetrieveServiceImpl(RouteRepository routeRepository) {
+    public RouteRetrieveServiceImpl(RouteRepository routeRepository) {
         this.routeRepository = routeRepository;
     }
 
     @Override
-    public List<Route> listRoutesAllNormal(int pageIndex) {
+    public List<Route> listRoutesAllNormal() {
         List<Route> routes = routeRepository.findAll();
         if (routes == null) {
             return new ArrayList<>();
@@ -27,8 +27,8 @@ public class RecordRetrieveServiceImpl implements RecordRetrieveService {
     }
 
     @Override
-    public Route getRouteById(Long id) {
-        Route route = routeRepository.findById(id);
+    public Route getRouteFoundById(Long id) {
+        Route route = routeRepository.findById(id).get();
         return route;
     }
 }

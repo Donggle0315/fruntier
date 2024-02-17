@@ -15,18 +15,18 @@ import java.util.NoSuchElementException;
 public class RecordUpdateServiceImpl implements RecordUpdateService {
     private final RouteRepository routeRepository;
     private final RecordRepository recordRepository;
-    private final RecordRetrieveService recordRetrieveService;
+    private final RouteRetrieveService routeRetrieveService;
 
     @Autowired
-    public RecordUpdateServiceImpl(RouteRepository routeRepository, RecordRepository recordRepository, RecordRetrieveService recordRetrieveService) {
+    public RecordUpdateServiceImpl(RouteRepository routeRepository, RecordRepository recordRepository, RouteRetrieveService routeRetrieveService) {
         this.routeRepository = routeRepository;
         this.recordRepository = recordRepository;
-        this.recordRetrieveService = recordRetrieveService;
+        this.routeRetrieveService = routeRetrieveService;
     }
 
     @Override
     public Record updateRecord(Long routeId, Record record) {
-        Route route = routeRepository.findById(routeId);
+        Route route = routeRepository.findById(routeId).get();
 
         if (route == null) {
             throw new NoSuchElementException();
@@ -43,7 +43,7 @@ public class RecordUpdateServiceImpl implements RecordUpdateService {
 
     @Override
     public Record getRecordById(Long Id) {
-        Record record = recordRepository.findById(Id);
+        Record record = recordRepository.findById(Id).get();
 
         return record;
     }

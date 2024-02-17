@@ -16,4 +16,6 @@ public interface RecommendRouteService {
     Boolean deleteRecommendRouteById(Long recommendRouteId);
 
     List<Vertex> makeRecommendRouteNormal(UserRequest userRequest);
+
+    RecommendRoute saveRoute(RecommendRoute recommendRoute);
 }
