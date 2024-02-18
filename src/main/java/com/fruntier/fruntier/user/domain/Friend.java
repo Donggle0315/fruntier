@@ -1,43 +1,47 @@
 package com.fruntier.fruntier.user.domain;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
 public class Friend {
-    private Long userId1;
-    private Long userId2;
+    @EmbeddedId
+    private FriendKey friendKey;
 
-    public Friend(Long userId1, Long userId2) {
-        this.userId1 = userId1;
-        this.userId2 = userId2;
+    @ManyToOne
+    @MapsId("userId1")
+    @JoinColumn(name="user_id_1")
+    private User user1;
+    @ManyToOne
+    @MapsId("userId2")
+    @JoinColumn(name="user_id_2")
+    private User user2;
+
+    public Friend() {
     }
 
-    public Long getUserId1() {
-        return userId1;
+    public FriendKey getFriendKey() {
+        return friendKey;
     }
 
-    public void setUserId1(Long userId1) {
-        this.userId1 = userId1;
+    public void setFriendKey(FriendKey friendKey) {
+        this.friendKey = friendKey;
     }
 
-    public Long getUserId2() {
-        return userId2;
+    public User getUser1() {
+        return user1;
     }
 
-    public void setUserId2(Long userId2) {
-        this.userId2 = userId2;
+    public void setUser1(User user1) {
+        this.user1 = user1;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if(this == obj) return true;
-        if(obj==null || getClass() != obj.getClass()) return false;
-
-        Friend friend = (Friend)obj;
-        return Objects.equals(userId1,friend.userId1) && Objects.equals(userId2,friend.userId2);
+    public User getUser2() {
+        return user2;
     }
 
-    @Override
-    public int hashCode(){
-        return Objects.hash(userId1,userId2);
+    public void setUser2(User user2) {
+        this.user2 = user2;
     }
 }

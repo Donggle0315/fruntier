@@ -1,11 +1,9 @@
 package com.fruntier.fruntier.user.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -26,6 +24,10 @@ public class User{
     private Tier tier;//유저 티어
     private Position position;//유저 등급(일반사용자, 관리자)
     private Date lastLoginDate; //마지막 접속 일자
+
+    @OneToMany(mappedBy = "user1")
+    private List<Friend> friendList;
+
 
     public User() {
         ;
