@@ -26,16 +26,16 @@
         </thead>
         <tbody>
         <tr th:each="friend : ${friendshipList}">
-            <td th:text="friend.user2.username"></td>
+            <td th:text="${friend.user2.username}"></td>
         </tr>
         </tbody>
     </table>
 
     <h2>친구 요청</h2>
-    <table id="from-request-table" class="table"></table>
+    <table id="incoming-request-table" class="table"></table>
 
     <h2>내가 보낸 요청</h2>
-    <table id="to-request-table" class="table"></table>
+    <table id="sent-request-table" class="table"></table>
 
     <h2>친구 찾기</h2>
     <div class="col-md-6">

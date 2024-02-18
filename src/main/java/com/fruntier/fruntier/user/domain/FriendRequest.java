@@ -4,25 +4,28 @@ import jakarta.persistence.*;
 
 @Entity
 public class FriendRequest {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    Long friendRequestId;
+    @EmbeddedId
+    FriendRequestKey friendRequestId;
 
     @ManyToOne
+    @MapsId("fromUserId")
+    @JoinColumn(name = "from_user_id")
     User fromUser;
 
     @ManyToOne
+    @MapsId("toUserId")
+    @JoinColumn(name = "to_user_id")
     User toUser;
 
-    public FriendRequest () {
+    public FriendRequest() {
 
     }
 
-    public Long getFriendRequestId() {
+    public FriendRequestKey getFriendRequestId() {
         return friendRequestId;
     }
 
-    public void setFriendRequestId(Long friendRequestId) {
+    public void setFriendRequestId(FriendRequestKey friendRequestId) {
         this.friendRequestId = friendRequestId;
     }
 

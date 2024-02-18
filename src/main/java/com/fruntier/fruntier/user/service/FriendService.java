@@ -15,7 +15,11 @@ public interface FriendService {
 
     void requestFriend(User fromUser, Long toUserId);
 
-    List<FriendSearchDTO> getFromRequestFriendList(User user);
+    void acceptRequestFriend(User curUser, Long requestingUserId);
 
-    List<FriendSearchDTO> getToRequestFriendList(User user);
+    void cancelRequestFriend(User curUser, Long targetUserId);
+
+    List<FriendSearchDTO> getFriendRequestSentList(User user);
+
+    List<FriendSearchDTO> getFriendRequestIncomingList(User user);
 }

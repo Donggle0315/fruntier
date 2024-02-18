@@ -29,8 +29,21 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public void makeFriendship(User f1, User f2) {
         Friendship friendship = new Friendship();
+        FriendKey friendKey = new FriendKey(f1.getId(), f2.getId());
+        friendship.setFriendKey(friendKey);
         friendship.setUser1(f1);
         friendship.setUser2(f2);
+
+        f1.getFriendshipList().add(friendship);
+        f2.getFriendshipList().add(friendship);
+
+        friendshipRepository.save(friendship);
+
+        friendship = new Friendship();
+        friendKey = new FriendKey(f2.getId(), f1.getId());
+        friendship.setFriendKey(friendKey);
+        friendship.setUser1(f2);
+        friendship.setUser2(f1);
 
         f1.getFriendshipList().add(friendship);
         f2.getFriendshipList().add(friendship);
@@ -42,9 +55,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public void breakFriendship(User f1, User f2) {
-        FriendKey fk = new FriendKey();
-        fk.setUserId1(f1.getId());
-        fk.setUserId2(f2.getId());
+        FriendKey fk = new FriendKey(f1.getId(), f2.getId());
         Optional<Friendship> friendshipOptional = friendshipRepository.findById(fk);
         if (friendshipOptional.isEmpty()) {
             return; // do nothing
@@ -84,28 +95,73 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public void requestFriend(User fromUser, Long toUserId) {
         Optional<User> toUserOptional = userRepository.findById(toUserId);
-        if(toUserOptional.isEmpty()){
+        if (toUserOptional.isEmpty()) {
             return; // don't do anything
         }
-
         User toUser = toUserOptional.get();
+
         FriendRequest friendRequest = new FriendRequest();
+        FriendRequestKey friendRequestKey = new FriendRequestKey(fromUser.getId(), toUserId);
+        friendRequest.setFriendRequestId(friendRequestKey);
         friendRequest.setFromUser(fromUser);
         friendRequest.setToUser(toUser);
 
-        friendRequest = friendRequestRepository.save(friendRequest);
+        fromUser.getFriendRequestSentList().add(friendRequest);
+        toUser.getFriendRequestIncomingList().add(friendRequest);
 
-        fromUser.getFriendRequestToList().add(friendRequest);
-        toUser.getFriendRequestFromList().add(friendRequest);
-
+        friendRequestRepository.save(friendRequest);
         userRepository.save(fromUser);
         userRepository.save(toUser);
     }
 
     @Override
-    public List<FriendSearchDTO> getFromRequestFriendList(User user) {
-        System.out.println("user.getFriendRequestFromList() = " + user.getFriendRequestFromList());
-        return user.getFriendRequestFromList()
+    public void acceptRequestFriend(User curUser, Long requestingUserId) {
+        Optional<User> userOptional = userRepository.findById(requestingUserId);
+        if (userOptional.isEmpty()) {
+            return; // do nothing
+        }
+
+        Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findById(new FriendRequestKey(requestingUserId, curUser.getId()));
+        if(friendRequestOptional.isEmpty()){
+            return;
+        }
+        FriendRequest friendRequest = friendRequestOptional.get();
+
+        User requestingUser = userOptional.get();
+        makeFriendship(curUser, requestingUser);
+        curUser.getFriendRequestIncomingList().remove(friendRequest);
+        requestingUser.getFriendRequestSentList().remove(friendRequest);
+
+        friendRequestRepository.delete(friendRequest);
+        userRepository.save(curUser);
+        userRepository.save(requestingUser);
+    }
+
+    @Override
+    public void cancelRequestFriend(User curUser, Long targetUserId) {
+        Optional<User> userOptional = userRepository.findById(targetUserId);
+        if (userOptional.isEmpty()) {
+            return; // do nothing
+        }
+
+        Optional<FriendRequest> friendRequestOptional = friendRequestRepository.findById(new FriendRequestKey(curUser.getId(), targetUserId));
+        if(friendRequestOptional.isEmpty()){
+            return;
+        }
+        FriendRequest friendRequest = friendRequestOptional.get();
+
+        User targetUser = userOptional.get();
+        curUser.getFriendRequestSentList().remove(friendRequest);
+        targetUser.getFriendRequestIncomingList().remove(friendRequest);
+
+        friendRequestRepository.delete(friendRequest);
+        userRepository.save(curUser);
+        userRepository.save(targetUser);
+    }
+
+    @Override
+    public List<FriendSearchDTO> getFriendRequestSentList(User user) {
+        return user.getFriendRequestSentList()
                 .stream()
                 .map(friendRequest -> {
                     User fromUser = friendRequest.getToUser();
@@ -114,8 +170,8 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public List<FriendSearchDTO> getToRequestFriendList(User user) {
-        return user.getFriendRequestToList()
+    public List<FriendSearchDTO> getFriendRequestIncomingList(User user) {
+        return user.getFriendRequestIncomingList()
                 .stream()
                 .map(friendRequest -> {
                     User toUser = friendRequest.getFromUser();

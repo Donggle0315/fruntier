@@ -30,10 +30,10 @@ public class User {
     private List<Friendship> friendshipList = new ArrayList<>();
 
     @OneToMany(mappedBy = "toUser")
-    private List<FriendRequest> friendRequestToList = new ArrayList<>();
+    private List<FriendRequest> friendRequestIncomingList = new ArrayList<>();
 
     @OneToMany(mappedBy = "fromUser")
-    private List<FriendRequest> friendRequestFromList = new ArrayList<>();
+    private List<FriendRequest> friendRequestSentList = new ArrayList<>();
 
 
     public User() {
@@ -178,19 +178,19 @@ public class User {
         this.friendshipList = friendshipList;
     }
 
-    public List<FriendRequest> getFriendRequestToList() {
-        return friendRequestToList;
+    public List<FriendRequest> getFriendRequestIncomingList() {
+        return friendRequestIncomingList;
     }
 
-    public void setFriendRequestToList(List<FriendRequest> friendRequestToList) {
-        this.friendRequestToList = friendRequestToList;
+    public void setFriendRequestIncomingList(List<FriendRequest> friendRequestIncomingList) {
+        this.friendRequestIncomingList = friendRequestIncomingList;
     }
 
-    public List<FriendRequest> getFriendRequestFromList() {
-        return friendRequestFromList;
+    public List<FriendRequest> getFriendRequestSentList() {
+        return friendRequestSentList;
     }
 
-    public void setFriendRequestFromList(List<FriendRequest> friendRequestFromList) {
-        this.friendRequestFromList = friendRequestFromList;
+    public void setFriendRequestSentList(List<FriendRequest> friendRequestSentList) {
+        this.friendRequestSentList = friendRequestSentList;
     }
 }

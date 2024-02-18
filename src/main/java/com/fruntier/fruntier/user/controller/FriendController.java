@@ -64,8 +64,8 @@ public class FriendController {
     }
 
     @ResponseBody
-    @GetMapping("/request/from")
-    public List<FriendSearchDTO> getFromFriendRequestList(
+    @GetMapping("/request/sent")
+    public List<FriendSearchDTO> getFriendRequestSentList(
             @CookieValue(value = "authToken", required = false) String authCookie
     ) throws UserNotLoggedInException {
         if (authCookie == null) {
@@ -73,15 +73,15 @@ public class FriendController {
         }
         try {
             User user = jwtTokenService.validateTokenReturnUser(authCookie);
-            return friendService.getFromRequestFriendList(user);
+            return friendService.getFriendRequestSentList(user);
         } catch (TokenValidationException tokenValidationException) {
             throw new UserNotLoggedInException(tokenValidationException.getMessage());
         }
     }
 
     @ResponseBody
-    @GetMapping("/request/to")
-    public List<FriendSearchDTO> getToFriendRequestList(
+    @GetMapping("/request/incoming")
+    public List<FriendSearchDTO> getFriendRequestIncomingList(
             @CookieValue(value = "authToken", required = false) String authCookie
     ) throws UserNotLoggedInException {
         if (authCookie == null) {
@@ -89,7 +89,7 @@ public class FriendController {
         }
         try {
             User user = jwtTokenService.validateTokenReturnUser(authCookie);
-            return friendService.getToRequestFriendList(user);
+            return friendService.getFriendRequestIncomingList(user);
         } catch (TokenValidationException tokenValidationException) {
             throw new UserNotLoggedInException(tokenValidationException.getMessage());
         }
@@ -116,14 +116,35 @@ public class FriendController {
     @ResponseBody
     @PostMapping("/request/accept")
     public void requestAccept(
-            @RequestBody String acceptUserId,
+            @RequestBody String acceptUserIdString,
             @CookieValue(value = "authToken", required = false) String authCookie
     ) throws UserNotLoggedInException {
         if (authCookie == null) {
             throw new UserNotLoggedInException("User isn't logged in");
         }
         try {
+            Long acceptUserId = Long.parseLong(acceptUserIdString);
             User user = jwtTokenService.validateTokenReturnUser(authCookie);
+            friendService.acceptRequestFriend(user, acceptUserId);
+        } catch (TokenValidationException tokenValidationException) {
+            throw new UserNotLoggedInException(tokenValidationException.getMessage());
+        }
+    }
+
+
+    @ResponseBody
+    @PostMapping("/request/cancel")
+    public void requestCancel(
+            @RequestBody String cancelUserIdString,
+            @CookieValue(value = "authToken", required = false) String authCookie
+    ) throws UserNotLoggedInException {
+        if (authCookie == null) {
+            throw new UserNotLoggedInException("User isn't logged in");
+        }
+        try {
+            Long cancelUserId = Long.parseLong(cancelUserIdString);
+            User user = jwtTokenService.validateTokenReturnUser(authCookie);
+            friendService.cancelRequestFriend(user, cancelUserId);
         } catch (TokenValidationException tokenValidationException) {
             throw new UserNotLoggedInException(tokenValidationException.getMessage());
         }

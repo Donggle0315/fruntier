@@ -1,7 +1,11 @@
 window.onload = () => {
     document.getElementById('search-form').addEventListener('submit', searchFriend)
-    refreshFromFriendRequest();
-    refreshToFriendRequest();
+    refreshFriendRequest();
+}
+
+function refreshFriendRequest() {
+    refreshFriendRequestSent();
+    refreshFriendRequestIncoming();
 }
 
 function searchFriend(event) {
@@ -39,8 +43,9 @@ function sendFriendRequest(toId){
         body: toId
     })
         .then(data => data.text())
-        .then(data => () => {
+        .then(data => {
             alert("요청을 보냈습니다!")
+            refreshFriendRequest();
         })
         .catch(err => {
             alert("뭔가 잘못되어서 실패했습니다");
@@ -48,13 +53,38 @@ function sendFriendRequest(toId){
         });
 }
 
-function refreshFromFriendRequest() {
-    fetch(`/user/friend/request/from`, {
+function refreshFriendRequestSent() {
+    fetch(`/user/friend/request/sent`, {
         method: "GET",
     })
         .then(data => data.json())
         .then(data => {
-            let table = document.getElementById("from-request-table");
+            let table = document.getElementById("sent-request-table");
+            table.innerHTML = "<thead><tr><th>이름</th><th></th></tr></thead>";
+            table.innerHTML += "<tbody>";
+            for(let i=0; i<data.length; i++){
+                table.innerHTML += `
+                <tr>
+                    <td>${data[i]['username']}</td>
+                    <td>
+                        <button class="btn btn-primary" onclick=sendCancelFriendRequest(${data[i]['id']})>취소</button>
+                    </td>
+                </tr>`;
+            }
+            table.innerHTML += "</tbody>";
+        })
+        .catch(err => {
+            console.error(err)
+        });
+}
+
+function refreshFriendRequestIncoming() {
+    fetch(`/user/friend/request/incoming`, {
+        method: "GET",
+    })
+        .then(data => data.json())
+        .then(data => {
+            let table = document.getElementById("incoming-request-table");
             table.innerHTML = "<thead><tr><th>이름</th><th></th></tr></thead>";
             table.innerHTML += "<tbody>";
             for(let i=0; i<data.length; i++){
@@ -73,25 +103,31 @@ function refreshFromFriendRequest() {
         });
 }
 
-function refreshToFriendRequest() {
-    fetch(`/user/friend/request/to`, {
-        method: "GET",
+function sendAcceptFriendRequest(id){
+    fetch(`/user/friend/request/accept`, {
+        method: "POST",
+        body: id
     })
-        .then(data => data.json())
+        .then(data => data.text())
         .then(data => {
-            let table = document.getElementById("to-request-table");
-            table.innerHTML = "<thead><tr><th>이름</th><th></th></tr></thead>";
-            table.innerHTML += "<tbody>";
-            for(let i=0; i<data.length; i++){
-                table.innerHTML += `
-                <tr>
-                    <td>${data[i]['username']}</td>
-                    <td>
-                        <button class="btn btn-primary" onclick=sendCancelFriendRequest(${data[i]['id']})>취소</button>
-                    </td>
-                </tr>`;
-            }
-            table.innerHTML += "</tbody>";
+            alert("수락했습니다!")
+            window.location.reload();
+        })
+        .catch(err => {
+            console.error(err)
+        });
+}
+
+function sendCancelFriendRequest(id) {
+
+    fetch(`/user/friend/request/cancel`, {
+        method: "POST",
+        body: id
+    })
+        .then(data => data.text())
+        .then(data => {
+            alert("취소했습니다!")
+            window.location.reload();
         })
         .catch(err => {
             console.error(err)

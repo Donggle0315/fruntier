@@ -14,6 +14,12 @@ public class FriendKey implements Serializable {
     @Column(name="user_id_2")
     private Long userId2;
 
+    public FriendKey(){}
+    public FriendKey(Long userId1, Long userId2) {
+        this.userId1 = userId1;
+        this.userId2 = userId2;
+    }
+
     public Long getUserId1() {
         return userId1;
     }
