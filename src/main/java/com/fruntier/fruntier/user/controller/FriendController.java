@@ -12,6 +12,6 @@ public class FriendController {
     @GetMapping
     public String friendPage(){
 
-        return "friend-main";
+        return "friend/friend-main";
     }
 }
