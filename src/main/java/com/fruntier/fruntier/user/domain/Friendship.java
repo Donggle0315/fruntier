@@ -2,10 +2,8 @@ package com.fruntier.fruntier.user.domain;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
-public class Friend {
+public class Friendship {
     @EmbeddedId
     private FriendKey friendKey;
 
@@ -18,8 +16,9 @@ public class Friend {
     @JoinColumn(name="user_id_2")
     private User user2;
 
-    public Friend() {
+    public Friendship() {
     }
+
 
     public FriendKey getFriendKey() {
         return friendKey;

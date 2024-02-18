@@ -9,4 +9,5 @@
 }
 .navbar {
     justify-content: space-between; /* Adjusts the spacing */
+    margin-bottom: 2em;
 }
