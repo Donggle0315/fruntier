@@ -2,25 +2,22 @@ package com.fruntier.fruntier.message;
 
 import com.fruntier.fruntier.JwtTokenService;
 import com.fruntier.fruntier.RequireTokenValidation;
-import com.fruntier.fruntier.message.dto.LoadChatUserInfo;
-import com.fruntier.fruntier.message.dto.SentMessage;
+import com.fruntier.fruntier.message.dto.ChatUserInfoDto;
+import com.fruntier.fruntier.message.dto.SentMessageDto;
 import com.fruntier.fruntier.user.controller.UserController;
 import com.fruntier.fruntier.user.domain.User;
-import com.fruntier.fruntier.user.exceptions.TokenValidationException;
 import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import com.fruntier.fruntier.user.service.UserInfoService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/message")
@@ -53,12 +50,12 @@ public class MessageController {
     }
     @PostMapping("/loadChatWith")
     @RequireTokenValidation
-    public ResponseEntity<?> loadChatWith(HttpServletRequest request, @RequestBody LoadChatUserInfo loadChatUserInfo) throws UserNotFoundException{
+    public ResponseEntity<?> loadChatWith(HttpServletRequest request, @RequestBody ChatUserInfoDto chatUserInfoDto) throws UserNotFoundException{
         User currentUser = userInfoService.findUserWithId(((User)request.getAttribute("validatedUser")).getId());
 
 
-        String loginUsername = loadChatUserInfo.getLoginUsername();
-        String opponentUsername = loadChatUserInfo.getOpponentUsername();
+        String loginUsername = chatUserInfoDto.getLoginUsername();
+        String opponentUsername = chatUserInfoDto.getOpponentUsername();
         if(!loginUsername.equals(currentUser.getUsername())){
             throw new UserNotFoundException("Not Logged In User");
         }
@@ -72,11 +69,11 @@ public class MessageController {
 
     @PostMapping("sendMessage")
     @RequireTokenValidation
-    public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody SentMessage sentMessage) throws  UserNotFoundException {
+    public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody SentMessageDto sentMessageDto) throws  UserNotFoundException {
 
         User currentUser = userInfoService.findUserWithId(((User) request.getAttribute("validatedUser")).getId());
-        String opponentUsername = sentMessage.getOpponentUsername();
-        String content = sentMessage.getContent();
+        String opponentUsername = sentMessageDto.getOpponentUsername();
+        String content = sentMessageDto.getContent();
         logger.debug("received Username : " + opponentUsername + "received Content : " + content);
 
         Message msg = messageService.sendMessage(currentUser.getUsername(), opponentUsername, content);
