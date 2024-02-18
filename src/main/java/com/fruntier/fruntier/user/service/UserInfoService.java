@@ -1,10 +1,9 @@
 package com.fruntier.fruntier.user.service;
 
 import com.fruntier.fruntier.user.domain.User;
-import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
+import com.fruntier.fruntier.globalexception.UserNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface UserInfoService {
     /**

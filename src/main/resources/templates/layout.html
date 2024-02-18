@@ -10,7 +10,7 @@
 <body>
 <!-- Bootstrap Navigation Bar as a Thymeleaf fragment -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navbar">
-    <a class="navbar-brand" th:href="@{/home}"><img class="logo" th:src="@{/image/fruntier-logo.png}"/></a>
+    <a class="navbar-brand" th:href="@{/user/home}"><img class="logo" th:src="@{/image/fruntier-logo.png}"/></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -33,7 +33,7 @@
     </div>
     <div th:switch="${not_logged_in}">
         <a class="btn btn-primary" role="button" th:case="${true}" th:href="@{/user/login}">Login</a>
-        <a class="btn btn-primary" role="button" th:case="${null}" th:href="@{/user/logout}">Logout</a>
+        <a id="logoutButton" class="btn btn-primary" role="button" style="display: none" th:href="@{/user/logout}">Logout</a>
     </div>
 </nav>
 
@@ -43,6 +43,33 @@
 </div>
 
 <script src="js/bootstrap.bundle.min.js" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
 <!-- Other JavaScript files -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Check if "authToken" cookie exists
+        if (getCookie('authToken')) {
+            // If the cookie exists, make the logout button visible
+            document.getElementById('logoutButton').style.display = 'block';
+        }else{
+            document.getElementById('logoutButton').style.display = 'block';
+
+        }
+    });
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(';'); // Split the cookie string into an array of individual cookies
+        for (let i = 0; i < cookies.length; i++) {
+            const cookiePair = cookies[i].trim().split('='); // Trim any leading or trailing whitespace
+            // Check if this cookie starts with the name we're looking for
+            if (cookiePair[0]===name) {
+                // If it does, return true to indicate the cookie exists
+                return true;
+            }
+        }
+        // If the cookie was not found, return false
+        return false;
+    }
+</script>
 </body>
 </html>

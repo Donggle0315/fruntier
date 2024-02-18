@@ -58,7 +58,7 @@
                         <div class="row">
                             <div class="col-3">Status Message</div>
                             <div class="col">
-                                <textarea class="form-control" th:value="${message}" name="message" readonly ></textarea>
+                                <textarea class="form-control" name="message" readonly th:text="${message}"></textarea>
                             </div>
                         </div>
                     </div>

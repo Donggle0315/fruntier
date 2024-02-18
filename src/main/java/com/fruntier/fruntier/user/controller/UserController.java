@@ -1,5 +1,8 @@
 package com.fruntier.fruntier.user.controller;
 
+import com.fruntier.fruntier.RequireTokenValidation;
+import com.fruntier.fruntier.TokenValidationAspect;
+import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import com.fruntier.fruntier.user.domain.Position;
 import com.fruntier.fruntier.user.domain.User;
 import com.fruntier.fruntier.user.exceptions.*;
@@ -8,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import com.fruntier.fruntier.user.service.UserInfoService;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,22 +32,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserInfoService userInfoService;
     private final UserJoinLoginService userJoinLoginService;
     private final JwtTokenService jwtTokenService;
+    private final TokenValidationAspect tokenValidationAspect;
 
-    @Autowired
-    public UserController(UserInfoService userInfoService, UserJoinLoginService userJoinLoginService, JwtTokenService jwtTokenService) {
-        this.userInfoService = userInfoService;
-        this.userJoinLoginService = userJoinLoginService;
-        this.jwtTokenService = jwtTokenService;
-    }
 
     @GetMapping("/join")
     public String userJoinPage() {
@@ -62,36 +59,21 @@ public class UserController {
     }
 
     @GetMapping("/info")
-    public String userInfo(@CookieValue(value = "authToken", required = false) String token, Model model) {
-        try {
-            if (token != null) {
-                User user = jwtTokenService.validateTokenReturnUser(token);
-                User userInfo = userInfoService.findUserWithId(user.getId());
+    @RequireTokenValidation
+    public String userInfo(HttpServletRequest request, Model model) throws UserNotFoundException{
+        // Assuming the aspect has already validated the user and set it in the request,
+        // and any TokenValidationException will be caught by the global exception handler.
+        User user = (User) request.getAttribute("validatedUser");
+        User userInfo = userInfoService.findUserWithId(user.getId());
 
-                model.addAttribute("username",userInfo.getUsername());
-                model.addAttribute("name",userInfo.getName());
-                model.addAttribute("email",userInfo.getEmail());
-                model.addAttribute("address",userInfo.getAddress());
-                model.addAttribute("message",userInfo.getMessage());
-                return "info";
-
-
-            } else {
-                // No token found in cookies user is not logged in.
-                logger.error("No token found in cookies");
-                return "redirect:login";
-            }
-        }catch (TokenValidationException e) {
-            logger.error("Token validation error: {}", e.getMessage(), e);
-            return "redirect:login";
-        }catch (UserNotFoundException e){
-            logger.error("User not Found Error : {}",e.getMessage(),e);
-            return "redirect:logout";
-        }catch (Exception e) {
-            logger.error("An unexpected error occurred: {}", e.getMessage(), e);
-            return "redirect:login";
-        }
+        model.addAttribute("username", userInfo.getUsername());
+        model.addAttribute("name", userInfo.getName());
+        model.addAttribute("email", userInfo.getEmail());
+        model.addAttribute("address", userInfo.getAddress());
+        model.addAttribute("message", userInfo.getMessage());
+        return "info";
     }
+
 
     @ResponseBody
     @PostMapping("/join")
@@ -116,9 +98,9 @@ public class UserController {
         user.setPosition(Position.USER);
         user.setAddress(address);
         if (sex.equals("male")) {
-            user.setMale(true);
+            user.setIsMale(true);
         } else {
-            user.setMale(false);
+            user.setIsMale(false);
         }
 
         try {
@@ -161,27 +143,15 @@ public class UserController {
     }
 
     @GetMapping("/home")
-    public String goHomePage(@CookieValue(value = "authToken", required = false) String token, Model model) {
-        try {
+    @RequireTokenValidation
+    public String goHomePage(Model model, HttpServletRequest request) {
 
-            if (token != null) {
-                User user = jwtTokenService.validateTokenReturnUser(token);
-                model.addAttribute("username", user.getUsername());
-                model.addAttribute("id",user.getId());
-                logger.info("Login successful) username: "+user.getUsername()+"id: "+user.getId());
-                return "home";
-            } else {
-                // No token found in cookies user is not logged in.
-                logger.error("No token found in cookies");
-                return "redirect:login";
-            }
-        } catch (TokenValidationException e) {
-            logger.error("Token validation error: {}", e.getMessage(), e);
-            return "redirect:login";
-        } catch (Exception e) {
-            logger.error("An unexpected error occurred: {}", e.getMessage(), e);
-            return "redirect:logout";
-        }
+        User user = (User) request.getAttribute("validatedUser");
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("id",user.getId());
+        logger.info("Login successful) username: "+user.getUsername()+"id: "+user.getId());
+
+        return "home";
     }
 
 
@@ -232,24 +202,12 @@ public class UserController {
         return "redirect:login";
     }
     @PostMapping("/submitUserInfo")
-    public ResponseEntity<?> submitUserInfo(@CookieValue(value = "authToken", required = false) String token,HttpServletRequest request, @RequestBody Map<String, String> userInfo){
-        try {
-            Long userId;
-
-            if (token != null) {
-                //get user information from token.
-                User currentUser = jwtTokenService.validateTokenReturnUser(token);
-                userId = currentUser.getId();
-            } else {
-                throw new NoTokenException("Token Validation Failed");
-            }
-
-            if (userInfo.containsValue(null)) {
-                throw new JsonEmptyException("Passed on Json Was Empty");
-            }
+    @RequireTokenValidation
+    public ResponseEntity<?> submitUserInfo(HttpServletRequest request, @RequestBody Map<String, String> userInfo) throws UserNotFoundException{
+            User user = (User) request.getAttribute("validatedUser");
 
 
-            User obtainedUser = userInfoService.findUserWithId(userId);
+            User obtainedUser = userInfoService.findUserWithId(user.getId());
 
             String name = userInfo.get("name");
             String email = userInfo.get("email");
@@ -263,26 +221,8 @@ public class UserController {
 
             logger.info("Message : "+message);
             userInfoService.modifyUser(obtainedUser);
-            //exception handling 예정
 
             return ResponseEntity.status(HttpStatus.OK).build();
-
-
-        } catch (TokenValidationException e) {
-            logger.error("Token validation error: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        } catch (NoTokenException e) {
-            logger.error("No Token Error: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }catch (JsonEmptyException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }catch (Exception e){
-            logger.error("Unexpected Error regarding Token: {}", e.getMessage(), e);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-        }
-
-
-
 
     }
 }
