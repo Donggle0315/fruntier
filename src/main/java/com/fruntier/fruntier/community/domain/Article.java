@@ -21,6 +21,7 @@ public class Article {
 
     private LocalDateTime date;
     private ArticleStatus status;
+    private ArticleType type;
     private String title;
 
     @ManyToOne
@@ -114,5 +115,13 @@ public class Article {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public ArticleType getType() {
+        return type;
+    }
+
+    public void setType(ArticleType type) {
+        this.type = type;
     }
 }

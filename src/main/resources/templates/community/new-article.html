@@ -21,6 +21,9 @@
         #add-article-btn {
             margin-top: 1em;
         }
+        .inline-fieldset label {
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -57,16 +60,22 @@
 <div id="main" class="container">
     <form id="article-form">
         <fieldset>
-            <legend class="row">Title</legend>
+            <legend class="row">제목</legend>
             <input type="text" name="title" class="row form-control" id="title">
         </fieldset>
-
+        <br>
+        <fieldset class="inline-fieldset">
+            <label for="run-together">글 종류 : </label>
+            <select name="type" id="run-together">
+                <option value="NORMAL">기본</option>
+                <option value="RUN_TOGETHER">같이 달려요!</option>
+            </select>
+        </fieldset>
         <br>
         <fieldset>
-            <legend class="row">Content</legend>
+            <legend class="row">글</legend>
             <textarea name="content" class="row form-control" rows="20"></textarea>
         </fieldset>
-
         <br>
         <div class="row justify-content-center">
             <button id="article-submit-btn" type="button" class="btn btn-primary w-75">Submit</button>

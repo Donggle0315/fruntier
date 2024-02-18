@@ -7,13 +7,12 @@ import com.fruntier.fruntier.community.domain.CommentDTO;
 import com.fruntier.fruntier.community.exception.CommentException;
 import com.fruntier.fruntier.community.exception.ArticleException;
 import com.fruntier.fruntier.user.domain.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface ArticleService {
     public ArticleStatus matchStringToArticleStatus(String articleStatusString);
     public Article saveNewArticle(ArticleDTO articleDTO, User user);
-    List<Article> getArticleListPage(int page, int size, String searchKey);
+    Page<Article> getArticleListPage(int page, int size, String searchKey);
     public Article getArticle(Long articleId) throws ArticleException;
     void saveComment(Article article, CommentDTO commentDTO, User user);
 

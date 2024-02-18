@@ -79,14 +79,26 @@
     <div class="row align-items-center">
         <div class="col btn-group page-btns justify-content-center" role="group">
             <button type="button" class="btn btn-light page-btn"
-                    th:onclick="|gotoPage(${curPage}-1, ${totalPages})|"><</button>
+                    th:onclick="|gotoPage(${curPage}-1, ${totalPages})|"><
+            </button>
             <button type="button" class="btn page-btn"
                     th:each="page: ${pageList}"
                     th:text="${page}"
                     th:classappend="${curPage} == ${page} ? btn-dark : btn-light"
-                    th:onclick="|gotoPage(${page}, ${totalPages})|">page</button>
+                    th:onclick="|gotoPage(${page}, ${totalPages})|">page
+            </button>
             <button type="button" class="btn btn-light page-btn"
-                    th:onclick="|gotoPage(${curPage}+1, ${totalPages})|">></button>
+                    th:onclick="|gotoPage(${curPage}+1, ${totalPages})|">>
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="search-form" class="form-inline d-flex justify-content-center">
+                <input id="search-input" class="form-control mr-2 pr-2" type="search" placeholder="Search" aria-label="Search">
+                &nbsp
+                <button class="btn btn-outline-primary ml-2 pl-2" type="submit">Search</button>
+            </form>
         </div>
     </div>
 
@@ -96,7 +108,6 @@
         </button>
     </div>
 </div>
-
 
 
 </body>

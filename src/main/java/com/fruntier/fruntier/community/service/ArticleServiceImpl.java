@@ -13,7 +13,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -51,6 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setStatus(articleStatus);
         article.setContent(articleDTO.getContent());
         article.setAuthor(user);
+        article.setType(articleDTO.getArticleType());
 
         article = articleRepository.save(article);
 
@@ -58,7 +58,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticleListPage(int page, int size, String searchKey) {
+    public Page<Article> getArticleListPage(int page, int size, String searchKey) {
         int totalPages = (int)(articleRepository.count() / size)+1;
         if (page < 0) {
             page = 0;
@@ -75,10 +75,10 @@ public class ArticleServiceImpl implements ArticleService {
         Example<Article> articleExample = Example.of(Article.fromTitle(searchKey), matcher);
 
         if (searchKey.isEmpty()){
-            return articleRepository.findAll(pageRequest).toList();
+            return articleRepository.findAll(pageRequest);
         }
         else{
-            return articleRepository.findAll(articleExample, pageRequest).toList();
+            return articleRepository.findAll(articleExample, pageRequest);
         }
     }
 
