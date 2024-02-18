@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,12 +31,27 @@ public class CommunityController {
         this.jwtTokenService = jwtTokenService;
     }
 
-
     @GetMapping
-    public String communityMainPage(Model model) {
-        List<Article> articleList = articleService.getArticleListPage(1);
+    public String communityMainPagePaged(
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(name = "page-size", required = false, defaultValue = "5") Integer pageSize,
+            @RequestParam(name="search", required = false, defaultValue = "") String searchKey,
+            Model model
+    ) {
+        List<Article> articleList = articleService.getArticleListPage(page, pageSize, searchKey);
+        long totalPages = articleService.getTotalCount() / pageSize + 1;
+        long startPage = page >= 3 ? page - 2 : 1;
+        List<Long> pageList = new ArrayList<>();
+        for(long i=startPage; i<startPage+5; i++){
+            pageList.add(i);
+            if(i == totalPages)
+                break;
+        }
 
         model.addAttribute(articleList);
+        model.addAttribute("pageList", pageList);
+        model.addAttribute("curPage", page);
+        model.addAttribute("totalPages", totalPages);
         return "community/community-main";
     }
 

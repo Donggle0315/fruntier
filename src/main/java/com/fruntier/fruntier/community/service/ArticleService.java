@@ -13,7 +13,7 @@ import java.util.List;
 public interface ArticleService {
     public ArticleStatus matchStringToArticleStatus(String articleStatusString);
     public Article saveNewArticle(ArticleDTO articleDTO, User user);
-    public List<Article> getArticleListPage(int page);
+    List<Article> getArticleListPage(int page, int size, String searchKey);
     public Article getArticle(Long articleId) throws ArticleException;
     void saveComment(Article article, CommentDTO commentDTO, User user);
 
@@ -24,4 +24,6 @@ public interface ArticleService {
     void deleteArticle(long articleId, User user) throws ArticleException;
 
     void editArticle(long articleId, User user, ArticleDTO articleDTO) throws ArticleException;
+
+    long getTotalCount();
 }

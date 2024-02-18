@@ -1,0 +1,24 @@
+
+.clickable {
+    cursor: pointer;
+}
+#main {
+    margin-top: 3em;
+}
+
+#add-article-btn {
+    margin-top: 1em;
+}
+
+td.title {
+    width: 60%;
+}
+
+.page-btns {
+    margin: 1em;
+    display: block;
+}
+
+.page-btn {
+    width: 5%;
+}
