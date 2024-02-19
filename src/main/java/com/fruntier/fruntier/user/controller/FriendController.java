@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ *  TODO :
+ *  이미 friend => search 안되게 하기
+ *  거절 기능
+ *  sidebar?
+  */
+
 @Controller
 @RequestMapping("/user/friend")
 public class FriendController {
