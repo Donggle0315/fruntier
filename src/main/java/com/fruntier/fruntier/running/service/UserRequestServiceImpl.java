@@ -33,7 +33,6 @@ public class UserRequestServiceImpl implements UserRequestService {
                 curClosest = vertex;
             }
         }
-
         return curClosest;
     }
 
@@ -42,15 +41,12 @@ public class UserRequestServiceImpl implements UserRequestService {
         //process the received JSON data on the server
         int expectedDistance = (int) payload.get("expectedDistance");
         List<Map<String, Object>> vertices = (List<Map<String, Object>>) payload.get("vertices");
-
         //extract start and end coordinates
         Coordinate startCoordinate = convertToCoordinate(vertices.get(0).get("coordinate"));
         Coordinate endCoordinate = convertToCoordinate(vertices.get(1).get("coordinate"));
         Vertex startVertex = convertCoordinateToVertex(startCoordinate);
         Vertex endVertex = convertCoordinateToVertex(endCoordinate);
-
         UserRequest userRequest = new UserRequest(startVertex, endVertex, expectedDistance);
-        System.out.println("userRequest : " + userRequest);
 
         return userRequest;
     }

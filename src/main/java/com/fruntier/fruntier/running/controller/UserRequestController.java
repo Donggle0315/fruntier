@@ -42,6 +42,7 @@ public class UserRequestController {
         Object vertices = payload.get("vertices");
         System.out.println("Received expectedDistance: " + expectedDistance);
         System.out.println("Received vertices: " + vertices);
+        System.out.println("payload = " + payload);
 
         UserRequest userRequest = userRequestService.makeUserRequesetFromJSON(payload);
         List<Vertex> recommendRoute = recommendRouteService.makeRecommendRouteNormal(userRequest);
@@ -62,7 +63,13 @@ public class UserRequestController {
         reco.setRouteVertices(recommendRoute);
 
         RecommendRoute result = recommendRouteService.saveRoute(reco);
-        Long routeId = result.getId();
+        Long routeId;
+        if (result == null) {
+            routeId = 0L;
+        } else{
+
+            routeId = result.getId();
+        }
 
         RecommendRouteDTO recommendRouteDTO = new RecommendRouteDTO(routeId, userPointList);
 

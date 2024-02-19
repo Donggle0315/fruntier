@@ -15,17 +15,12 @@ import java.util.List;
 @Table(name = "recommend_route")
 public class RecommendRoute {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double distance;
     private Integer expectedTime;
     private Double score;
-    @ManyToMany(mappedBy = "route", cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "RecommendRoute_Vertex",
-            joinColumns = { @JoinColumn(name = "recommendRoute_id")},
-            inverseJoinColumns = { @JoinColumn(name = "vertex_id")}
-    )
+    @ManyToMany
     private List<Vertex> routeVertices = new ArrayList<>();
 
 

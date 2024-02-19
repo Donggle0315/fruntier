@@ -11,15 +11,15 @@ import java.util.List;
 @Entity
 public class Vertex {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded
     private Coordinate coordinate;
     private String location;
 
-    @ManyToMany(mappedBy = "routeVertices")
-    private List<RecommendRoute> route = new ArrayList<>();
+//    @ManyToMany(mappedBy = "routeVertices")
+//    private List<RecommendRoute> route = new ArrayList<>();
 
     @OneToMany(mappedBy = "endVertex")
     private List<Edge> inEdge;

@@ -20,6 +20,7 @@ public class Route {
 
     @OneToMany(mappedBy = "route", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Record> history;
+    @ManyToOne
     private RecommendRoute recommendRoute;
 
     public Route() {
