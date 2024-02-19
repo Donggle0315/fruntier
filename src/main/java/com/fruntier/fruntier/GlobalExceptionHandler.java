@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
         redirectAttributes.addAttribute("not_logged_in", true);
         logger.info("Not Logged in Exception");
 
-        return "redirect:/user/login";
+        return "redirect:/user/logout";
     }
 
     @ExceptionHandler(UserNotFoundException.class)
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
         redirectAttributes.addAttribute("not_logged_in",true);
         logger.info("User Not Found Exception");
 
-        return "redirect:/user/login";
+        return "redirect:/user/logout";
     }
 
     @ExceptionHandler(TokenValidationException.class)
@@ -37,6 +37,6 @@ public class GlobalExceptionHandler {
         redirectAttributes.addAttribute("not_logged_in", true);
         logger.info("Token is not Valid");
 
-        return "redirect:/user/login";
+        return "redirect:/user/logout";
     }
 }
