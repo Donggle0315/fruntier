@@ -1,17 +1,23 @@
 package com.fruntier.fruntier;
 import com.fruntier.fruntier.user.domain.User;
 import com.fruntier.fruntier.user.exceptions.TokenValidationException;
+import com.fruntier.fruntier.user.repository.UserRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import org.antlr.v4.runtime.Token;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 import javax.crypto.SecretKey;
 
 @Service
 public class JwtTokenService {
+    @Autowired
+    private UserRepository userRepository;
     private final SecretKey key;
 
 
@@ -44,12 +50,11 @@ public class JwtTokenService {
                     .getPayload();
 
             // Additional validation can be done here (e.g., checking user ID, roles)
-            User loginUser = new User();
-            loginUser.setUsername(claims.getSubject());
-            loginUser.setId(claims.get("id",Long.class));
-
-
-            return loginUser; // Token is valid
+            Optional<User> userOptional = userRepository.findById(claims.get("id", Long.class));
+            if(userOptional.isEmpty()){
+                throw new TokenValidationException("User not found", new Exception());
+            }
+            return userOptional.get(); // Token is valid
         } catch (ExpiredJwtException e) {
             throw new TokenValidationException("Token is expired");
         } catch (SignatureException e) {

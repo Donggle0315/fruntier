@@ -9,10 +9,10 @@ import com.fruntier.fruntier.user.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 
@@ -50,6 +50,7 @@ public class ArticleServiceImpl implements ArticleService {
         article.setStatus(articleStatus);
         article.setContent(articleDTO.getContent());
         article.setAuthor(user);
+        article.setType(articleDTO.getArticleType());
 
         article = articleRepository.save(article);
 
@@ -57,8 +58,28 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<Article> getArticleListPage(int page) {
-        return articleRepository.findAll();
+    public Page<Article> getArticleListPage(int page, int size, String searchKey) {
+        int totalPages = (int)(articleRepository.count() / size)+1;
+        if (page < 0) {
+            page = 0;
+        }
+        else if (page > totalPages) {
+            page = totalPages;
+        }
+        Pageable pageRequest = PageRequest.of(page - 1, size, Sort.by("date").descending());
+
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withIgnoreCase()
+                .withIgnoreNullValues()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+        Example<Article> articleExample = Example.of(Article.fromTitle(searchKey), matcher);
+
+        if (searchKey.isEmpty()){
+            return articleRepository.findAll(pageRequest);
+        }
+        else{
+            return articleRepository.findAll(articleExample, pageRequest);
+        }
     }
 
     @Override
@@ -122,12 +143,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticle(long articleId, User user) throws ArticleException {
         Optional<Article> articleOptional = articleRepository.findById(articleId);
-        if(articleOptional.isEmpty()){
+        if (articleOptional.isEmpty()) {
             throw new ArticleException("Article does not exist!");
         }
 
         Article article = articleOptional.get();
-        if(!article.getAuthor().equals(user)){
+        if (!article.getAuthor().equals(user)) {
             throw new ArticleException("Article's author does not match!");
         }
 
@@ -138,12 +159,12 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void editArticle(long articleId, User user, ArticleDTO articleDTO) throws ArticleException {
         Optional<Article> articleOptional = articleRepository.findById(articleId);
-        if(articleOptional.isEmpty()){
+        if (articleOptional.isEmpty()) {
             throw new ArticleException("Article does not exist!");
         }
 
         Article article = articleOptional.get();
-        if(!article.getAuthor().equals(user)){
+        if (!article.getAuthor().equals(user)) {
             throw new ArticleException("Article's author does not match!");
         }
 
@@ -152,5 +173,10 @@ public class ArticleServiceImpl implements ArticleService {
         article.setContent(articleDTO.getContent());
 
         article = articleRepository.save(article);
+    }
+
+    @Override
+    public long getTotalCount() {
+        return articleRepository.count();
     }
 }

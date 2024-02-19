@@ -10,12 +10,14 @@ import com.fruntier.fruntier.globalexception.UserNotLoggedInException;
 import com.fruntier.fruntier.user.domain.User;
 import com.fruntier.fruntier.user.exceptions.TokenValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -30,12 +32,27 @@ public class CommunityController {
         this.jwtTokenService = jwtTokenService;
     }
 
-
     @GetMapping
-    public String communityMainPage(Model model) {
-        List<Article> articleList = articleService.getArticleListPage(1);
+    public String communityMainPagePaged(
+            @RequestParam(required = false, defaultValue = "1") Integer page,
+            @RequestParam(name = "page-size", required = false, defaultValue = "5") Integer pageSize,
+            @RequestParam(name = "search", required = false, defaultValue = "") String searchKey,
+            Model model
+    ) {
+        Page<Article> articleListPage = articleService.getArticleListPage(page, pageSize, searchKey);
+        long totalPages = articleListPage.getTotalPages();
+        long startPage = page >= 3 ? page - 2 : 1;
+        List<Long> pageList = new ArrayList<>();
+        for (long i = startPage; i < startPage + 5; i++) {
+            pageList.add(i);
+            if (i == totalPages)
+                break;
+        }
 
-        model.addAttribute(articleList);
+        model.addAttribute(articleListPage.toList());
+        model.addAttribute("pageList", pageList);
+        model.addAttribute("curPage", page);
+        model.addAttribute("totalPages", totalPages);
         return "community/community-main";
     }
 

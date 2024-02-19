@@ -12,16 +12,8 @@
     <script th:src="@{/js/community/community-main.js}"></script>
 
     <link th:href="@{/css/navbar.css}" rel="stylesheet">
+    <link th:href="@{/css/community/community-main.css}" rel="stylesheet">
 
-    <style>
-        #main {
-            margin-top: 3em;
-        }
-
-        #add-article-btn {
-            margin-top: 1em;
-        }
-    </style>
 </head>
 <body>
 <!-- Bootstrap Navigation Bar -->
@@ -34,15 +26,54 @@
 <div id="main" class="container">
     <div id="articles-card" class="card">
         <div class="card-header">
-            Articles
+            일반 게시글
         </div>
-        <ul class="list-group list-group-flush">
-            <li th:each="article: ${articleList}"
-                th:text="${article.title}"
-                th:onclick="|window.location.href='@{/community/article/{articleId}(articleId=${article.id})}'|"
-                class="list-group-item"
-            ></li>
-        </ul>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>날짜</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="article: ${articleList}"
+                    th:onclick="|window.location.href='@{/community/article/{articleId}(articleId=${article.id})}'|"
+                    class="clickable"
+                >
+                    <td th:text="${article.title}" class="title"></td>
+                    <td th:text="${article.author.username}"></td>
+                    <td th:text="${article.adaptiveTime}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col btn-group page-btns justify-content-center" role="group">
+            <button type="button" class="btn btn-light page-btn"
+                    th:onclick="|gotoPage(${curPage}-1, ${totalPages})|"><
+            </button>
+            <button type="button" class="btn page-btn"
+                    th:each="page: ${pageList}"
+                    th:text="${page}"
+                    th:classappend="${curPage} == ${page} ? btn-dark : btn-light"
+                    th:onclick="|gotoPage(${page}, ${totalPages})|">page
+            </button>
+            <button type="button" class="btn btn-light page-btn"
+                    th:onclick="|gotoPage(${curPage}+1, ${totalPages})|">>
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form id="search-form" class="form-inline d-flex justify-content-center">
+                <input id="search-input" class="form-control mr-2 pr-2" type="search" placeholder="Search" aria-label="Search">
+                &nbsp
+                <button class="btn btn-outline-primary ml-2 pl-2" type="submit">Search</button>
+            </form>
+        </div>
     </div>
 
     <div class="row">
@@ -51,7 +82,6 @@
         </button>
     </div>
 </div>
-
 
 
 </body>

@@ -7,14 +7,17 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-public class User{
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,6 +34,16 @@ public class User{
     private Tier tier;//유저 티어
     private Position position;//유저 등급(일반사용자, 관리자)
     private Date lastLoginDate; //마지막 접속 일자
+
+    @OneToMany(mappedBy = "user2")
+    private List<Friendship> friendshipList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "toUser")
+    private List<FriendRequest> friendRequestIncomingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "fromUser")
+    private List<FriendRequest> friendRequestSentList = new ArrayList<>();
+
 
     public User() {
         ;
@@ -51,6 +64,13 @@ public class User{
         this.position = position;
         this.lastLoginDate = lastLoginDate;
     }
+
+    public static User fromUsername(String key) {
+        User user = new User();
+        user.setUsername(key);
+        return user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
