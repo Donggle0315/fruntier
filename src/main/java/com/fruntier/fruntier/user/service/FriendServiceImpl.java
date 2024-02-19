@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -87,9 +88,9 @@ public class FriendServiceImpl implements FriendService {
 
         Example<User> userExample = Example.of(User.fromUsername(key), matcher);
 
-        List<User> all = userRepository.findAll(userExample, pageRequest)
-                .stream().filter(curUser -> !user.equals(curUser)).toList();
-        return all.stream().map(curUser -> new FriendSearchDTO(curUser.getId(), curUser.getUsername())).toList();
+        Stream<User> userStream = userRepository.findAll(userExample, pageRequest)
+                .stream().filter(curUser -> !user.equals(curUser));
+        return userStream.map(curUser -> new FriendSearchDTO(curUser.getId(), curUser.getUsername())).toList();
     }
 
     @Override

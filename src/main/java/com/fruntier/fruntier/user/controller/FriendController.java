@@ -19,6 +19,7 @@ import java.util.List;
  *  TODO :
  *  이미 friend => search 안되게 하기
  *  거절 기능
+ *  자기 자신이 친구 리스트 이름에 들어감??
  *  sidebar?
   */
 
