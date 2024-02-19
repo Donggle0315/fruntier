@@ -3,6 +3,7 @@ var markerLatLng;
 var vertexMap = [];
 var result = [];
 var response;
+var routeId;
 
 window.onload = function () {
     /* KaKao Map Container*/
@@ -87,8 +88,10 @@ window.onload = function () {
                 alert("Error: 추천 경로 생성 실패");
                 return;
             }
-
-            drawRouteOnMap(response);
+            routeId = response.id;
+            console.log("routeId", routeId);
+            console.log("response.id", response.id);
+            drawRouteOnMap(response.userPointList);
         });
     }
 
@@ -120,7 +123,7 @@ window.onload = function () {
 
     function openConnectionServer() {
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/api/routes/recommendation', true);
+        xhr.open('POST', '/running/recommendation', true);
         xhr.setRequestHeader('Content-Type', 'application/json');
 
         return xhr;
@@ -185,19 +188,26 @@ window.onload = function () {
     }
 
     document.getElementById("recordRoute").addEventListener('click', recordBusiness);
-    function recordBusiness() {
-        const formData = {
-                title: document.getElementById("routeTitle").value,
-                routes: response
-            };
 
-            fetch('/record/save', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData),
-                });
+    function recordBusiness() {
+        console.log("routeroute : ", routeId);
+        const data = {
+            "title" : document.getElementById("routeTitle").value,
+            "route" : routeId,
+        };
+        console.log("data : ", data);
+        fetch('/route/save', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error!");
+            }
+        });
 
     }
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Save</title>
+</head>
+
+<body>
+<h1>Route Save Page</h1>
+<script type="text/javascript" th:src="@{/js/userRequest.js}"></script>
+
+<form action="/route/save" method="POST">
+    <label for="title">Route Title:</label><br>
+    <input type="hidden" id="routeId" name="routeId" value="${routeId}">
+    <input type="text" id="title" name="title" required><br><br>
+    <button type="submit">Save Route</button>
+</form>
+
+</body>
+</html>

@@ -47,6 +47,12 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
         return findNormalRoute(userRequest);
     }
 
+    @Override
+    public RecommendRoute saveRoute(RecommendRoute recommendRoute) {
+        RecommendRoute route = recommendRouteRepository.save(recommendRoute);
+        return route;
+    }
+
 
     class StackElement {
         public Vertex vertex;

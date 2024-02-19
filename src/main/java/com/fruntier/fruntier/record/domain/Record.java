@@ -1,10 +1,14 @@
 package com.fruntier.fruntier.record.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-//@Entity
+@Entity
+@Getter
+@Setter
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,38 +28,6 @@ public class Record {
         this.id = id;
         this.runningDate = runningDate;
         this.minutesForRunning = minutesForRunning;
-        this.route = route;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public LocalDateTime getRunningDate() {
-        return runningDate;
-    }
-
-    public void setRunningDate(LocalDateTime runningDate) {
-        this.runningDate = runningDate;
-    }
-
-    public int getMinutesForRunning() {
-        return minutesForRunning;
-    }
-
-    public void setMinutesForRunning(int minutesForRunning) {
-        this.minutesForRunning = minutesForRunning;
-    }
-
-    public Route getRoute() {
-        return route;
-    }
-
-    public void setRoute(Route route) {
         this.route = route;
     }
 
