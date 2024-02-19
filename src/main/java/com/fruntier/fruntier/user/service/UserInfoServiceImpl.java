@@ -1,7 +1,7 @@
 package com.fruntier.fruntier.user.service;
 
 import com.fruntier.fruntier.user.domain.User;
-import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
+import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import com.fruntier.fruntier.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 

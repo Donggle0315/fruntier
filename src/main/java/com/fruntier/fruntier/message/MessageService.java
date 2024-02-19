@@ -1,6 +1,6 @@
 package com.fruntier.fruntier.message;
 
-import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
+import com.fruntier.fruntier.globalexception.UserNotFoundException;
 
 import java.util.List;
 

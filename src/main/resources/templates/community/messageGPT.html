@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enhanced Chat UI</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Existing styles... */
+    .chat-message {
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 20px;
+      max-width: 75%;
+    }
+    .message-outgoing {
+      background-color: #dcf8c6; /* Light green, for example */
+      margin-left: auto;
+      border-bottom-right-radius: 0;
+    }
+    .message-incoming {
+      background-color: #f0f0f0; /* Light grey, for contrast */
+      border-bottom-left-radius: 0;
+    }
+    .chat-area {
+      background-color: #e5ddd5; /* WhatsApp-like background */
+      padding: 10px; /* Add padding */
+    }
+  </style>
+</head>
+<body>
+<!-- Body content... -->
+<div class="col-12 chat-area">
+  <div class="card" style="height: 75%;">
+    <div class="card-header" id="chatLogo">
+      Please Select User
+    </div>
+    <div id="message-list" class="list-group list-group-flush">
+      <!-- Example of an outgoing message -->
+      <div class="chat-message message-outgoing">Hey, how are you?</div>
+      <!-- Example of an incoming message -->
+      <div class="chat-message message-incoming">I'm good, thanks for asking!</div>
+      <!-- Further messages here -->
+    </div>
+  </div>
+</div>
+<!-- Remaining body content... -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/js/message.js}"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@ package com.fruntier.fruntier.message;
 
 import com.fruntier.fruntier.message.comparator.MessageComparator;
 import com.fruntier.fruntier.user.domain.User;
-import com.fruntier.fruntier.user.exceptions.UserNotFoundException;
+import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import com.fruntier.fruntier.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
