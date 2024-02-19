@@ -51,11 +51,11 @@ public class JwtTokenService {
 
             return loginUser; // Token is valid
         } catch (ExpiredJwtException e) {
-            throw new TokenValidationException("Token is expired", e);
+            throw new TokenValidationException("Token is expired");
         } catch (SignatureException e) {
-            throw new TokenValidationException("Invalid token signature", e);
+            throw new TokenValidationException("Invalid token signature");
         } catch (IllegalArgumentException e) {
-            throw new TokenValidationException("Token is invalid", e);
+            throw new TokenValidationException("Token is invalid");
         }
     }
 }

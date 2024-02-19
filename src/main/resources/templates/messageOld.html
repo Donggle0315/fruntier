@@ -13,7 +13,7 @@
     .full-height {
       min-height: 100vh; /* Ensure full viewport height */
     }
-    .user-list {
+    .chat-area, .user-list {
       overflow-y: auto;
     }
     .user-list .list-group-item:hover, .user-list .list-group-item.active {
@@ -23,10 +23,6 @@
     .chat-area {
       background-color: #fff; /* Ensure contrast for readability */
       border-left: 1px solid #dee2e6; /* Add separation between chat and user list */
-      padding: 10px;
-      margin: 0 auto;
-      width: auto;
-
     }
     #divMessageBox {
       background-color: #f8f9fa; /* Differentiate message box from chat area */
@@ -34,37 +30,6 @@
     }
     #messageBox {
       resize: none; /* Prevent resizing to keep layout clean */
-    }
-    .chat-message {
-      padding: 10px;
-      margin: 5px 0;
-      border-radius: 20px;
-      max-width: 75%;
-    }
-    .message-outgoing {
-      background-color: #dcf8c6; /* Light green, for example */
-      margin-left: auto;
-      border-bottom-right-radius: 0;
-    }
-    .message-incoming {
-      background-color: #f0f0f0; /* Light grey, for contrast */
-      border-bottom-left-radius: 0;
-    }
-    .chat-area {
-      background-color: #e5ddd5; /* WhatsApp-like background */
-      padding: 10px; /* Add padding */
-      border-left: 1px solid #dee2e6; /* Add separation between chat and user list */
-      margin: 0 auto;
-      width: auto;
-      height: 500px;
-    }
-    #message-list {
-      overflow-y: auto; /* Enable vertical scrolling */
-      height: 400px; /* Adjust based on the desired fixed height */
-    }
-    .selected {
-      background-color: #f2f2f2; /* Light grey */
-      color: #666; /* Darker grey text color */
     }
   </style>
 </head>
@@ -79,7 +44,7 @@
         <div class="card-header">
           Users
         </div>
-        <ul class="list-group list-group-flush" id="userList">
+        <ul class="list-group list-group-flush">
           <!-- Dynamic user list here -->
           <li class="list-group-item" th:data-login-username="${loginUser.username}" th:data-opponent-username="${user.username}"
               th:each="user : ${userList}" th:data-opponent-name="${user.name}" th:text="${user.name}+' ('+${user.username}+')'" th:classappend="${user.id} == ${loginUser.id} ? 'current-user' : ''" onclick="loadChat(this)">
@@ -92,19 +57,18 @@
     <div class="col-lg-8 col-md-7">
       <div class="row">
         <div class="col-12 chat-area">
-          <div class="card">
+          <div class="card" style="height: 75%;">
             <div class="card-header" id="chatLogo">
               Please Select User
             </div>
-            <div id="message-list" class="list-group list-group-flush">
-              <!-- Example of an outgoing message -->
-              <!-- Further messages here -->
-            </div>
+            <ul class="list-group list-group-flush" id="message-list">
+              <!-- Messages will be displayed here -->
+            </ul>
           </div>
         </div>
         <!-- Send Message Area -->
-        <div class="col-12" style="">
-          <div class="sendBoxDiv" id="divMessageBox" style="display: none">
+        <div class="col-12" style="height: 25%;">
+          <div class="card" id="divMessageBox">
             <form id="messageForm">
               <div class="form-group">
                 <label for="messageBox">Send Message</label>
