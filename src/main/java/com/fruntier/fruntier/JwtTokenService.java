@@ -52,7 +52,7 @@ public class JwtTokenService {
             // Additional validation can be done here (e.g., checking user ID, roles)
             Optional<User> userOptional = userRepository.findById(claims.get("id", Long.class));
             if(userOptional.isEmpty()){
-                throw new TokenValidationException("User not found", new Exception());
+                throw new TokenValidationException("User not found");
             }
             return userOptional.get(); // Token is valid
         } catch (ExpiredJwtException e) {

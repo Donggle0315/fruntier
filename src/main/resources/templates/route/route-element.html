@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Element</title>
+    <script src="js/route/route.js" defer></script> <!-- Link to the JavaScript file -->
+</head>
+<body>
+<h1>Route Element</h1>
+
+<!-- Route 객체의 속성을 동적으로 표시 -->
+<div id="routeDetails" th:if="${route}">
+    <p>ID: <span th:text="${route.id}"></span></p>
+    <p>User ID: <span th:text="${route.userId}"></span></p>
+    <p>Title: <span th:text="${route.title}"></span></p>
+
+    <!-- history 속성이 존재하는 경우 -->
+    <div th:if="${route.history}">
+        <h2>History</h2>
+        <ul>
+            <!-- history 속성의 각 요소를 순회하며 출력 -->
+            <li th:each="record : ${route.history}">
+                <p>Date: <span th:text="${record.runningDate}"></span></p>
+                <p>Time: <span th:text="${record.minutesForRunning}"></span></p>
+                <!-- 기타 속성들도 동일한 방식으로 표시할 수 있음 -->
+            </li>
+        </ul>
+    </div>
+
+    <!-- recommendRoute 속성이 존재하는 경우 -->
+    <div th:if="${route.recommendRoute}">
+        <h2>Recommend Route</h2>
+        <p>Name: <span th:text="${route.recommendRoute.id}"></span></p>
+        <!-- 기타 속성들도 동일한 방식으로 표시할 수 있음 -->
+    </div>
+
+    <!-- 버튼 추가 -->
+    <button id="updateRecordButton">Update Record</button>
+</div>
+
+<!-- Route 객체가 존재하지 않는 경우 -->
+<p th:unless="${route}">No route found.</p>
+
+</body>
+</html>

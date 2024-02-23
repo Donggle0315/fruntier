@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Routes List</title>
+    <script src="/js/route/route.js" defer></script> <!-- Link to the JavaScript file -->
 </head>
 <body>
 <h1>Routes List</h1>
@@ -11,18 +12,24 @@
 <table border="1">
     <thead>
     <tr>
+        <th>Route ID</th>
         <th>User ID</th>
         <th>Title</th>
-        <th>Recommendation</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="route : ${routes}">
+        <td th:text="${route.routeId}"></td>
         <td th:text="${route.userId}"></td>
         <td th:text="${route.title}"></td>
-        <td th:text="${route.recommendRoute}"></td>
+        <td>
+            <!-- routeId를 파라미터로 가지고 find/{routeId}로 GET 요청을 보내는 JavaScript 코드 -->
+            <a th:href="@{/route/find(routeId=${route.routeId})}" onclick="sendGetRequest(${route.routeId})">Find</a>
+        </td>
     </tr>
     </tbody>
 </table>
+
 </body>
 </html>

@@ -1,0 +1,19 @@
+    <!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Record Update</title>
+    </head>
+    <body>
+    <h1>Record Update</h1>
+    <form action="/record/update" method="POST">
+        <input type="hidden" name="routeId" th:value="${routeId}">
+        <label for="runningDate">Running Date:</label>
+        <input type="datetime-local" id="runningDate" name="runningDate" th:required="required"><br><br>
+        <label for="minutesForRunning">Minutes for Running:</label>
+        <input type="number" id="minutesForRunning" name="minutesForRunning" th:required="required"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    </body>
+    </html>

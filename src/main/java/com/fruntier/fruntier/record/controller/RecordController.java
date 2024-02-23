@@ -6,9 +6,8 @@ import com.fruntier.fruntier.record.service.RecordUpdateService;
 import com.fruntier.fruntier.record.service.RouteRetrieveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,23 +17,34 @@ import java.time.format.DateTimeFormatter;
 public class RecordController {
     private final RouteRetrieveService routeRetrieveService;
     private final RecordUpdateService recordUpdateService;
+
     @Autowired
     public RecordController(RouteRetrieveService routeRetrieveService, RecordUpdateService recordUpdateService) {
         this.routeRetrieveService = routeRetrieveService;
         this.recordUpdateService = recordUpdateService;
     }
 
+    @GetMapping("/update")
+    public String updateRecordPage(@RequestParam String routeId, Model model) {
+        model.addAttribute("routeId", routeId);
+
+        return "record/record-update";
+    }
+
     @PostMapping("/update")
     public String updateRecord(@ModelAttribute RecordDTO recordDTO) {
-        System.out.println("RecordController.updateRecord");
         Long routeId = recordDTO.getRouteId();
+        Record record = convertDTOToRecord(recordDTO, routeId);
+        recordUpdateService.updateRecord(routeId, record);
+
+        return "redirect:/route";
+    }
+
+    private Record convertDTOToRecord(RecordDTO recordDTO, Long routeId) {
         Record record = new Record();
         record.setRoute(routeRetrieveService.getRouteFoundById(routeId));
         record.setRunningDate(LocalDateTime.parse(recordDTO.getRunningDate(), DateTimeFormatter.ISO_DATE_TIME));
         record.setMinutesForRunning(recordDTO.getMinutesForRunning());
-
-        recordUpdateService.updateRecord(routeId, record);
-
-        return "redirect:/routes/" + routeId;
+        return record;
     }
 }

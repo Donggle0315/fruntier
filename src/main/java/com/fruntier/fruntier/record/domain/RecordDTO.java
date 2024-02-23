@@ -2,10 +2,11 @@ package com.fruntier.fruntier.record.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class RecordDTO {
     private String runningDate;
     private int minutesForRunning;

@@ -30,7 +30,7 @@ public class UserRequestController {
 
     @GetMapping
     public String userRequest() {
-        return "userRequest";
+        return "recommend/userRequest";
     }
 
     @ResponseBody
@@ -67,7 +67,6 @@ public class UserRequestController {
         if (result == null) {
             routeId = 0L;
         } else{
-
             routeId = result.getId();
         }
 
