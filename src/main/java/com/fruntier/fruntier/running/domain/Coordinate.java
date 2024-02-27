@@ -2,7 +2,11 @@ package com.fruntier.fruntier.running.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter @Setter @ToString
 @Embeddable
 public class Coordinate {
     private Double longitude;
@@ -14,29 +18,5 @@ public class Coordinate {
     public Coordinate(Double longitude, Double latitude) {
         this.longitude = longitude;
         this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    @Override
-    public String toString() {
-        return "Coordinate{" +
-                "longitude=" + longitude +
-                ", latitude=" + latitude +
-                '}';
     }
 }

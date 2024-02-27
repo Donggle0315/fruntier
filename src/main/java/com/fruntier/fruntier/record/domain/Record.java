@@ -3,16 +3,20 @@ package com.fruntier.fruntier.record.domain;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
+@ToString
 public class Record {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Long userId;
 
     private LocalDateTime runningDate;
     private int minutesForRunning;
@@ -24,15 +28,11 @@ public class Record {
     public Record() {
     }
 
-    public Record(Long id, LocalDateTime runningDate, int minutesForRunning, Route route) {
+    public Record(Long id, Long userId, LocalDateTime runningDate, int minutesForRunning, Route route) {
         this.id = id;
+        this.userId = userId;
         this.runningDate = runningDate;
         this.minutesForRunning = minutesForRunning;
         this.route = route;
-    }
-
-    @Override
-    public String toString() {
-        return this.id + " " + this.minutesForRunning + " " + this.runningDate + " " + this.route;
     }
 }

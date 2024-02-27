@@ -4,6 +4,7 @@ import com.fruntier.fruntier.running.domain.UserRequest;
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.RecommendRoute;
 import com.fruntier.fruntier.running.domain.Vertex;
+import com.fruntier.fruntier.running.exception.NotFindRecommendRouteException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface RecommendRouteService {
 
     Boolean deleteRecommendRouteById(Long recommendRouteId);
 
-    List<Vertex> makeRecommendRouteNormal(UserRequest userRequest);
+    List<Vertex> makeRecommendRouteNormal(UserRequest userRequest) throws NotFindRecommendRouteException;
 
     RecommendRoute saveRoute(RecommendRoute recommendRoute);
 }
