@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class RouteRetrieveServiceImpl implements RouteRetrieveService {
@@ -19,16 +20,13 @@ public class RouteRetrieveServiceImpl implements RouteRetrieveService {
 
     @Override
     public List<Route> listRoutesAllNormal() {
-        List<Route> routes = routeRepository.findAll();
-        if (routes == null) {
-            return new ArrayList<>();
-        }
-        return routes;
+        return routeRepository.findAll();
     }
 
     @Override
-    public Route getRouteFoundById(Long id) {
-        Route route = routeRepository.findById(id).get();
-        return route;
+    public Route findRouteById(Long id) throws NoSuchElementException{
+        return routeRepository.findById(id).orElseThrow(
+                () -> new NoSuchElementException()
+        );
     }
 }

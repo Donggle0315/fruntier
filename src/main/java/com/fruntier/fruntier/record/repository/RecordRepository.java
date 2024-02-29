@@ -8,9 +8,5 @@ import java.util.List;
 
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long>{
-//    Record save(Record record);
-//
-//    Record findById(Long id);
-//
     List<Record> findByRouteId(Long routeId);
 }

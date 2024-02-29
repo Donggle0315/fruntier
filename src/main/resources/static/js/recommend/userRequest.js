@@ -195,7 +195,7 @@ window.onload = function () {
         console.log("routeroute : ", routeId);
         const data = {
             "title" : document.getElementById("routeTitle").value,
-            "route" : routeId,
+            "routeId" : routeId,
         };
         console.log("data : ", data);
         fetch('/route/save', {

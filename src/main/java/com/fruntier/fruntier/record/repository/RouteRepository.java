@@ -9,8 +9,4 @@ import java.util.List;
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Long> {
 
-//    Route findById(Long id);
-//    Route save(Route route);
-//
-//    List<Route> findAll();
 }

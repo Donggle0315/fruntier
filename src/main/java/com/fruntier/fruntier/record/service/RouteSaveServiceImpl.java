@@ -16,8 +16,6 @@ public class RouteSaveServiceImpl implements RouteSaveService {
 
     @Override
     public Route save(Route route) {
-        System.out.println("RouteSaveServiceImpl.save");
-        Route save = routeRepository.save(route);
-        return save;
+        return routeRepository.save(route);
     }
 }
