@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.*;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @Setter
+@ToString
 public class User {
 
     @Id
@@ -35,7 +37,7 @@ public class User {
     private Position position;//유저 등급(일반사용자, 관리자)
     private Date lastLoginDate; //마지막 접속 일자
 
-    @OneToMany(mappedBy = "user2")
+    @OneToMany(mappedBy = "user1")
     private List<Friendship> friendshipList = new ArrayList<>();
 
     @OneToMany(mappedBy = "toUser")
