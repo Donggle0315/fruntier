@@ -2,12 +2,13 @@ package com.fruntier.fruntier.user.service;
 
 import com.fruntier.fruntier.user.domain.FriendSearchDTO;
 import com.fruntier.fruntier.user.domain.User;
+import com.fruntier.fruntier.user.exceptions.FriendshipNotFoundException;
 
 import java.util.List;
 
 public interface FriendService {
     void makeFriendship(User f1, User f2);
-    void breakFriendship(User f1, User f2);
+    void breakFriendship(User f1, User f2) throws FriendshipNotFoundException;
     List<User> findFriendOfUser(User user);
 
 
