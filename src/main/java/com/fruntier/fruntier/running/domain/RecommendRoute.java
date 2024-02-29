@@ -20,19 +20,19 @@ public class RecommendRoute {
     private Double distance;
     private Integer expectedTime;
     private Double score;
+    private Long userId;
     @ManyToMany
     private List<Vertex> routeVertices = new ArrayList<>();
-
 
     public RecommendRoute() {
     }
 
-    public RecommendRoute(Long id, Double distance, Integer expectedTime, Double score, List<Vertex> routeVertices) {
+    public RecommendRoute(Long id, Double distance, Integer expectedTime, Double score, List<Vertex> routeVertices, Long userId) {
         this.id = id;
         this.distance = distance;
         this.expectedTime = expectedTime;
         this.score = score;
         this.routeVertices = routeVertices;
+        this.userId = userId;
     }
-
 }

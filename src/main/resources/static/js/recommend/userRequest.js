@@ -80,7 +80,7 @@ window.onload = function () {
 
         communicateServer(serverContainer, sendingData, function (error, response) {
             if (error) {
-                alert("Error: 서버 통신 중 오류가 발생했습니다.");
+                alert("Error: 경로를 생성하지 못했습니다.");
                 return;
             }
 
@@ -148,6 +148,9 @@ window.onload = function () {
     }
 
     function validateRecommendRoute(recommendRoute) {
+        if (recommendRoute == null) {
+            return false;
+        }
         return true;
     }
 
@@ -188,7 +191,6 @@ window.onload = function () {
     }
 
     document.getElementById("recordRoute").addEventListener('click', recordBusiness);
-
     function recordBusiness() {
         console.log("routeroute : ", routeId);
         const data = {
@@ -207,8 +209,10 @@ window.onload = function () {
             if (!response.ok) {
                 throw new Error("Error!");
             }
+            if (response.ok) {
+                //here to fetch got html file
+                window.location.href = '/route/success';
+            }
         });
-
     }
-
 }

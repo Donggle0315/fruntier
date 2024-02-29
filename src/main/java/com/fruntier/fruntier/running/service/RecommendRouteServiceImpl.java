@@ -1,6 +1,7 @@
 package com.fruntier.fruntier.running.service;
 
 import com.fruntier.fruntier.running.domain.*;
+import com.fruntier.fruntier.running.exception.NotFindRecommendRouteException;
 import com.fruntier.fruntier.running.repository.RecommendRouteRepository;
 import com.fruntier.fruntier.running.repository.VertexRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
     }
 
     @Override
-    public List<Vertex> makeRecommendRouteNormal(UserRequest userRequest) {
+    public List<Vertex> makeRecommendRouteNormal(UserRequest userRequest) throws NotFindRecommendRouteException{
         return findNormalRoute(userRequest);
     }
 
@@ -67,7 +68,7 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
         }
     }
 
-    public List<Vertex> findNormalRoute(UserRequest userRequest){
+    public List<Vertex> findNormalRoute(UserRequest userRequest) throws NotFindRecommendRouteException {
         Vertex startVertex = userRequest.getStartVertex();
         Vertex endVertex = userRequest.getEndVertex();
         Stack<StackElement> route = new Stack<>();
@@ -104,7 +105,7 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
 
         // fail
         if(route.empty()){
-            return null;
+            throw new NotFindRecommendRouteException("Fail To Make Recommend Route");
         }
         // success
         return convertRouteToVertex(route);
