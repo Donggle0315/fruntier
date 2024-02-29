@@ -1,6 +1,8 @@
-package com.fruntier.fruntier.message;
+package com.fruntier.fruntier.message.repository;
 
+import com.fruntier.fruntier.message.domain.Message;
 import com.fruntier.fruntier.user.domain.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

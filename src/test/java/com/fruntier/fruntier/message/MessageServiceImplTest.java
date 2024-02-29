@@ -1,6 +1,8 @@
 package com.fruntier.fruntier.message;
 
-import com.fruntier.fruntier.user.controller.UserController;
+import com.fruntier.fruntier.message.domain.Message;
+import com.fruntier.fruntier.message.repository.MessageRepository;
+import com.fruntier.fruntier.message.service.MessageService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;

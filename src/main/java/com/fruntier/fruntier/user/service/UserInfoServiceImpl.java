@@ -3,6 +3,7 @@ package com.fruntier.fruntier.user.service;
 import com.fruntier.fruntier.user.domain.User;
 import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import com.fruntier.fruntier.user.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,41 +11,25 @@ import java.util.Optional;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
+    @Autowired
     public UserInfoServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
-    public Boolean joinUser(User user) {
-
-        return true;
-    }
-
-    @Override
     public User findUserById(Long userId) throws UserNotFoundException{
-        //find the user with id.
-        Optional<User> user = userRepository.findById(userId);
+        return userRepository.findById(userId).orElseThrow(
+                ()->new UserNotFoundException("User not found in FindUserWithId")
+        );
 
-        if(user.isEmpty()){throw new UserNotFoundException("User not found in FindUserWithId");}
-
-        return user.get();
     }
 
     @Override
     public Boolean modifyUser(User user) {
-        /*
-        **HOW ON EARTH AM I TO USE THIS?
-         */
         userRepository.save(user);
-
         return true;
-    }
-
-    @Override
-    public Boolean withdrawUser(User user) {
-        return null;
     }
 
     @Override

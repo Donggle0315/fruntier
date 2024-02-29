@@ -8,14 +8,12 @@ import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
-public class userJoinLoginServiceImpl implements UserJoinLoginService {
+public class UserJoinLoginServiceImpl implements UserJoinLoginService {
     UserRepository userRepository;
 
     @Autowired
-    public userJoinLoginServiceImpl(UserRepository userRepository) {
+    public UserJoinLoginServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -28,7 +26,7 @@ public class userJoinLoginServiceImpl implements UserJoinLoginService {
 
     @Override
     public User joinUser(User user) throws HasDuplicateUsernameException {
-        if(userRepository.findByUsername(user.getUsername()).isPresent()){
+        if(isDuplicateUsername(user.getUsername())){
             throw new HasDuplicateUsernameException("Duplicate Username Found");
         }
         return userRepository.save(user);

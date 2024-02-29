@@ -2,10 +2,10 @@
 /**
  * 1. select a user to chat with
  */
-
 var currentOpponentName = null;
 var currentOpponentUsername = null;
-var currentLoginUserName;
+var currentLoginUserName = null;
+var currentLoginUserUsername = null;
 
 function loadChat(element){
     var loginUsername = element.getAttribute('data-login-username');
@@ -25,18 +25,9 @@ function loadChat(element){
 }
 
 function loadChatWith(loginUsername, opponentUsername) {
-    // Adjusted to include both loginUserId and opponentId
-    let loadChatUserInfo = JSON.stringify({
-        loginUsername: loginUsername,
-        opponentUsername: opponentUsername
-    });
 
-    fetch('/message/loadChatWith', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: loadChatUserInfo
+    fetch(`/message/chat?opponentUsername=${opponentUsername}`, {
+        method: 'GET'
     }).then(response => response.json()) // Correctly return the promise here
         .then(data => {
             console.log('Messages:', data);
@@ -47,26 +38,7 @@ function loadChatWith(loginUsername, opponentUsername) {
     });
 }
 
-// function displayMessages(messages) {
-//     const messageList = document.getElementById('message-list');
-//     messageList.innerHTML = ''; // Clear existing messages
-//     document.getElementById("messageBox").value = ""; //clear textbox
-//
-//     if (messages.length == 0) {
-//         messageList.innerHTML = '<li class="list-group-item">No messages found.</li>';
-//     } else {
-//         messages.forEach((msg) => {
-//             const li = document.createElement('li');
-//             li.classList.add('list-group-item');
-//             const time = getTimeFromMessage(msg);
-//             li.textContent = msg.sender.name +'('+msg.sender.username +')' + ': '+ msg.content + '(' + time + ')' ;
-//
-//
-//
-//             messageList.appendChild(li);
-//         });
-//     }
-// }
+
 function displayMessages(messages) {
     const messageList = document.getElementById('message-list');
     messageList.innerHTML = ''; // Clear existing messages
@@ -115,7 +87,7 @@ function sendMessage(element){
         content : content
     });
 
-    fetch('/message/sendMessage', {
+    fetch('/message/chat', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

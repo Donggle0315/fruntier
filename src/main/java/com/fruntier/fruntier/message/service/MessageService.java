@@ -1,6 +1,8 @@
-package com.fruntier.fruntier.message;
+package com.fruntier.fruntier.message.service;
 
 import com.fruntier.fruntier.globalexception.UserNotFoundException;
+import com.fruntier.fruntier.message.domain.Message;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 

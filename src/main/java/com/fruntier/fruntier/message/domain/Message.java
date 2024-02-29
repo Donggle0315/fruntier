@@ -1,9 +1,11 @@
-package com.fruntier.fruntier.message;
+package com.fruntier.fruntier.message.domain;
 import com.fruntier.fruntier.user.domain.User;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.Date;
 
+@Getter
 @Entity
 public class Message {
     @Id
@@ -31,43 +33,27 @@ public class Message {
     public Message() {
     }
 
-    public Long getId() {
-        return Id;
-    }
-
     public void setId(Long id) {
         Id = id;
-    }
-
-    public User getSender() {
-        return sender;
     }
 
     public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public User getReceiver() {
-        return receiver;
-    }
-
     public void setReceiver(User receiver) {
         this.receiver = receiver;
-    }
-
-    public Date getTime() {
-        return time;
     }
 
     public void setTime(Date time) {
         this.time = time;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public void setContent(String content) {
         this.content = content;
     }
+
+
 }
+
+

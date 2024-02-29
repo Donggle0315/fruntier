@@ -1,21 +1,20 @@
-package com.fruntier.fruntier.message;
+package com.fruntier.fruntier.message.service;
 
 
-import com.fruntier.fruntier.message.comparator.MessageComparator;
+import com.fruntier.fruntier.message.domain.Message;
+import com.fruntier.fruntier.message.repository.MessageRepository;
 import com.fruntier.fruntier.user.domain.User;
 import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import com.fruntier.fruntier.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 
 @Service
-public class MessageServiceImpl implements MessageService{
+public class MessageServiceImpl implements MessageService {
 
     @Autowired
     public MessageServiceImpl(UserRepository userRepository, MessageRepository messageRepository) {
@@ -32,10 +31,10 @@ public class MessageServiceImpl implements MessageService{
         Optional<User> opReceiver = userRepository.findByUsername(receiverUsername);
         Optional<User> opSender = userRepository.findByUsername(senderUsername);
 
-        if(opReceiver.isEmpty()){
+        if (opReceiver.isEmpty()) {
             throw new UserNotFoundException("Could not find the Receiver of the Message");
         }
-        if(opSender.isEmpty()){
+        if (opSender.isEmpty()) {
             throw new UserNotFoundException("Could not find the Sender of the Message");
         }
 
@@ -56,16 +55,22 @@ public class MessageServiceImpl implements MessageService{
 
     @Override
     public List<Message> fetchConversation(String loginUserUsername, String opponentUsername) {
-        List<Message> messageListOne =  messageRepository.findByReceiverUsernameAndSenderUsername(loginUserUsername,opponentUsername);
-        List<Message> messageListTwo = messageRepository.findByReceiverUsernameAndSenderUsername(opponentUsername,loginUserUsername);
+        List<Message> messageListOne = messageRepository.findByReceiverUsernameAndSenderUsername(loginUserUsername, opponentUsername);
+        List<Message> messageListTwo = messageRepository.findByReceiverUsernameAndSenderUsername(opponentUsername, loginUserUsername);
 
         List<Message> newList = new ArrayList<>();
-        Stream.of(messageListOne,messageListTwo).forEach(newList::addAll);
+        Stream.of(messageListOne, messageListTwo).forEach(newList::addAll);
 
         newList.sort(new MessageComparator());
 
         return newList;
     }
 
+    private static class MessageComparator implements Comparator<Message> {
+        @Override
+        public int compare(Message o1, Message o2) {
+            return o1.getTime().compareTo(o2.getTime());
+        }
 
+    }
 }

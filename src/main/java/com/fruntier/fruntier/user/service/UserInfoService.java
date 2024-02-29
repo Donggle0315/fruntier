@@ -6,11 +6,7 @@ import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import java.util.List;
 
 public interface UserInfoService {
-    /**
-     * 회원가입 기능 - 중복 회원가입 불가
-     * @param user 회원가입 유저 클래스
-     */
-    Boolean joinUser(User user);
+
 
     /**
      * 유저 검색 기능
@@ -25,13 +21,7 @@ public interface UserInfoService {
      * @return 수정 성공 여부
      */
     Boolean modifyUser(User user);
-
-    /**
-     * 유저 탈퇴 기능
-     * @param user 탈퇴할 유저 아이디
-     * @return 탈퇴 성공 여부
-     */
-    Boolean withdrawUser(User user);
+    
 
     /**
      * 임시로 만듬. 수정 예정 --> 원래는 친구들만 리턴하는데, 임시로 모두 리턴하도록.
