@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.Random;
 import javax.crypto.SecretKey;
 
 @Service
@@ -23,7 +24,7 @@ public class JwtTokenService {
 
     public JwtTokenService() {
         try {
-            byte[] keyBytes = Decoders.BASE64.decode("justshutupandgeneratemykeyfor256bytesorwhateverman");
+            byte[] keyBytes = Decoders.BASE64.decode(generateRandomString(64));
             this.key = Keys.hmacShaKeyFor(keyBytes);
         }catch (Exception e){
             throw new RuntimeException("Error generating key for JWT",e);
@@ -62,5 +63,14 @@ public class JwtTokenService {
         } catch (IllegalArgumentException e) {
             throw new TokenValidationException("Token is invalid");
         }
+    }
+
+    private String generateRandomString(int targetStringLength){
+        Random random = new Random();
+
+        return random.ints(97, 122 + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 }
