@@ -23,7 +23,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public User findUserWithId(Long userId) throws UserNotFoundException{
+    public User findUserById(Long userId) throws UserNotFoundException{
         //find the user with id.
         Optional<User> user = userRepository.findById(userId);
 

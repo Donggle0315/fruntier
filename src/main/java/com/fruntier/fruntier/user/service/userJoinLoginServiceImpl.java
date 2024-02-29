@@ -5,6 +5,7 @@ import com.fruntier.fruntier.user.exceptions.HasDuplicateUsernameException;
 import com.fruntier.fruntier.user.exceptions.PasswordWrongException;
 import com.fruntier.fruntier.globalexception.UserNotFoundException;
 import com.fruntier.fruntier.user.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,22 +21,10 @@ public class userJoinLoginServiceImpl implements UserJoinLoginService {
     }
 
     @Override
-    public User loginUser(String username, String password) throws UserNotFoundException, PasswordWrongException{
-        User idUser;
-        User pwUser;
-        Optional<User> idCheckUser = userRepository.findByUsername(username);
-        Optional<User> pwCheckUser = userRepository.findByUsernameAndPassword(username,password);
-
-
-        if(idCheckUser.isEmpty()){ // username not found
-            throw new UserNotFoundException("user(username) is not found");
-        }
-
-        if(pwCheckUser.isEmpty()){
-            throw new PasswordWrongException("wrong password");
-        }
-
-        return pwCheckUser.get();
+    public User checkUsernameAndPassword(String username, String password) throws UserNotFoundException{
+        return userRepository.findByUsernameAndPassword(username,password).orElseThrow(
+                ()->new UserNotFoundException("User not Found")
+        );
     }
 
     @Override
@@ -50,6 +39,14 @@ public class userJoinLoginServiceImpl implements UserJoinLoginService {
     @Override
     public boolean isDuplicateUsername(String username){
         return userRepository.findByUsername(username).isPresent();
+    }
+
+    @Override
+    public Cookie tokenToCookie(String token) {
+        Cookie tokenCookie = new Cookie("authToken", token);
+        tokenCookie.setHttpOnly(true);
+        tokenCookie.setPath("/");
+        return tokenCookie;
     }
 
 }
