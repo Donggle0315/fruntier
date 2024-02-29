@@ -20,22 +20,20 @@ import java.util.Objects;
 @Setter
 @ToString
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id; //유저 구분자(PK)
-    private String username; //the id of the user. identifiable
-    private String name;//유저 이름
-    private String password;//유저 패스 워드
-    private String email;//유저 이메일
+    private Long id;
+    private String username;
+    private String name;
+    private String password;
+    private String email;
     private String address;
-    private String phoneNumber; //유저 핸드폰 번호
-    //private Image profile_picture;
-    private String message;// 유저 프로필 메세지
-    private Boolean isMale;//유저 성별
-    private Tier tier;//유저 티어
-    private Position position;//유저 등급(일반사용자, 관리자)
-    private Date lastLoginDate; //마지막 접속 일자
+    private String phoneNumber;
+    private String message;
+    private Boolean isMale;
+    private Tier tier;
+    private Position position;
+    private Date lastLoginDate;
 
     @OneToMany(mappedBy = "user1")
     private List<Friendship> friendshipList = new ArrayList<>();

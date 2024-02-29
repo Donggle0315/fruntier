@@ -1,8 +1,12 @@
 package com.fruntier.fruntier.user.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 public class FriendRequest {
     @EmbeddedId
     FriendRequestKey friendRequestId;
@@ -19,29 +23,5 @@ public class FriendRequest {
 
     public FriendRequest() {
 
-    }
-
-    public FriendRequestKey getFriendRequestId() {
-        return friendRequestId;
-    }
-
-    public void setFriendRequestId(FriendRequestKey friendRequestId) {
-        this.friendRequestId = friendRequestId;
-    }
-
-    public User getFromUser() {
-        return fromUser;
-    }
-
-    public void setFromUser(User fromUser) {
-        this.fromUser = fromUser;
-    }
-
-    public User getToUser() {
-        return toUser;
-    }
-
-    public void setToUser(User toUser) {
-        this.toUser = toUser;
     }
 }

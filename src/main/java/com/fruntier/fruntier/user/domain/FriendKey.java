@@ -2,11 +2,15 @@ package com.fruntier.fruntier.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@Setter
 public class FriendKey implements Serializable {
     @Column(name="user_id_1")
     private Long userId1;
@@ -17,22 +21,6 @@ public class FriendKey implements Serializable {
     public FriendKey(){}
     public FriendKey(Long userId1, Long userId2) {
         this.userId1 = userId1;
-        this.userId2 = userId2;
-    }
-
-    public Long getUserId1() {
-        return userId1;
-    }
-
-    public void setUserId1(Long userId1) {
-        this.userId1 = userId1;
-    }
-
-    public Long getUserId2() {
-        return userId2;
-    }
-
-    public void setUserId2(Long userId2) {
         this.userId2 = userId2;
     }
 

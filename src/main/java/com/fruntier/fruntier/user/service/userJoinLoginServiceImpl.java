@@ -27,6 +27,7 @@ public class userJoinLoginServiceImpl implements UserJoinLoginService {
         Optional<User> pwCheckUser = userRepository.findByUsernameAndPassword(username,password);
 
 
+
         if(idCheckUser.isEmpty()){ // username not found
             throw new UserNotFoundException("user(username) is not found");
         }
