@@ -31,8 +31,7 @@ public class userJoinLoginServiceImpl implements UserJoinLoginService {
         if(userRepository.findByUsername(user.getUsername()).isPresent()){
             throw new HasDuplicateUsernameException("Duplicate Username Found");
         }
-        User new_user = userRepository.save(user);
-        return new_user;
+        return userRepository.save(user);
     }
 
     @Override
