@@ -1,6 +1,7 @@
 package com.fruntier.fruntier.community.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fruntier.fruntier.user.domain.User;
 import jakarta.persistence.*;
 
@@ -24,6 +25,7 @@ public class Article {
     private ArticleType type;
     private String title;
 
+    @JsonIgnore
     @ManyToOne
     private User author;
     private String content;

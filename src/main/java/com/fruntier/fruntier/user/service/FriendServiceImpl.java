@@ -36,7 +36,6 @@ public class FriendServiceImpl implements FriendService {
         friendship.setUser2(f2);
 
         f1.getFriendshipList().add(friendship);
-        f2.getFriendshipList().add(friendship);
 
         friendshipRepository.save(friendship);
 
@@ -46,7 +45,6 @@ public class FriendServiceImpl implements FriendService {
         friendship.setUser1(f2);
         friendship.setUser2(f1);
 
-        f1.getFriendshipList().add(friendship);
         f2.getFriendshipList().add(friendship);
         friendshipRepository.save(friendship);
 
@@ -89,8 +87,27 @@ public class FriendServiceImpl implements FriendService {
         Example<User> userExample = Example.of(User.fromUsername(key), matcher);
 
         Stream<User> userStream = userRepository.findAll(userExample, pageRequest)
-                .stream().filter(curUser -> !user.equals(curUser));
+                .stream().filter(curUser -> {
+                    boolean notCurrentUser = !user.equals(curUser);
+                    boolean notFriendsAlready = !areFriends(curUser, user);
+                    boolean notSentRequestAlready = !hasFriendRequest(user, curUser);
+                    return notCurrentUser && notFriendsAlready && notSentRequestAlready;
+                });
         return userStream.map(curUser -> new FriendSearchDTO(curUser.getId(), curUser.getUsername())).toList();
+    }
+
+    private boolean hasFriendRequest(User user, User curUser) {
+        FriendRequestKey fk = new FriendRequestKey();
+        fk.setFromUserId(user.getId());
+        fk.setToUserId(curUser.getId());
+        return friendRequestRepository.findById(fk).isPresent();
+    }
+
+    private boolean areFriends(User u1, User u2){
+        FriendKey fk = new FriendKey();
+        fk.setUserId1(u1.getId());
+        fk.setUserId2(u2.getId());
+        return friendshipRepository.findById(fk).isPresent();
     }
 
     @Override
