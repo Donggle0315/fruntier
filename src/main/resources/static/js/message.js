@@ -1,6 +1,6 @@
 
 /**
- * 1. select a user to chat with
+ * 1. select a user to chat with ass
  */
 var currentOpponentName = null;
 var currentOpponentUsername = null;
