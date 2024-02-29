@@ -1,21 +1,17 @@
 package com.fruntier.fruntier.community.controller;
 
 
-import com.fruntier.fruntier.JwtTokenService;
 import com.fruntier.fruntier.RequireTokenValidation;
 import com.fruntier.fruntier.community.domain.*;
 import com.fruntier.fruntier.community.exception.CommentException;
 import com.fruntier.fruntier.community.exception.ArticleException;
 import com.fruntier.fruntier.community.service.ArticleService;
-import com.fruntier.fruntier.globalexception.UserNotLoggedInException;
 import com.fruntier.fruntier.user.domain.User;
-import com.fruntier.fruntier.user.exceptions.TokenValidationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +24,10 @@ import java.util.List;
 @Slf4j
 public class CommunityController {
     private final ArticleService articleService;
-    private final JwtTokenService jwtTokenService;
 
     @Autowired
-    public CommunityController(ArticleService articleService, JwtTokenService jwtTokenService) {
+    public CommunityController(ArticleService articleService) {
         this.articleService = articleService;
-        this.jwtTokenService = jwtTokenService;
     }
 
     @GetMapping
@@ -45,6 +39,16 @@ public class CommunityController {
             Model model
     ) {
         Page<Article> articleListPage = articleService.getArticleListPage(page, pageSize, searchKey);
+        Result result = extractPage(page, articleListPage);
+
+        model.addAttribute(articleListPage.toList());
+        model.addAttribute("pageList", result.pageList());
+        model.addAttribute("curPage", page);
+        model.addAttribute("totalPages", result.totalPages());
+        return "community/community-main";
+    }
+
+    private static Result extractPage(Integer page, Page<Article> articleListPage) {
         long totalPages = articleListPage.getTotalPages();
         long startPage = page >= 3 ? page - 2 : 1;
         List<Long> pageList = new ArrayList<>();
@@ -53,12 +57,10 @@ public class CommunityController {
             if (i == totalPages)
                 break;
         }
+        return new Result(totalPages, pageList);
+    }
 
-        model.addAttribute(articleListPage.toList());
-        model.addAttribute("pageList", pageList);
-        model.addAttribute("curPage", page);
-        model.addAttribute("totalPages", totalPages);
-        return "community/community-main";
+    private record Result(long totalPages, List<Long> pageList) {
     }
 
     @GetMapping("/article/{articleId}")
@@ -68,7 +70,7 @@ public class CommunityController {
             HttpServletRequest request
     ) {
         User user = (User) request.getAttribute("validatedUser");
-        log.info("user={}", user);
+
         try {
             Article article = articleService.getArticle(articleId);
             model.addAttribute("article", article);
@@ -104,15 +106,13 @@ public class CommunityController {
     @PatchMapping("/article/{articleId}/comment/{commentId}")
     @RequireTokenValidation
     public String editComment(
-            @PathVariable long articleId,
             @PathVariable long commentId,
             @RequestBody CommentDTO commentDTO,
             HttpServletRequest request
     ) {
         User user = (User) request.getAttribute("validatedUser");
         try {
-            System.out.println("commentDTO.getContent() = " + commentDTO.getContent());
-            articleService.editComment(user, articleId, commentId, commentDTO.getContent());
+            articleService.editComment(user, commentId, commentDTO.getContent());
         } catch (CommentException e) {
             return "redirect:/article/{articleId}/comment/{commentId}"; // refresh the page
         }
@@ -123,13 +123,12 @@ public class CommunityController {
     @DeleteMapping("/article/{articleId}/comment/{commentId}")
     @RequireTokenValidation
     public String deleteComment(
-            @PathVariable long articleId,
             @PathVariable long commentId,
             HttpServletRequest request
     ) {
         User user = (User) request.getAttribute("validatedUser");
         try {
-            articleService.deleteComment(user, articleId, commentId);
+            articleService.deleteComment(user, commentId);
         } catch (CommentException e) {
             return "redirect:/article/{articleId}/comment/{commentId}"; // refresh the page
         }
@@ -142,6 +141,7 @@ public class CommunityController {
         return "community/new-article";
     }
 
+    // TODO: inspect this
     @ResponseBody
     @PostMapping("/article/new")
     @RequireTokenValidation
@@ -150,8 +150,6 @@ public class CommunityController {
             HttpServletRequest request
     ) {
         User user = (User) request.getAttribute("validatedUser");
-        log.debug("articleDTO={}", articleDTO);
-        log.info("user={}", user);
         return articleService.saveNewArticle(articleDTO, user);
     }
 
@@ -159,7 +157,6 @@ public class CommunityController {
     @RequireTokenValidation
     public String editArticleView(
             @PathVariable long articleId,
-            @CookieValue(value = "authToken", required = false) String authCookie,
             HttpServletRequest request,
             Model model
     ) {
@@ -168,7 +165,7 @@ public class CommunityController {
             Article article = articleService.getArticle(articleId);
             model.addAttribute("article", article);
         } catch (ArticleException e) {
-            return "redirect: /community";
+            return "redirect:/community";
         }
         return "community/edit-article";
     }
@@ -199,9 +196,10 @@ public class CommunityController {
     ) {
         User user = (User) request.getAttribute("validatedUser");
         try {
-            articleService.deleteArticle(articleId, user);
+            Article article = articleService.getArticle(articleId);
+            articleService.deleteArticle(article, user);
         } catch (ArticleException e) {
-            return "redirect: /community";
+            return "redirect:/community";
         }
         return "";
     }

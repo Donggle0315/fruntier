@@ -1,16 +1,14 @@
 package com.fruntier.fruntier.community.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CommentDTO {
     private String content;
 
     public CommentDTO() {
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }

@@ -16,7 +16,7 @@ public class ArticleDTO {
     private String status;
     private String type;
 
-    public ArticleDTO(String title, String content, String status) {
+    public ArticleDTO(String title, String content, String status, String type) {
         this.title = title;
         this.content = content;
         this.status = status;

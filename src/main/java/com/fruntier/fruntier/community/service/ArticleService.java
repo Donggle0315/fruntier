@@ -1,28 +1,22 @@
 package com.fruntier.fruntier.community.service;
 
-import com.fruntier.fruntier.community.domain.Article;
-import com.fruntier.fruntier.community.domain.ArticleDTO;
-import com.fruntier.fruntier.community.domain.ArticleStatus;
-import com.fruntier.fruntier.community.domain.CommentDTO;
+import com.fruntier.fruntier.community.domain.*;
 import com.fruntier.fruntier.community.exception.CommentException;
 import com.fruntier.fruntier.community.exception.ArticleException;
 import com.fruntier.fruntier.user.domain.User;
 import org.springframework.data.domain.Page;
 
 public interface ArticleService {
-    public ArticleStatus matchStringToArticleStatus(String articleStatusString);
     public Article saveNewArticle(ArticleDTO articleDTO, User user);
     Page<Article> getArticleListPage(int page, int size, String searchKey);
     public Article getArticle(Long articleId) throws ArticleException;
-    void saveComment(Article article, CommentDTO commentDTO, User user);
+    Comment saveComment(Article article, CommentDTO commentDTO, User user);
 
-    void deleteComment(User user, long articleId, long commentId) throws CommentException;
+    void deleteComment(User user, long commentId) throws CommentException;
 
-    void editComment(User user, long articleId, long commentId, String content) throws CommentException;
+    void editComment(User user, long commentId, String content) throws CommentException;
 
-    void deleteArticle(long articleId, User user) throws ArticleException;
+    void deleteArticle(Article article, User user) throws ArticleException;
 
     void editArticle(long articleId, User user, ArticleDTO articleDTO) throws ArticleException;
-
-    long getTotalCount();
 }
