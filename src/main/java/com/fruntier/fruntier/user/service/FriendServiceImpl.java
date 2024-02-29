@@ -1,6 +1,7 @@
 package com.fruntier.fruntier.user.service;
 
 import com.fruntier.fruntier.user.domain.*;
+import com.fruntier.fruntier.user.exceptions.FriendshipNotFoundException;
 import com.fruntier.fruntier.user.repository.FriendRequestRepository;
 import com.fruntier.fruntier.user.repository.FriendshipRepository;
 import com.fruntier.fruntier.user.repository.UserRepository;
@@ -29,6 +30,13 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     public void makeFriendship(User f1, User f2) {
+        makeDirectedFriendship(f1, f2);
+        makeDirectedFriendship(f2, f1);
+        userRepository.save(f1);
+        userRepository.save(f2);
+    }
+
+    private void makeDirectedFriendship(User f1, User f2) {
         Friendship friendship = new Friendship();
         FriendKey friendKey = new FriendKey(f1.getId(), f2.getId());
         friendship.setFriendKey(friendKey);
@@ -38,36 +46,33 @@ public class FriendServiceImpl implements FriendService {
         f1.getFriendshipList().add(friendship);
 
         friendshipRepository.save(friendship);
-
-        friendship = new Friendship();
-        friendKey = new FriendKey(f2.getId(), f1.getId());
-        friendship.setFriendKey(friendKey);
-        friendship.setUser1(f2);
-        friendship.setUser2(f1);
-
-        f2.getFriendshipList().add(friendship);
-        friendshipRepository.save(friendship);
-
-        userRepository.save(f1);
-        userRepository.save(f2);
     }
 
     @Override
     public void breakFriendship(User f1, User f2) {
-        FriendKey fk = new FriendKey(f1.getId(), f2.getId());
-        Optional<Friendship> friendshipOptional = friendshipRepository.findById(fk);
-        if (friendshipOptional.isEmpty()) {
-            return; // do nothing
-        }
+        try {
+            breakFriendshipDirected(f1, f2);
+            breakFriendshipDirected(f2, f1);
+            userRepository.save(f1);
+            userRepository.save(f2);
 
-        Friendship friendship = friendshipOptional.get();
+        }
+        catch (FriendshipNotFoundException e){
+            return; // don't do anything
+        }
+    }
+
+    private void breakFriendshipDirected(User f1, User f2) throws FriendshipNotFoundException {
+        FriendKey fk = new FriendKey(f1.getId(), f2.getId());
+
+        Friendship friendship = friendshipRepository.findById(fk).orElseThrow(
+                () -> new FriendshipNotFoundException("No Friendship Found")
+        );
+
         f1.getFriendshipList().remove(friendship);
         f2.getFriendshipList().remove(friendship);
 
         friendshipRepository.delete(friendship);
-
-        userRepository.save(f1);
-        userRepository.save(f2);
     }
 
     @Override
