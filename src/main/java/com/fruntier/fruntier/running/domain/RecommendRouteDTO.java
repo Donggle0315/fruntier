@@ -8,13 +8,13 @@ import java.util.List;
 @Setter @Getter
 public class RecommendRouteDTO {
     private Long id;
-    private List<UserPoint> userPointList;
+    private List<VertexDTO> vertexDTOList;
 
     public RecommendRouteDTO() {
     }
 
-    public RecommendRouteDTO(Long id, List<UserPoint> userPointList) {
+    public RecommendRouteDTO(Long id, List<VertexDTO> vertexDTOList) {
         this.id = id;
-        this.userPointList = userPointList;
+        this.vertexDTOList = vertexDTOList;
     }
 }

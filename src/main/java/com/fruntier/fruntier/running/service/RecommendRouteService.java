@@ -12,11 +12,11 @@ import java.util.List;
 public interface RecommendRouteService {
     void createRecommendRoute(RecommendRoute recommendRoute);
 
-    RecommendRoute findRecommendRouteById(Long recommendRouteId);
+    RecommendRoute findRecommendRouteById(Long recommendRouteId) throws NotFindRecommendRouteException;
 
     Boolean deleteRecommendRouteById(Long recommendRouteId);
 
     List<Vertex> makeRecommendRouteNormal(UserRequest userRequest) throws NotFindRecommendRouteException;
 
-    RecommendRoute saveRoute(RecommendRoute recommendRoute);
+    void saveRoute(RecommendRoute recommendRoute) throws NotFindRecommendRouteException;
 }

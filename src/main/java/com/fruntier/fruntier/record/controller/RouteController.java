@@ -6,6 +6,7 @@ import com.fruntier.fruntier.record.domain.RouteElementDTO;
 import com.fruntier.fruntier.record.domain.SaveRouteDTO;
 import com.fruntier.fruntier.record.service.RouteRetrieveService;
 import com.fruntier.fruntier.record.service.RouteSaveService;
+import com.fruntier.fruntier.running.exception.NotFindRecommendRouteException;
 import com.fruntier.fruntier.running.service.RecommendRouteService;
 import com.fruntier.fruntier.user.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -74,13 +75,17 @@ public class RouteController {
                             HttpServletRequest request) {
         User user = (User) request.getAttribute("validatedUser");
 
-        Route route = makeRouteInstance(user.getId(), saveRouteDTO.getRouteId(), saveRouteDTO.getTitle());
-        routeSaveService.save(route);
+        try {
+            Route route = makeRouteInstance(user.getId(), saveRouteDTO.getRouteId(), saveRouteDTO.getTitle());
+            routeSaveService.save(route);
+            return "redirect:success";
+        } catch (NotFindRecommendRouteException e) {
+            return "redirect:/";
+        }
 
-        return "redirect:success";
     }
 
-    private Route makeRouteInstance(Long userId, Long routeId, String title) {
+    private Route makeRouteInstance(Long userId, Long routeId, String title) throws NotFindRecommendRouteException {
         Route route = new Route();
         route.setUserId(userId);
         route.setId(routeId);
@@ -103,6 +108,7 @@ public class RouteController {
             model.addAttribute(routeRetrieveService.findRouteById(id));
         } catch (NoSuchElementException e) {
             return "redirect:/route";
+
         }
 
         return "route/route-element";

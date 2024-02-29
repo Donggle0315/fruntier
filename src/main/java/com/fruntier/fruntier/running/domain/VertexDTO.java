@@ -5,11 +5,11 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter @Setter @ToString
-public class UserPoint {
+public class VertexDTO {
     private String title;
     private Coordinate coordinate;
 
-    public UserPoint(String title, Coordinate coordinate) {
+    public VertexDTO(String title, Coordinate coordinate) {
         this.title = title;
         this.coordinate = coordinate;
     }

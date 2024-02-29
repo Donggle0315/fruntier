@@ -9,13 +9,13 @@ import lombok.ToString;
 @Getter @Setter @ToString
 @Embeddable
 public class Coordinate {
-    private Double longitude;
     private Double latitude;
+    private Double longitude;
 
     public Coordinate() {
     }
 
-    public Coordinate(Double longitude, Double latitude) {
+    public Coordinate(Double latitude, Double longitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }

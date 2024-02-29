@@ -10,6 +10,9 @@ public class UserRequest {
     Vertex endVertex;
     Integer expectDistance;
 
+    public UserRequest() {
+    }
+
     public UserRequest(Vertex startVertex, Vertex endVertex, Integer expectDistance) {
         this.startVertex = startVertex;
         this.endVertex = endVertex;

@@ -91,7 +91,7 @@ window.onload = function () {
             routeId = response.id;
             console.log("routeId", routeId);
             console.log("response.id", response.id);
-            drawRouteOnMap(response.userPointList);
+            drawRouteOnMap(response.vertexDTOList);
         });
     }
 
@@ -108,14 +108,13 @@ window.onload = function () {
     }
 
     function makeSendingDataJSON(expectedDistance) {
+        console.log("point : ", vertexMap);
         var data = JSON.stringify({
             expectedDistance: parseInt(expectedDistance),
-            vertices: vertexMap.map(function (item) {
-                return {
-                    title : item.title,
-                    coordinate : {latitude : item.latLng.getLat(), longitude : item.latLng.getLng() }
-                };
-            })
+            startLat : vertexMap[0].latLng.getLat(),
+            startLng : vertexMap[0].latLng.getLng(),
+            endLat : vertexMap[1].latLng.getLat(),
+            endLng : vertexMap[1].latLng.getLng(),
         })
 
         return data;

@@ -8,7 +8,4 @@ import java.util.Map;
 
 public interface UserRequestService {
     Vertex convertCoordinateToVertex(Coordinate coordinate);
-
-    UserRequest makeUserRequesetFromJSON(Map<String, Object> payload);
-
 }

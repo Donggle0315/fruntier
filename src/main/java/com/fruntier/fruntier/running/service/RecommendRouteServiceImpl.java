@@ -29,9 +29,10 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
     }
 
     @Override
-    public RecommendRoute findRecommendRouteById(Long recommendRouteId) {
-        Optional<RecommendRoute> recommendRoute = recommendRouteRepository.findById(recommendRouteId);
-        return recommendRoute.orElse(null);
+    public RecommendRoute findRecommendRouteById(Long recommendRouteId) throws NotFindRecommendRouteException{
+        return recommendRouteRepository.findById(recommendRouteId).orElseThrow(
+                () -> new NotFindRecommendRouteException("not found Recommend Route")
+        );
     }
 
     @Override
@@ -49,9 +50,8 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
     }
 
     @Override
-    public RecommendRoute saveRoute(RecommendRoute recommendRoute) {
-        RecommendRoute route = recommendRouteRepository.save(recommendRoute);
-        return route;
+    public void saveRoute(RecommendRoute recommendRoute) {
+        recommendRouteRepository.save(recommendRoute);
     }
 
 
@@ -68,7 +68,7 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
         }
     }
 
-    public List<Vertex> findNormalRoute(UserRequest userRequest) throws NotFindRecommendRouteException {
+    public List<Vertex> findNormalRoute(UserRequest userRequest) throws NotFindRecommendRouteException, NoSuchElementException {
         Vertex startVertex = userRequest.getStartVertex();
         Vertex endVertex = userRequest.getEndVertex();
         Stack<StackElement> route = new Stack<>();
@@ -123,7 +123,7 @@ public class RecommendRouteServiceImpl implements RecommendRouteService {
         return Math.sqrt(xDiff * xDiff + yDiff * yDiff) * 1.5;
     }
 
-    public double shortestPathDistance(Vertex startVertex, Vertex endVertex){
+    public double shortestPathDistance(Vertex startVertex, Vertex endVertex) throws NoSuchElementException{
         Map<Vertex, Double> distances = new HashMap<>();
         Map<Vertex, Vertex> predecessors = new HashMap<>();
         Set<Vertex> visitedVertices = new HashSet<>();

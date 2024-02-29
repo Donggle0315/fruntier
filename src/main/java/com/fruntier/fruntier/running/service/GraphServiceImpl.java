@@ -3,13 +3,12 @@ package com.fruntier.fruntier.running.service;
 
 import com.fruntier.fruntier.running.domain.Edge;
 import com.fruntier.fruntier.running.domain.Vertex;
-import com.fruntier.fruntier.running.repository.VertexMemoryRepository;
 import com.fruntier.fruntier.running.repository.VertexRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 public class GraphServiceImpl implements GraphService {
@@ -20,22 +19,12 @@ public class GraphServiceImpl implements GraphService {
         this.vertexRepository = vertexRepository;
     }
 
-
-
     @Override
-    public List<Edge> findConnectedEdge(Vertex vertex) {
-        Vertex resultVertex;
-        List<Edge> returnEdgeList;
-        Optional<Vertex> v1 = vertexRepository.findById(vertex.getId());
-        if(v1.isPresent()){
-            resultVertex = v1.get();
-        }else{
-            return null;
-        }
+    public List<Edge> findConnectedEdge(Vertex vertex) throws NoSuchElementException {
+        Vertex resultVertex = vertexRepository.findById(vertex.getId()).orElseThrow(
+                () -> new NoSuchElementException("Cannot find Vertex")
+        );
 
-        returnEdgeList = resultVertex.getOutEdge();
-
-        return returnEdgeList;
-
+        return resultVertex.getOutEdge();
     }
 }
