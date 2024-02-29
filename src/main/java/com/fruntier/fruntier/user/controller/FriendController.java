@@ -141,8 +141,8 @@ public class FriendController {
 
 
     @ResponseBody
-    @PostMapping("/request/cancel")
-    public void requestCancel(
+    @PostMapping("/request/decline")
+    public void requestDecline(
             @RequestBody String cancelUserIdString,
             @CookieValue(value = "authToken", required = false) String authCookie
     ) throws UserNotLoggedInException {

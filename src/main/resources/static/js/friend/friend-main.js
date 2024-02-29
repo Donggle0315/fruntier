@@ -6,12 +6,18 @@ window.onload = () => {
 function refreshFriendRequest() {
     refreshFriendRequestSent();
     refreshFriendRequestIncoming();
+    searchFriend(null);
 }
 
 function searchFriend(event) {
-    event.preventDefault();
+    if (event != null){
+        event.preventDefault();
+    }
 
     let query = document.getElementById('search-input').value;
+    if (query == "") {
+        return;
+    }
     fetch(`/user/friend/search?key=${query}`, {
         method: "GET"
     })
@@ -93,10 +99,26 @@ function refreshFriendRequestIncoming() {
                     <td>${data[i]['username']}</td>
                     <td>
                         <button class="btn btn-primary" onclick=sendAcceptFriendRequest(${data[i]['id']})>수락</button>
+                        <button class="btn btn-danger" onclick=sendDeclineFriendRequest(${data[i]['id']})>거절</button>
                     </td>
                 </tr>`;
             }
             table.innerHTML += "</tbody>";
+        })
+        .catch(err => {
+            console.error(err)
+        });
+}
+
+function sendDeclineFriendRequest(id){
+    fetch(`/user/friend/request/decline`, {
+        method: "POST",
+        body: id
+    })
+        .then(data => data.text())
+        .then(data => {
+            alert("거절했습니다!")
+            window.location.reload();
         })
         .catch(err => {
             console.error(err)
