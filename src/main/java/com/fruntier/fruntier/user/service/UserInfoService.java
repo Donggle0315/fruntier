@@ -17,7 +17,7 @@ public interface UserInfoService {
      * @param userId 찾고자 하는 유저의 아이디(PK)
      * @return User class
      */
-    User findUserWithId(Long userId) throws UserNotFoundException;
+    User findUserById(Long userId) throws UserNotFoundException;
 
     /**
      * 유저 정보 수정 기능

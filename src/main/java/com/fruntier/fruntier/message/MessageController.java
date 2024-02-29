@@ -37,7 +37,7 @@ public class MessageController {
     @GetMapping("/conversationList")
     @RequireTokenValidation
     public String messagePage(HttpServletRequest request, Model model) throws UserNotFoundException{
-        User loginUser = userInfoService.findUserWithId(((User)request.getAttribute("validatedUser")).getId());
+        User loginUser = userInfoService.findUserById(((User)request.getAttribute("validatedUser")).getId());
 
         List<User> userList = userInfoService.findUsers();
 
@@ -51,7 +51,7 @@ public class MessageController {
     @PostMapping("/loadChatWith")
     @RequireTokenValidation
     public ResponseEntity<?> loadChatWith(HttpServletRequest request, @RequestBody ChatUserInfoDto chatUserInfoDto) throws UserNotFoundException{
-        User currentUser = userInfoService.findUserWithId(((User)request.getAttribute("validatedUser")).getId());
+        User currentUser = userInfoService.findUserById(((User)request.getAttribute("validatedUser")).getId());
 
 
         String loginUsername = chatUserInfoDto.getLoginUsername();
@@ -71,7 +71,7 @@ public class MessageController {
     @RequireTokenValidation
     public ResponseEntity<?> sendMessage(HttpServletRequest request, @RequestBody SentMessageDto sentMessageDto) throws  UserNotFoundException {
 
-        User currentUser = userInfoService.findUserWithId(((User) request.getAttribute("validatedUser")).getId());
+        User currentUser = userInfoService.findUserById(((User) request.getAttribute("validatedUser")).getId());
         String opponentUsername = sentMessageDto.getOpponentUsername();
         String content = sentMessageDto.getContent();
         logger.debug("received Username : " + opponentUsername + "received Content : " + content);
