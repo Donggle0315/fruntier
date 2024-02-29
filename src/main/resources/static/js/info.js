@@ -31,7 +31,7 @@ function submitUserInfo(){
     let send_object = JSON.stringify(Object.fromEntries(formData));
     console.log(send_object);
 
-    fetch('/user/submitUserInfo',{
+    fetch('/user/info',{
         method : 'POST',
         headers : {
             'Content-Type': 'application/json',
